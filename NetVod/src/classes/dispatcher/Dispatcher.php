@@ -6,19 +6,18 @@ class Dispatcher
 {
     public function run() : string
     {
-        $_GET['action'] = $_GET['action'] ?? "";
-        $content='
+        $action = (!empty($_GET['action'])) ? $_GET['action'] : "default";
+        $content= <<<EOF
         <!DOCTYPE html>
         <html lang="fr">
         <head>
             <meta charset="UTF-8">
-            <title>NetVod - '.$_GET['action'].'</title>
+            <title>NetVod - {$_GET['action']}</title>
         </head>
         <body>
-        switch ($action)
-        ';
+        EOF;
 
-        switch ($_GET['action']){
+        switch ($action){
             case 'add-user':
                 //TODO
                 break;
