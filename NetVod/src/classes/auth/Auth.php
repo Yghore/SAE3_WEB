@@ -4,14 +4,35 @@ namespace iutnc\netvod\auth;
 
 use iutnc\deefy\db\ConnectionFactory;
 use iutnc\netvod\exception\AuthException;
+use iutnc\netvod\exception\LoginInvalidEmailException;
+use iutnc\netvod\exception\LoginInvalidPasswordException;
 use iutnc\netvod\model\User;
 
 class Auth
 {
 
-    public static function login(string $email, string $password)
+    /**
+     * @param string $email Email
+     * @param string $password Password
+     * @return void // Defini la session (avec l'utilisation du token)
+     * @throws AuthException
+     */
+    public static function authenticate(string $email, string $password) : bool
     {
-        $db = ConnectionFactory::makeConnection();
+        $user = User::getFromEmail($email);
+        if(!$user)
+        {
+            throw new LoginInvalidEmailException("Email invalide");
+        }
+        if($user->checkPassword($password))
+        {
+            $_SESSION['user'] = $user;
+            return true;
+        }
+        else
+        {
+            throw new LoginInvalidPasswordException("Mot de passe invalide");
+        }
     }
 
     public static function register(string $email, string $password, string $role ='1') : bool{
@@ -26,8 +47,6 @@ class Auth
         $user->save();
         return true;
     }
+
+
 }
-
-
-
-
