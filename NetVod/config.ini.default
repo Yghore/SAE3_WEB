@@ -1,5 +1,0 @@
-host=localhost
-dataBase=sae
-driver=mysql
-username=root
-password=
