@@ -37,6 +37,7 @@ class Signin extends Action
         } catch (AuthException $e) {
             print($e->getMessage());
         }
+
         return $content;
     }
 }
