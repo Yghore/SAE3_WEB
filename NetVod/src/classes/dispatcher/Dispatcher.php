@@ -32,6 +32,12 @@ class Dispatcher
             case 'print-catalogue':
                 //TODO
                 break;
+            case 'add-episode':
+                //TODO
+                break;
+            default:
+                //TODO
+                break;
         }
 
         $content .= '</body></html>';
