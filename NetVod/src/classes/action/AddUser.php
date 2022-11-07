@@ -45,7 +45,6 @@ class AddUser extends Action
         } catch (AuthException $e) {
             return print($e->getMessage());
         }
-
     }
 
 
