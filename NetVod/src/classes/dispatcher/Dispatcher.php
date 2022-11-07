@@ -59,5 +59,4 @@ class Dispatcher
         </html>
     END;
     }
-    
 }

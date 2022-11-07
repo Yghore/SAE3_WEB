@@ -8,7 +8,10 @@ use iutnc\netvod\exception\AuthException;
 
 class AddUser extends Action
 {
-
+    /**
+     * Méthode qui permet d'afficher le formulaire d'ajout d'un utilisateur
+     * @return string
+     */
     protected function executeGET(): string
     {
         $content = '<h1>Ajout d’un utilisateur</h1>';
@@ -25,6 +28,10 @@ class AddUser extends Action
         return $content;
     }
 
+    /**
+     * Méthode qui permet d'ajouter un utilisateur
+     * @return string
+     */
     protected function executePOST(): string
     {
         try {
