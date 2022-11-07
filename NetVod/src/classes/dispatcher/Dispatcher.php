@@ -8,7 +8,6 @@ class Dispatcher
 {
     public function run()
     {
-        $action = null;
         $html = '';
         switch ($action){
             case 'add-user':
@@ -28,6 +27,7 @@ class Dispatcher
                 //TODO
                 break;
             default:
+                $action = null;
                 $html = "Bienvenue";
                 break;
         }
