@@ -1,9 +1,11 @@
 <?php
 
-namespace iutnc\netvod\modele;
+namespace iutnc\netvod\model;
 
 class User
 {
+
+
 
 
 }
