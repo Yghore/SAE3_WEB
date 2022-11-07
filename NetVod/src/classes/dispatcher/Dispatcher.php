@@ -42,6 +42,7 @@ class Dispatcher
         }
 
         $content .= '</body></html>';
+
         return $content;
     }
 }
