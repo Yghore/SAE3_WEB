@@ -12,7 +12,7 @@ class Signin extends Action
     protected function executeGET(): string
     {
         $content = '<h1>Connexion</h1>';
-        $content .= '<form action="index.php?action=add-user" method="post">';
+        $content .= '<form action="index.php?action=signin" method="post">';
         $content .= '<label for="email">Email</label>';
         $content .= '<input type="email" name="email" id="email" required>';
         $content .= '<label for="password">Mot de passe</label>';

@@ -10,12 +10,14 @@ class User
     private string $email;
     private string $password;
     private string $role;
+    private int $id;
 
-    public function __construct(string $email, string $password, string $role = '1')
+    public function __construct(string $email, string $password, int $id, string $role = '1')
     {
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
+        $this->id = $id;
     }
     public static function getFromSession()
     {
@@ -44,12 +46,20 @@ class User
         ]);
         $result = $query->fetch();
         if ($result) {
-            return new User($result['email'], $result['pass']);
+            return new User($result['email'], $result['pass'], $result['id']);
         }
         return null;
     }
 
     public function checkPassword($password){
         return password_verify($password, $this->password);
+    }
+
+    public function addFavoriteSerie(int $idSerie)
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("INSERT INTO favorite2user VALUES(:user, :serie)");
+        $state->execute([':user' => User::getFromSession()->id]);
+        return true;
     }
 }
