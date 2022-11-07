@@ -39,9 +39,7 @@ class Dispatcher
                 $html = "Bienvenue";
                 break;
         }
-        if ($action !== null){
-            $html = $action->execute();
-        }
+
         $this->renderPage($html);
     }
 
