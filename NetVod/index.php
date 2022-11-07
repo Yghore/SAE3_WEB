@@ -1,8 +1,9 @@
 <?php
 
+use iutnc\netvod\dispatcher\Dispatcher;
 require_once 'vendor/autoload.php';
 
 session_start();
 
-$test = new \iutnc\netvod\dispatcher\Dispacher();
+$test = new Dispatcher();
 $test->run();

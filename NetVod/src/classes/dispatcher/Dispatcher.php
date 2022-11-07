@@ -6,7 +6,6 @@ class Dispatcher
 {
     public function run() : string
     {
-        session_start();
         $_GET['action'] = $_GET['action'] ?? "";
         $content='
         <!DOCTYPE html>
