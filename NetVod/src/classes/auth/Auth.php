@@ -3,7 +3,8 @@
 namespace iutnc\netvod\auth;
 
 use iutnc\deefy\db\ConnectionFactory;
-use MongoDB\Driver\Exception\ConnectionException;
+use iutnc\netvod\exception\AuthException;
+use iutnc\netvod\modele\User;
 
 class Auth
 {
@@ -13,5 +14,20 @@ class Auth
         $db = ConnectionFactory::makeConnection();
     }
 
-
+    public static function register(string $email, string $password, string $role ='1') : bool{
+        if (strlen($password) <= 10){
+            throw new AuthException("Le mot de passe doit faire 10 caractères");
+        }
+        $user = User::getFromEmail($email);
+        if ($user){
+            throw new AuthException("L'utilisateur existe déjà");
+        }
+        $user = new User($email, password_hash($password, PASSWORD_DEFAULT), $role);
+        $user->save();
+        return true;
+    }
 }
+
+
+
+

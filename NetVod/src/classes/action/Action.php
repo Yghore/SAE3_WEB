@@ -15,7 +15,7 @@ abstract class Action
         $this->script_name = $_SERVER['SCRIPT_NAME'];
     }
 
-    public function __invoke() : string
+    public function execute() : string
     {
         if ($this->http_method == 'GET') {
             return $this->executeGET();

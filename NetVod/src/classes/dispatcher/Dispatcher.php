@@ -2,6 +2,8 @@
 
 namespace iutnc\netvod\dispatcher;
 
+use iutnc\netvod\action\AddUser;
+
 class Dispatcher
 {
     public function run() : string
@@ -12,14 +14,15 @@ class Dispatcher
         <html lang="fr">
         <head>
             <meta charset="UTF-8">
-            <title>NetVod - {$_GET['action']}</title>
+            <title>NetVod - Video Streaming</title>
         </head>
         <body>
         EOF;
 
         switch ($action){
             case 'add-user':
-                //TODO
+                $action = new AddUser();
+                $content = $action->execute();
                 break;
             case 'signin':
                 //TODO
