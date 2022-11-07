@@ -14,6 +14,7 @@ class Dispatcher
             case 'add-user':
                 $action = new AddUser();
                 break;
+
             case 'signin':
                 //TODO
                 break;
