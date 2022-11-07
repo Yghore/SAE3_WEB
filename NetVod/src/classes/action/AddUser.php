@@ -35,9 +35,13 @@ class AddUser extends Action
     protected function executePOST(): string
     {
         try {
-            Auth::register($_POST['email'], $_POST['password']);
-            header('Location: '.$_SERVER['PHP_SELF']);
-            return 'Utilisateur inscrit';
+            if ($_POST['password'] == $_POST['confirmer']) {
+                Auth::register($_POST['email'], $_POST['password']);
+                header('Location: '.$_SERVER['PHP_SELF']);
+                return '<h1>Utilisateur ajouté</h1>';
+            } else {
+                return '<h1>Les mots de passe ne correspondent pas</h1>';
+            }
         } catch (AuthException $e) {
             return print($e->getMessage());
         }
