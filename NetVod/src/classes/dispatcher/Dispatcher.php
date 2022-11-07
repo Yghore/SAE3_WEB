@@ -40,9 +40,7 @@ class Dispatcher
                 //TODO
                 break;
         }
-
         $content .= '</body></html>';
-
         return $content;
     }
 }
