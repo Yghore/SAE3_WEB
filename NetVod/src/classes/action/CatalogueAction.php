@@ -26,7 +26,7 @@ class CatalogueAction extends Action
             while ($row = $resultatSet->fetch()){
                 $titre = $row['titre'];
                 $image = $row['img'];
-                $html .= "<li><a methods='post' href=\"index.php?action=print-catalogue&titre=$titre\">$titre $image</a></li>";
+                $html .= "<li><a href=\"index.php?action=print-catalogue&titre=$titre\">$titre $image</a></li>";
             }
             $html .= '</nav></ul>';
         } else {
