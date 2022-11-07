@@ -1,5 +1,5 @@
 host=localhost
 dataBase=sae
 driver=mysql
-user=root
+username=root
 password=

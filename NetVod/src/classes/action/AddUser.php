@@ -3,7 +3,7 @@
 namespace iutnc\netvod\action;
 
 use iutnc\netvod\auth\Auth;
-use iutnc\netvod\exception\AuthException;
+use iutnc\netvod\exception\auth\AuthException;
 
 
 class AddUser extends Action

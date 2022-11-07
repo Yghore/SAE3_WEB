@@ -19,11 +19,10 @@ class User
     public function save()
     {
         $db = ConnectionFactory::makeConnection();
-        $query = $db->prepare("INSERT INTO user (email, password, role) VALUES (:email, :password, :role)");
+        $query = $db->prepare("INSERT INTO user (email, pass) VALUES (:email, :password)");
         $query->execute([
             'email' => $this->email,
-            'password' => $this->password,
-            'role' => $this->role
+            'password' => $this->password
         ]);
     }
 
@@ -36,7 +35,7 @@ class User
         ]);
         $result = $query->fetch();
         if ($result) {
-            return new User($result['email'], $result['password'], $result['role']);
+            return new User($result['email'], $result['pass']);
         }
         return null;
     }
