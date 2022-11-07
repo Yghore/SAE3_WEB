@@ -2,7 +2,6 @@ create table user (
     id integer(11) NOT NULL auto_increment,
     email varchar(25) NOT NULL,
     pass varchar(255) NOT NULL,
-    token varchar(255),
 
     primary key (id)
 );
