@@ -72,7 +72,7 @@ class Dispatcher
                     <li><a href="?action=print-catalogue">afficher la categorie</a></li>
                     <li><a href="?action=add-episode">ajouter un episode</a></li>
                 </nav></ul>
-                <h2>$html</h2>
+                <div>$html</div>
             </body>
         </html>
     END;
