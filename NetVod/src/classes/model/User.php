@@ -2,7 +2,8 @@
 
 namespace iutnc\netvod\model;
 
-use iutnc\deefy\db\ConnectionFactory;
+
+use iutnc\netvod\db\ConnectionFactory;
 
 class User
 {
