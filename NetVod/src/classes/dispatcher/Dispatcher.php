@@ -3,6 +3,7 @@
 namespace iutnc\netvod\dispatcher;
 
 use iutnc\netvod\action\AddUser;
+use iutnc\netvod\action\Signin;
 
 class Dispatcher
 {
@@ -16,11 +17,13 @@ class Dispatcher
         $html = '';
         switch ($action){
             case 'add-user':
-                $action = new AddUser();
+                $user = new AddUser();
+                $html .= $user->execute();
                 break;
 
             case 'signin':
-                //TODO
+                $signin = new Signin();
+                $html .= $signin->execute();
                 break;
             case 'add-serial':
                 //TODO
@@ -55,6 +58,7 @@ class Dispatcher
                 <h1>NetVod - Video Streaming</h1>
                 <nav><ul>
                     <li><a href="?action=add-user">Ajouter un utilisateur</a></li>
+                    <li><a href="?action=signin">Se connecter</a></li>
                     <li><a href="index.php">Accueil</a></li>
                     <li><a href="?action=add-serial">ajouter une serie</a></li>
                     <li><a href="?action=print-catalogue">afficher la categorie</a></li>
