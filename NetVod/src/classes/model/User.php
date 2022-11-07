@@ -1,7 +1,9 @@
 <?php
 
 namespace iutnc\netvod\model;
+
 use iutnc\netvod\db\ConnectionFactory;
+use iutnc\netvod\exception\auth\AuthException;
 
 class User
 {
@@ -14,6 +16,13 @@ class User
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
+    }
+    public static function getFromSession()
+    {
+        if(isset($_SESSION['user'])){
+            return $_SESSION['user'];
+        }
+        throw new AuthException("Vous n'êtes pas connecté");
     }
 
     public function save()
