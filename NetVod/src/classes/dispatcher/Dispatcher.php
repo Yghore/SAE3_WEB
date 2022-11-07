@@ -2,7 +2,10 @@
 
 namespace iutnc\netvod\dispatcher;
 
+use iutnc\netvod\action\AddEpisodeAction;
+use iutnc\netvod\action\AddSerial;
 use iutnc\netvod\action\AddUser;
+use iutnc\netvod\action\CatalogueAction;
 use iutnc\netvod\action\Signin;
 
 class Dispatcher
@@ -26,20 +29,28 @@ class Dispatcher
                 $html .= $signin->execute();
                 break;
             case 'add-serial':
-                //TODO
+                $addserial = new AddSerial();
+                $html .= $addserial->execute();
                 break;
+
             case 'print-catalogue':
-                //TODO
+                $catalogue = new CatalogueAction();
+                $html .= $catalogue->execute();
                 break;
+
             case 'add-episode':
-                //TODO
+                $episolde = new AddEpisodeAction();
+                $html .= $episolde->execute();
                 break;
+
             default:
                 $action = null;
                 $html = "Bienvenue";
                 break;
         }
-
+        if ($action !== null){
+            $html = $action->execute();
+        }
         $this->renderPage($html);
     }
 
