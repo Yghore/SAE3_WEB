@@ -1,0 +1,11 @@
+{
+  "name": "s3/sae",
+  "description": "netflix du bled",
+  "type": "projet",
+
+  "autoload": {
+    "psr-4": {
+      "iutnc\\netvod\\": "./src/classes"
+    }
+  }
+}
