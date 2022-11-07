@@ -37,8 +37,7 @@ class User
         ]);
         $result = $query->fetch();
         if ($result) {
-            $user = new User($result['email'], $result['password'], $result['role']);
-            return $user;
+            return new User($result['email'], $result['password'], $result['role']);
         }
         return null;
     }
