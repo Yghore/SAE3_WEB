@@ -2,6 +2,7 @@ create table user (
     id integer(11) NOT NULL auto_increment,
     email varchar(25) NOT NULL,
     pass varchar(255) NOT NULL,
+    valid boolean DEFAULT false,
 
     primary key (id)
 );
@@ -9,6 +10,8 @@ create table user (
 create table token_reset (
     token varchar(255) not null unique,
     iduser integer(11) not null,
+    date_expiration datetime,
+    type_token varchar(1) CHECK(type_token IN('R', 'V')),
 
     CONSTRAINT pk_token primary key(token, idUser),
     CONSTRAINT fk_token_reset_user_iduser foreign key (iduser) REFERENCES user(id)

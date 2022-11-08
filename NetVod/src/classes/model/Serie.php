@@ -33,3 +33,4 @@ class Serie
         return $state->fetchObject(Serie::class);
     }
 }
+

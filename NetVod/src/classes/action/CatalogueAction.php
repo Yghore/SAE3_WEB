@@ -3,7 +3,9 @@
 namespace iutnc\netvod\action;
 
 use iutnc\netvod\db\ConnectionFactory;
+use iutnc\netvod\model\list\Serie;
 use iutnc\netvod\model\User;
+use iutnc\netvod\render\SerieRenderer;
 
 class CatalogueAction extends Action
 {
@@ -13,6 +15,13 @@ class CatalogueAction extends Action
         $html = '';
         $pdo = ConnectionFactory::makeConnection();
         if (!isset($_GET['id'])) {
+
+            $nbSerie = Serie::nbSerie();
+            for ($i = 1; $i <= $nbSerie; $i++){
+                 $serie = Serie::getSerie($i);
+                 $render = new SerieRenderer($serie);
+                 $html .= $render->render(2);
+            }
             $query = <<<end
             SELECT
                 id,
@@ -20,7 +29,7 @@ class CatalogueAction extends Action
                 img
             FROM
                 serie
-        end;
+            end;
             $resultatSet = $pdo->prepare($query);
             $resultatSet->execute();
             while ($row = $resultatSet->fetch()) {
@@ -54,32 +63,13 @@ class CatalogueAction extends Action
                 EOF;
                 }
             }
-            $html .= '</nav></ul>';
         } else {
             $idserie = $_GET['id'];
             if (!isset($_GET['idepisode'])) {
-                $query = <<<end
-            SELECT
-                *,
-                COUNT(episode.serie_id) as 'nbepisodes'
-            FROM
-                serie
-            INNER JOIN episode ON episode.serie_id = serie.id
-            WHERE
-                serie.id = ?
-            end;
-                $resultatSet = $pdo->prepare($query);
-                $resultatSet->execute([$idserie]);
-                $serieid = '';
-                while ($row = $resultatSet->fetch()) {
-                    $serieid = $row['id'];
-                    $html .= 'titre : ' . $row['titre'] . "<br/>";
-                    $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
-                    $html .= 'img : ' . $row['img'] . "<br/>";
-                    $html .= 'annee : ' . $row['annee'] . "<br/>";
-                    $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
-                    $html .= 'nombre d épisodes : ' . $row['nbepisodes'] . "<br/>";
-                }
+                $serie = Serie::getSerie($idserie);
+                $render = new SerieRenderer($serie);
+                $html .= $render->render(1);
+
                 if (User::getFromSession()->isFavoriteSerie($idserie)) {
                     $html .= "Cette série est dans les favoris";
                 } else {

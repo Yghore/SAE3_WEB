@@ -16,7 +16,14 @@ class UserRenderer implements Renderer
 
     public function render(int $selector = 1): string
     {
-        $html = "";
+        $html = <<<EOF
+            <div>
+                <p>Email : {$this->user->email}</p>
+                <p>Email : {$this->user->role}</p>
+                <p>Email : {$this->user->id}</p>
+                
+            </div>
+        EOF;
         return $html;
     }
 }
