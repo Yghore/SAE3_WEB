@@ -7,12 +7,12 @@ use iutnc\netvod\model\User;
 class AddFavorite extends Action
 {
 
-    protected function executeGET(): string
+    protected function executeGET(): array
     {
         // TODO: Implement executeGET() method.
     }
 
-    protected function executePOST(): string
+    protected function executePOST(): array
     {
         var_dump($_POST);
         $directory = $_POST['url'];
