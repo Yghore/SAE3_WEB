@@ -2,7 +2,6 @@
 
 namespace iutnc\netvod\render;
 
-use ViewException;
 
 interface Renderer
 {
