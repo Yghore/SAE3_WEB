@@ -24,6 +24,8 @@ class Serie
 
     protected array $episodes;
 
+    protected int $nbEpisodes;
+
     public function __construct(string $titre, array $episodes = []){
         $this->titre = $titre;
         $this->episodes = $episodes;
@@ -85,10 +87,9 @@ class Serie
         return $episodes;
     }
 
-    public static function getSerie(int $id) : string
+    public static function getSerie(int $id) : Serie
     {
         $pdo = ConnectionFactory::makeConnection();
-        $html = '';
         $query = <<<end
             SELECT
                 *,
@@ -103,14 +104,24 @@ class Serie
         $resultatSet->execute([$id]);
         $serieid = '';
         while ($row = $resultatSet->fetch()) {
-            $serieid = $row['id'];
+            $serie = new Serie($row['titre']);
+            $serie->id = $row['id'];
+            $serie->description = "";
+            $serie->img = $row['img'];
+            $serie->annee= $row['annee'];
+            $serie->date = $row['date_ajout'];
+            $serie->nbEpisodes = $row['nbepisodes'];
+
+
+            /*$serieid = $row['id'];
             $html .= 'titre : ' . $row['titre'] . "<br/>";
             $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
             $html .= 'img : ' . $row['img'] . "<br/>";
             $html .= 'annee : ' . $row['annee'] . "<br/>";
             $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
             $html .= 'nombre d épisodes : ' . $row['nbepisodes'] . "<br/>";
+            */
         }
-        return $html;
+        return $serie;
     }
 }
