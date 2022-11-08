@@ -27,11 +27,11 @@ create table favorite2user (
 
 create table current2user (
     iduser integer(11) not null,
-    idepisode integer(11) not null,
+    idserie integer(11) not null,
 
-    CONSTRAINT pk_current2user primary key (iduser, idepisode),
+    CONSTRAINT pk_current2user primary key (iduser, idserie),
     CONSTRAINT fk_current2user_user_iduser foreign key (iduser) REFERENCES user(id),
-    CONSTRAINT fk_current2user_episode_idepisode foreign key (idepisode) REFERENCES episode(id)
+    CONSTRAINT fk_current2user_serie_idserie foreign key (idepisode) REFERENCES serie(id)
 
 );
 
