@@ -3,7 +3,6 @@
 namespace iutnc\netvod\action;
 
 use iutnc\netvod\db\ConnectionFactory;
-use iutnc\netvod\model\User;
 
 class CatalogueAction extends Action
 {
@@ -45,32 +44,18 @@ class CatalogueAction extends Action
             WHERE
                 serie.id = ?
             end;
-            $resultatSet= $pdo->prepare($query);
-            $resultatSet->execute([$idserie]);
-            $serieid = '';
-            while ($row = $resultatSet->fetch()){
-                $serieid = $row['id'];
-                $html .= 'titre : ' .  $row['titre'] . "<br/>";
-                $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
-                $html .= 'img : ' . $row['img'] . "<br/>";
-                $html .= 'annee : ' . $row['annee'] . "<br/>";
-                $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
-                $html .= 'nombre d épisodes : ' . $row['nbepisodes'] . "<br/>";
-            }
-            if(User::getFromSession()->isFavoriteSerie($idserie))
-            {
-                $html .= "Cette série est dans les favoris";
-            }
-            else
-            {
-                $html .= <<<EOF
-                <form method="POST" action="?action=add-favorite">
-                    <input type="hidden" name="url" value="{$_SERVER['REQUEST_URI']}">
-                    <input type="hidden" name="idserie" value="$idserie">
-                    <input type="submit" value="Ajouter au favoris">
-                </form>
-                EOF;
-            }
+                $resultatSet= $pdo->prepare($query);
+                $resultatSet->execute([$idserie]);
+                $serieid = '';
+                while ($row = $resultatSet->fetch()){
+                    $serieid = $row['id'];
+                    $html .= 'titre : ' .  $row['titre'] . "<br/>";
+                    $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
+                    $html .= 'img : ' . $row['img'] . "<br/>";
+                    $html .= 'annee : ' . $row['annee'] . "<br/>";
+                    $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
+                    $html .= 'nombre d épisodes : ' . $row['nbepisodes'];
+                }
 
                 $query2 = <<<end
             SELECT
