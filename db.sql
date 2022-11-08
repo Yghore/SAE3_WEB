@@ -31,7 +31,7 @@ create table current2user (
 
     CONSTRAINT pk_current2user primary key (iduser, idserie),
     CONSTRAINT fk_current2user_user_iduser foreign key (iduser) REFERENCES user(id),
-    CONSTRAINT fk_current2user_serie_idserie foreign key (idepisode) REFERENCES serie(id)
+    CONSTRAINT fk_current2user_serie_idserie foreign key (idserie) REFERENCES serie(id)
 
 );
 
