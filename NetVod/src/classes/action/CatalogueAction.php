@@ -33,7 +33,8 @@ class CatalogueAction extends Action
             $html .= '</nav></ul>';
         } else {
             $idserie = $_GET['id'];
-            $query = <<<end
+            if (! isset($_GET['idepisode'])){
+                $query = <<<end
             SELECT
                 *,
                 COUNT(episode.serie_id) as 'nbepisodes'
@@ -43,36 +44,40 @@ class CatalogueAction extends Action
             WHERE
                 serie.id = ?
             end;
-            $resultatSet= $pdo->prepare($query);
-            $resultatSet->execute([$idserie]);
-            $serieid = '';
-            while ($row = $resultatSet->fetch()){
-                $serieid = $row['id'];
-                $html .= 'titre : ' .  $row['titre'] . "<br/>";
-                $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
-                $html .= 'img : ' . $row['img'] . "<br/>";
-                $html .= 'annee : ' . $row['annee'] . "<br/>";
-                $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
-                $html .= 'nombre d épisodes : ' . $row['nbepisodes'];
-            }
+                $resultatSet= $pdo->prepare($query);
+                $resultatSet->execute([$idserie]);
+                $serieid = '';
+                while ($row = $resultatSet->fetch()){
+                    $serieid = $row['id'];
+                    $html .= 'titre : ' .  $row['titre'] . "<br/>";
+                    $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
+                    $html .= 'img : ' . $row['img'] . "<br/>";
+                    $html .= 'annee : ' . $row['annee'] . "<br/>";
+                    $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
+                    $html .= 'nombre d épisodes : ' . $row['nbepisodes'];
+                }
 
-            $query2 = <<<end
+                $query2 = <<<end
             SELECT
               *
             FROM
                 episode
             WHERE serie_id = ?
             end;
-            $resultatSet2 = $pdo->prepare($query2);
-            $resultatSet2->execute([$idserie]);
-            while ($row2 = $resultatSet2->fetch()){
-                $idepisode = $row2['id'];
-                $titre2 = $row2['titre'];
-                $numero2 = $row2['numero'];
-                $duree = $row2['duree'];
-                $img = '';
-                $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
+                $resultatSet2 = $pdo->prepare($query2);
+                $resultatSet2->execute([$idserie]);
+                while ($row2 = $resultatSet2->fetch()){
+                    $idepisode = $row2['id'];
+                    $titre2 = $row2['titre'];
+                    $numero2 = $row2['numero'];
+                    $duree = $row2['duree'];
+                    $img = '';
+                    $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
+                }
+            } else {
+
             }
+
         }
         return $html;
     }
