@@ -58,7 +58,6 @@ class Dispatcher
             default:
                 $home = new Home();
                 $this->renderer->addHtmlWithViewData('home', ['$titre' => 'Je suis un je suis une donnée']);
-                $html .= $home->execute();
                 break;
         }
         $this->renderPage($html);
