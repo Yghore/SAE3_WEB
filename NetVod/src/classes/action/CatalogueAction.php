@@ -21,21 +21,9 @@ class CatalogueAction extends Action
                  $serie = Serie::getSerie($i);
                  $render = new SerieRenderer($serie);
                  $html .= $render->render(2);
-            }
-            $query = <<<end
-            SELECT
-                id,
-                titre,
-                img
-            FROM
-                serie
-            end;
-            $resultatSet = $pdo->prepare($query);
-            $resultatSet->execute();
-            while ($row = $resultatSet->fetch()) {
-                $idserie = $row['id'];
-                $titre = $row['titre'];
-                $image = $row['img'];
+                $idserie = $serie->id;
+                $titre = $serie->titre;
+                $image = $serie->img;
                 $query3 = <<<end
                 SELECT
                     avg(note) as note

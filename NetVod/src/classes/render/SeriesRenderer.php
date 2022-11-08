@@ -18,6 +18,7 @@ class SeriesRenderer implements Renderer
         $html = "<div>";
         foreach ($this->series as $value)
         {
+
             $render = new SerieRenderer($value);
             $html .= $render->render($selector);
         }
