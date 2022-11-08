@@ -4,9 +4,6 @@ namespace iutnc\netvod\db;
 
 use PDO;
 use PDOException;
-
-ConnectionFactory::setConfig('db.config.ini');
-
 class ConnectionFactory
 {
     public static $db = null;
