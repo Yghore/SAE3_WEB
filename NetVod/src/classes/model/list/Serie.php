@@ -35,6 +35,7 @@ class Serie
         if (property_exists($this, $attribut)){
             return $this->$attribut;
         } else {
+            echo $attribut;
             throw new InvalidPropertyNameException();
         }
     }
@@ -57,7 +58,7 @@ class Serie
         }
     }
 
-    public function getEpisodesListes(int $id) :array {
+    public function getDescriptionSerie(int $id) :array {
         $pdo = ConnectionFactory::makeConnection();
         $episodes = [];
         $query2 = <<<end
@@ -84,16 +85,31 @@ class Serie
             $episodes->serie_id = $id;
             //$html .= "<li><a href=\"index.php?action=print-catalogue&id=$id&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
         }
+        $this->episodes = $episodes;
         return $episodes;
     }
+
+    public static function nbSerie(): int {
+        $pdo = ConnectionFactory::makeConnection();
+        $query = <<<end
+            SELECT
+                COUNT(id) as 'nb'
+            FROM
+                serie
+            end;
+        $resultatSet = $pdo->prepare($query);
+        $resultatSet->execute();
+        $nbSerie = $resultatSet->fetch()['nb'];
+        return $nbSerie;
+    }
+
 
     public static function getSerie(int $id) : Serie
     {
         $pdo = ConnectionFactory::makeConnection();
         $query = <<<end
             SELECT
-                *,
-                COUNT(episode.serie_id) as 'nbepisodes'
+                serie.titre, serie.id, serie.descriptif, serie.img, serie.annee, serie.date_ajout, COUNT(episode.serie_id) as 'nbepisodes'
             FROM
                 serie
             INNER JOIN episode ON episode.serie_id = serie.id
@@ -106,21 +122,11 @@ class Serie
         while ($row = $resultatSet->fetch()) {
             $serie = new Serie($row['titre']);
             $serie->id = $row['id'];
-            $serie->description = "";
+            $serie->description = $row['descriptif'];
             $serie->img = $row['img'];
             $serie->annee= $row['annee'];
             $serie->date = $row['date_ajout'];
             $serie->nbEpisodes = $row['nbepisodes'];
-
-
-            /*$serieid = $row['id'];
-            $html .= 'titre : ' . $row['titre'] . "<br/>";
-            $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
-            $html .= 'img : ' . $row['img'] . "<br/>";
-            $html .= 'annee : ' . $row['annee'] . "<br/>";
-            $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
-            $html .= 'nombre d épisodes : ' . $row['nbepisodes'] . "<br/>";
-            */
         }
         return $serie;
     }
