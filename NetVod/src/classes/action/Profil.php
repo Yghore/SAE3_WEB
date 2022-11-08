@@ -12,21 +12,28 @@ class Profil extends Action
         //affichage du profil avec nom prenom age
 
         $html = <<<EOF
-        <h1>Profil</h1>
-        <form action="index.php?action=profil" method="post">
-        <label for="nom">Nom</label>
-        <input type="text" name="nom" id="nom" required>
-        <label for="prenom">Prénom</label>
-        <input type="text" name="prenom" id="prenom" required>
-        <label for="age">Age</label>
-        <input type="number" name="age" id="age" required>
-        <input type="submit" value="Modifier">
-        </form>
+        <div class="bg-form">
+            <div class="form">
+                <h1>Profil</h1>
+                <form action="index.php?action=profil" method="post">
+                    <label for="nom">Nom</label>
+                    <input type="text" name="nom" id="nom" required>
+                    <label for="prenom">Prénom</label>
+                    <input type="text" name="prenom" id="prenom" required>
+                    <label for="age">Age</label>
+                    <input type="number" name="age" id="age" required>
+                    <input type="submit" value="Modifier">
+                </form>
+                
+            </div>
+            <div class="form">
+                <h1>Déconnexion</h1>
+                <form action="index.php?action=profil" method="post">
+                    <input type="submit" value="Déconnexion">
+                </form>
+            </div>
+        </div>
 
-        <h1>Déconnexion</h1>
-           <form action="index.php?action=profil" method="post">
-              <input type="submit" value="Déconnexion">
-           </form>
         EOF;
         return $html;
     }

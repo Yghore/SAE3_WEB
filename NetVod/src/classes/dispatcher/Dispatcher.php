@@ -82,19 +82,25 @@ class Dispatcher
             <head>
                 <title>NetVod - Video Streaming</title>
                 <meta charset= "utf8" />
+               <link rel="stylesheet" href="ressources/style.css" >
             </head>
             
             <body>
-                <h1>NetVod - Video Streaming</h1>
-                <nav><ul>
-                    <li><a href="index.php">Accueil</a></li>
-                    <li><a href="?action=add-user">Inscription</a></li>
-                    <li><a href="?action=signin">Se connecter</a></li>
-                    <li><a href="?action=add-serial">ajouter une serie</a></li>
-                    <li><a href="?action=print-catalogue">afficher le catalogue</a></li>
-                    <li><a href="?action=add-episode">ajouter un episode</a></li>
-                    <li><a href="?action=profil">Profil</a></li>
-                </nav></ul>
+                <nav>
+                    <div class="left">
+                        <a id="img" href="index.php"><img src="ressources/img/logo.png" alt="Logo NetVOD"></a>
+                        <a href="?action=add-serial">Ajouter une serie</a>
+                        <a href="?action=print-catalogue">Afficher le catalogue</a>
+                        <a href="?action=add-episode">Ajouter un episode</a>
+                    </div>
+                    <div class="right">
+                        <a href="?action=add-user">Inscription</a>
+                        <a href="?action=signin">Se connecter</a>
+                        <a href="?action=profil">Profil</a>
+                    </div>
+
+                    
+                </nav>
                 <div>$html</div>
             </body>
         </html>
