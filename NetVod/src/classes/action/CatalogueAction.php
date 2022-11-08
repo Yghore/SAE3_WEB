@@ -34,7 +34,8 @@ class CatalogueAction extends Action
             $html .= '</nav></ul>';
         } else {
             $idserie = $_GET['id'];
-            $query = <<<end
+            if (! isset($_GET['idepisode'])){
+                $query = <<<end
             SELECT
                 *,
                 COUNT(episode.serie_id) as 'nbepisodes'
@@ -71,23 +72,27 @@ class CatalogueAction extends Action
                 EOF;
             }
 
-            $query2 = <<<end
+                $query2 = <<<end
             SELECT
               *
             FROM
                 episode
             WHERE serie_id = ?
             end;
-            $resultatSet2 = $pdo->prepare($query2);
-            $resultatSet2->execute([$idserie]);
-            while ($row2 = $resultatSet2->fetch()){
-                $idepisode = $row2['id'];
-                $titre2 = $row2['titre'];
-                $numero2 = $row2['numero'];
-                $duree = $row2['duree'];
-                $img = '';
-                $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
+                $resultatSet2 = $pdo->prepare($query2);
+                $resultatSet2->execute([$idserie]);
+                while ($row2 = $resultatSet2->fetch()){
+                    $idepisode = $row2['id'];
+                    $titre2 = $row2['titre'];
+                    $numero2 = $row2['numero'];
+                    $duree = $row2['duree'];
+                    $img = '';
+                    $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
+                }
+            } else {
+
             }
+
         }
         return $html;
     }
