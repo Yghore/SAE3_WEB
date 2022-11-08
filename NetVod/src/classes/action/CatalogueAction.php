@@ -8,7 +8,7 @@ use iutnc\netvod\model\User;
 class CatalogueAction extends Action
 {
 
-    protected function executeGET(): string
+    protected function executeGET(): array
     {
         $html = '';
         $pdo = ConnectionFactory::makeConnection();

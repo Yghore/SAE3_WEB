@@ -5,12 +5,12 @@ namespace iutnc\netvod\action;
 class AddSerial extends Action
 {
 
-    protected function executeGET(): string
+    protected function executeGET(): array
     {
         // TODO: Implement executeGET() method.
     }
 
-    protected function executePOST(): string
+    protected function executePOST(): array
     {
         // TODO: Implement executePOST() method.
     }

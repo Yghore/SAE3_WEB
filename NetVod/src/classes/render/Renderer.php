@@ -32,12 +32,23 @@ class Renderer
         throw new ViewException("La view n'existe pas!");
     }
 
+
+    public function getViewFromData(array &$data)
+    {
+        if(isset($data['view']))
+        {
+            $view = $data['view'];
+            unset($data['view']);
+            return $view;
+        }
+    }
     /**
      * @param string $view Le nom de la vue
      * @param array $data le tableau de data doit etre cohérent avec la vue si dans vue {{$etre}} alors le tableau doit contenit $etre => value
      * @return void ajoute au HTML principale
      */
-    public function addHtmlWithData(string $view, array $data)
+
+    public function addHtmlWithViewData(string $view, array $data)
     {
         $view = $this->getView($view);
         foreach ($data as $k => $v)
@@ -45,6 +56,13 @@ class Renderer
             $view = str_replace("{{$k}}", $v, $view);
         }
         Renderer::$html .= $view;
+    }
+
+    public function addHtmlWithData(array $data)
+    {
+        $view = $this->getViewFromData($data);
+        $this->addHtmlWithViewData($view, $data);
+
     }
 
 }

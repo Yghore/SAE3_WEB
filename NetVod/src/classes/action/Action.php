@@ -15,7 +15,7 @@ abstract class Action
         $this->script_name = $_SERVER['SCRIPT_NAME'];
     }
 
-    public function execute() : string
+    public function execute() : array
     {
         if ($this->http_method == 'GET') {
             return $this->executeGET();
@@ -26,7 +26,7 @@ abstract class Action
         }
     }
 
-    protected abstract function executeGET() : string;
+    protected abstract function executeGET() : array;
 
-    protected abstract function executePOST() : string;
+    protected abstract function executePOST() : array;
 }

@@ -12,7 +12,7 @@ class AddUser extends Action
      * Méthode qui permet d'afficher le formulaire d'ajout d'un utilisateur
      * @return string
      */
-    protected function executeGET(): string
+    protected function executeGET(): array
     {
         $content = '<h1>Ajout d’un utilisateur</h1>';
         $content .= '<form action="index.php?action=add-user" method="post">';
@@ -32,7 +32,7 @@ class AddUser extends Action
      * Méthode qui permet d'ajouter un utilisateur
      * @return string
      */
-    protected function executePOST(): string
+    protected function executePOST(): array
     {
         try {
             if ($_POST['password'] == $_POST['confirmer']) {
