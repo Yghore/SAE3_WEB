@@ -22,7 +22,6 @@ class AddCommentNote extends Action
 
         EOF;
 
-      //ajout d'un bouton pour ajouter un commentaire a la série
 
 
         return $content;
