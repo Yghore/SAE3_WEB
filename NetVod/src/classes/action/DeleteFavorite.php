@@ -4,19 +4,19 @@ namespace iutnc\netvod\action;
 
 use iutnc\netvod\model\User;
 
-class AddFavorite extends Action
+class DeleteFavorite extends Action
 {
 
-    protected function executeGET(): string
+    protected function executeGET(): array
     {
         // TODO: Implement executeGET() method.
     }
 
-    protected function executePOST(): string
+    protected function executePOST(): array
     {
         $directory = $_POST['url'];
         $serie = $_POST['idserie'];
-        User::getFromSession()->addFavoriteSerie($serie);
+        User::getFromSession()->removeFavoriteSerie($serie);
         header('location: '. $directory);
         die();
     }

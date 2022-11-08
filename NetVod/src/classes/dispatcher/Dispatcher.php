@@ -2,12 +2,14 @@
 
 namespace iutnc\netvod\dispatcher;
 
+use iutnc\netvod\action\AddCommentNote;
 use iutnc\netvod\action\AddEpisodeAction;
 use iutnc\netvod\action\AddFavorite;
 use iutnc\netvod\action\AddSerial;
 use iutnc\netvod\action\AddUser;
 use iutnc\netvod\action\AffichageDetaille;
 use iutnc\netvod\action\CatalogueAction;
+use iutnc\netvod\action\DeleteFavorite;
 use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Signin;
 
@@ -45,13 +47,17 @@ class Dispatcher
             case 'add-favorite':
                 $favorite = new AddFavorite();
                 $html .= $favorite->execute();
+                break;
+            case 'delete-favorite':
+                $favorite = new DeleteFavorite();
+                $html .= $favorite->execute();
             case 'add-episode':
                 $episode = new AddEpisodeAction();
                 $html .= $episode->execute();
                 break;
-            case 'affichage-detaille':
-                $affichage = new AffichageDetaille();
-                $html .= $affichage->execute();
+            case 'add-comment-note':
+                $comment = new AddCommentNote();
+                $html .= $comment->execute();
                 break;
             default:
                 $home = new Home();

@@ -34,7 +34,7 @@ class User
 
     public static function existSession() : bool
     {
-        return $_SESSION['user'];
+        return isset($_SESSION['user']);
     }
 
     public static function getFromSession() : User
@@ -84,8 +84,9 @@ class User
     {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT * FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id WHERE iduser = :user");
+        $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([':user' => $this->id]);
-        return $state->fetchAll(PDO::FETCH_OBJ);
+        return $state->fetchAll();
     }
 
     public function isFavoriteSerie(int $serieid) : bool
@@ -96,6 +97,25 @@ class User
         return $state->rowCount() >= 1;
     }
 
+    public function removeFavoriteSerie(int $serieid) : bool
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("DELETE FROM favorite2user WHERE iduser = :user AND idserie = :serie");
+        return $state->execute([':user' => $this->id, ':serie' => $serieid]);
+    }
+
+    public function putCommentNoteSerie(int $id, String $comment, int $note)
+    {
+        $iduser = User::getFromSession()->getId();
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("INSERT INTO comment2user (idserie,iduser,commentaire,note ) VALUES (?, ?, ?, ?)");
+        $state->execute([$id,$iduser, $comment, $note]);
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
 
 
