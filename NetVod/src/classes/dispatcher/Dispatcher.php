@@ -9,6 +9,7 @@ use iutnc\netvod\action\AddUser;
 use iutnc\netvod\action\CatalogueAction;
 use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Signin;
+use iutnc\netvod\render\Renderer;
 
 class Dispatcher
 {
@@ -16,6 +17,7 @@ class Dispatcher
 
     public function run()
     {
+        $renderer = new Renderer();
         if (isset($_GET['action'])) {
             $action = $_GET['action'];
         } else {
@@ -51,6 +53,7 @@ class Dispatcher
 
             default:
                 $home = new Home();
+                $renderer->addHtmlWithData('home', ['$titre' => 'Je suis un je suis une donnée']);
                 $html .= $home->execute();
                 break;
         }
@@ -58,7 +61,8 @@ class Dispatcher
     }
 
     private function renderPage(string $html){
-        echo <<<END
+        Renderer::echo();
+        /**echo <<<END
         <!DOCTYPE html>
         <html lang = "fr">
             <head>
@@ -79,6 +83,6 @@ class Dispatcher
                 <div>$html</div>
             </body>
         </html>
-    END;
+    END;**/
     }
 }
