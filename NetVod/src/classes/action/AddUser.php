@@ -43,7 +43,7 @@ class AddUser extends Action
                 return '<h1>Les mots de passe ne correspondent pas</h1>';
             }
         } catch (AuthException $e) {
-            return print($e->getMessage());
+            return $e->getMessage();
         }
     }
 
