@@ -33,4 +33,16 @@ create table current2user (
     CONSTRAINT fk_current2user_user_iduser foreign key (iduser) REFERENCES user(id),
     CONSTRAINT fk_current2user_episode_idepisode foreign key (idepisode) REFERENCES episode(id)
 
-)
+);
+
+create table comment2user (
+    idserie integer(11) not null,
+    iduser integer(11) not null,
+    note integer(1) CHECK(note IN(1,2,3,4,5)),
+    commentaire tinytext,
+
+    CONSTRAINT pk_comment2user primary key(idserie, iduser),
+    CONSTRAINT fk_comment2user_user_iduser foreign key (iduser) REFERENCES user(id),
+    CONSTRAINT fk_comment2user_serie_idserie foreign key(idserie) REFERENCES serie(id)
+
+);
