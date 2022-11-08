@@ -87,6 +87,18 @@ class CatalogueAction extends Action
                     $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
 
                 }
+                // On vérifie que l'utilisateur est connecté
+                if(User::existSession()){
+                    // On insère dans la table current2user la série en cours si elle n'y est pas déjà
+                    $query3 = <<<end
+                    INSERT IGNORE INTO current2user
+                    VALUES (?,?)
+                    end;
+                    $rs3 = $pdo->prepare($query3);
+                    $iduser = User::getFromSession()->id;
+                    $rs3->execute([$iduser,$idserie]);
+
+                }
             } else {
                 $idepisode = $_GET['idepisode'];
                 $query = <<<end
