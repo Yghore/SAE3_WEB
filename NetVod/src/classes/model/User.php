@@ -84,8 +84,9 @@ class User
     {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT * FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id WHERE iduser = :user");
+        $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([':user' => $this->id]);
-        return $state->fetchAll(PDO::FETCH_OBJ);
+        return $state->fetchAll();
     }
 
     public function isFavoriteSerie(int $serieid) : bool
