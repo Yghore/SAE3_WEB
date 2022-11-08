@@ -37,7 +37,7 @@ class Auth
     }
 
     public static function register(string $email, string $password, string $role ='1') : bool{
-        if (strlen($password) <= 10){
+        if (strlen($password) < 10){
             throw new RegisterInvalidPasswordMatchException("Le mot de passe doit faire 10 caractères");
         }
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
