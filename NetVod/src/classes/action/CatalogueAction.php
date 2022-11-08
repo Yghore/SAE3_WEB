@@ -69,7 +69,6 @@ class CatalogueAction extends Action
                 $serie = Serie::getSerie($idserie);
                 $render = new SerieRenderer($serie);
                 $html .= $render->render(1);
-                $html .= $render->render(2);
 
                 if (User::getFromSession()->isFavoriteSerie($idserie)) {
                     $html .= "Cette série est dans les favoris";
