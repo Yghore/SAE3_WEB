@@ -3,7 +3,8 @@
 namespace iutnc\netvod\action;
 
 use iutnc\netvod\auth\Auth;
-use iutnc\netvod\exception\AuthException;
+use iutnc\netvod\exception\auth\AuthException;
+
 use iutnc\netvod\model\User;
 
 class Signin extends Action
@@ -18,11 +19,8 @@ class Signin extends Action
                 <h1>Vous êtes déjà connecté :</h1>
                 <div>Utilisateur : <bold>{$user->email}</bold></div>
             EOF;
-
-
-
         }
-        catch(\iutnc\netvod\exception\auth\AuthException)
+        catch(AuthException)
         {
             return <<<EOF
                 <h1>Connexion</h1>

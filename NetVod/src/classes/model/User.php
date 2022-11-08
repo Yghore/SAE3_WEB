@@ -112,10 +112,31 @@ class User
         $state->execute([$id,$iduser, $comment, $note]);
     }
 
+    public static function disconnect() : string
+    {
+        if(isset($_SESSION['user'])){
+            unset($_SESSION['user']);
+            $res = <<<EOF
+            <div class="alert alert-success" role="alert">
+                Vous êtes déconnecté
+            EOF;
+
+        }else{
+            $res = <<<EOF
+            <div class="alert alert-danger" role="alert">
+                Vous n'êtes pas connecté
+            EOF;
+
+        }
+        return $res;
+    }
+
     public function getId()
     {
         return $this->id;
     }
+
+
 
 
 

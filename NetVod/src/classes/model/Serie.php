@@ -1,3 +1,4 @@
+
 <?php
 
 namespace iutnc\netvod\model;
@@ -32,12 +33,4 @@ class Serie
         $state->execute([$id]);
         return $state->fetchObject(Serie::class);
     }
-
-
-
-
-
-
-
-
 }
