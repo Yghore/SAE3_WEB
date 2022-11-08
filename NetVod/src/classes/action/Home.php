@@ -5,12 +5,12 @@ namespace iutnc\netvod\action;
 class Home extends Action
 {
 
-    protected function executeGET(): array
+    protected function executeGET(): string
     {
-        return [];
+        return "";
     }
 
-    protected function executePOST(): array
+    protected function executePOST(): string
     {
         // TODO: Implement executePOST() method.
     }
