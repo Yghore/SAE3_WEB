@@ -11,6 +11,7 @@ use iutnc\netvod\action\CatalogueAction;
 use iutnc\netvod\action\DeleteFavorite;
 use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Logout;
+use iutnc\netvod\action\Profil;
 use iutnc\netvod\action\Signin;
 
 class Dispatcher
@@ -60,7 +61,9 @@ class Dispatcher
                 $html .= $comment->execute();
                 break;
 
-            case 'logout':
+            case 'profil':
+                $profil = new Profil();
+                $html .= $profil->execute();
                 $logout = new Logout();
                 $html .= $logout->execute();
                 break;
@@ -90,7 +93,7 @@ class Dispatcher
                     <li><a href="?action=add-serial">ajouter une serie</a></li>
                     <li><a href="?action=print-catalogue">afficher le catalogue</a></li>
                     <li><a href="?action=add-episode">ajouter un episode</a></li>
-                    <li><a href="?action=logout">Se déconnecter</a></li>
+                    <li><a href="?action=profil">Profil</a></li>
                 </nav></ul>
                 <div>$html</div>
             </body>
