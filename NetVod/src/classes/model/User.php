@@ -2,8 +2,10 @@
 
 namespace iutnc\netvod\model;
 
+use http\Exception;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\auth\AuthException;
+use PDO;
 
 class User
 {
@@ -12,6 +14,16 @@ class User
     private string $role;
     private int $id;
 
+    public function __get(string $name): mixed
+    {
+        if(property_exists($this, $name) && $name != "password")
+        {
+            return $this->$name;
+        }
+        throw new \Exception("$name n'existe pas");
+
+    }
+
     public function __construct(string $email, string $password, int $id, string $role = '1')
     {
         $this->email = $email;
@@ -19,7 +31,13 @@ class User
         $this->role = $role;
         $this->id = $id;
     }
-    public static function getFromSession()
+
+    public static function existSession() : bool
+    {
+        return $_SESSION['user'];
+    }
+
+    public static function getFromSession() : User
     {
         if(isset($_SESSION['user'])){
             return $_SESSION['user'];
@@ -55,11 +73,29 @@ class User
         return password_verify($password, $this->password);
     }
 
-    public function addFavoriteSerie(int $idSerie)
+    public function addFavoriteSerie(int $idSerie): bool
     {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("INSERT INTO favorite2user VALUES(:user, :serie)");
-        $state->execute([':user' => User::getFromSession()->id]);
-        return true;
+        return $state->execute([':user' => $this->id, ':serie' => $idSerie]);
     }
+
+    public function getFavoritesSeries() : array
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("SELECT * FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id WHERE iduser = :user");
+        $state->execute([':user' => $this->id]);
+        return $state->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function isFavoriteSerie(int $serieid) : bool
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("SELECT idserie FROM favorite2user WHERE iduser = :user AND idserie = :serie");
+        $state->execute([':user' => $this->id, ':serie' => $serieid]);
+        return $state->rowCount() >= 1;
+    }
+
+
+
 }

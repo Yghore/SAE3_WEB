@@ -3,9 +3,11 @@
 namespace iutnc\netvod\dispatcher;
 
 use iutnc\netvod\action\AddEpisodeAction;
+use iutnc\netvod\action\AddFavorite;
 use iutnc\netvod\action\AddSerial;
 use iutnc\netvod\action\AddUser;
 use iutnc\netvod\action\CatalogueAction;
+use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Signin;
 
 class Dispatcher
@@ -39,15 +41,17 @@ class Dispatcher
                 $catalogue = new CatalogueAction();
                 $html .= $catalogue->execute();
                 break;
-
+            case 'add-favorite':
+                $favorite = new AddFavorite();
+                $html .= $favorite->execute();
             case 'add-episode':
-                $episolde = new AddEpisodeAction();
-                $html .= $episolde->execute();
+                $episode = new AddEpisodeAction();
+                $html .= $episode->execute();
                 break;
 
             default:
-                $action = null;
-                $html = "Bienvenue";
+                $home = new Home();
+                $html .= $home->execute();
                 break;
         }
         $this->renderPage($html);
