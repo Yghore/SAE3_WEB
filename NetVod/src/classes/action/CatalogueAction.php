@@ -12,7 +12,7 @@ class CatalogueAction extends Action
     {
         $html = '';
         $pdo = ConnectionFactory::makeConnection();
-        if (! isset($_GET['id'])){
+        if (!isset($_GET['id'])) {
             $query = <<<end
             SELECT
                 id,
@@ -25,7 +25,7 @@ class CatalogueAction extends Action
             $resultatSet->execute();
             $html .= '<form action="index.php?action=add-user" method="post">';
             $html .= '<nav><ul>';
-            while ($row = $resultatSet->fetch()){
+            while ($row = $resultatSet->fetch()) {
                 $idserie = $row['id'];
                 $titre = $row['titre'];
                 $image = $row['img'];
@@ -34,7 +34,7 @@ class CatalogueAction extends Action
             $html .= '</nav></ul>';
         } else {
             $idserie = $_GET['id'];
-            if (! isset($_GET['idepisode'])){
+            if (!isset($_GET['idepisode'])) {
                 $query = <<<end
             SELECT
                 *,
@@ -45,32 +45,29 @@ class CatalogueAction extends Action
             WHERE
                 serie.id = ?
             end;
-            $resultatSet= $pdo->prepare($query);
-            $resultatSet->execute([$idserie]);
-            $serieid = '';
-            while ($row = $resultatSet->fetch()){
-                $serieid = $row['id'];
-                $html .= 'titre : ' .  $row['titre'] . "<br/>";
-                $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
-                $html .= 'img : ' . $row['img'] . "<br/>";
-                $html .= 'annee : ' . $row['annee'] . "<br/>";
-                $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
-                $html .= 'nombre d épisodes : ' . $row['nbepisodes'] . "<br/>";
-            }
-            if(User::getFromSession()->isFavoriteSerie($idserie))
-            {
-                $html .= "Cette série est dans les favoris";
-            }
-            else
-            {
-                $html .= <<<EOF
+                $resultatSet = $pdo->prepare($query);
+                $resultatSet->execute([$idserie]);
+                $serieid = '';
+                while ($row = $resultatSet->fetch()) {
+                    $serieid = $row['id'];
+                    $html .= 'titre : ' . $row['titre'] . "<br/>";
+                    $html .= 'descriptif : ' . $row['descriptif'] . "<br/>";
+                    $html .= 'img : ' . $row['img'] . "<br/>";
+                    $html .= 'annee : ' . $row['annee'] . "<br/>";
+                    $html .= 'date d ajout : ' . $row['date_ajout'] . "<br/>";
+                    $html .= 'nombre d épisodes : ' . $row['nbepisodes'] . "<br/>";
+                }
+                if (User::getFromSession()->isFavoriteSerie($idserie)) {
+                    $html .= "Cette série est dans les favoris";
+                } else {
+                    $html .= <<<EOF
                 <form method="POST" action="?action=add-favorite">
                     <input type="hidden" name="url" value="{$_SERVER['REQUEST_URI']}">
                     <input type="hidden" name="idserie" value="$idserie">
                     <input type="submit" value="Ajouter au favoris">
                 </form>
                 EOF;
-            }
+                }
 
                 $query2 = <<<end
             SELECT
@@ -81,19 +78,41 @@ class CatalogueAction extends Action
             end;
                 $resultatSet2 = $pdo->prepare($query2);
                 $resultatSet2->execute([$idserie]);
-                while ($row2 = $resultatSet2->fetch()){
+                while ($row2 = $resultatSet2->fetch()) {
                     $idepisode = $row2['id'];
                     $titre2 = $row2['titre'];
                     $numero2 = $row2['numero'];
                     $duree = $row2['duree'];
                     $img = '';
                     $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
+
                 }
             } else {
-
+                $idepisode = $_GET['idepisode'];
+                $query = <<<end
+            SELECT  
+                *
+            FROM
+                episode
+            WHERE
+                id = ?
+            end;
+                $resultatSet = $pdo->prepare($query);
+                $resultatSet->execute([$idepisode]);
+                while ($row = $resultatSet->fetch()) {
+                    $titre = $row['titre'];
+                    $numero = $row['numero'];
+                    $resume = $row['resume'];
+                    $duree = $row['duree'];
+                    $img = '';
+                    $html .= "<li><a href=\"index.php?action=print-catalogue&id=$idserie&idepisode=$idepisode\"> $numero $titre $duree $img </a></li>";
+                    $html .= "</br>$titre";
+                    $html .= "</br>$resume";
+                    $html .= "</br>$duree";
+                }
             }
-
         }
+
         return $html;
     }
 

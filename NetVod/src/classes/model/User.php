@@ -2,9 +2,9 @@
 
 namespace iutnc\netvod\model;
 
-use http\Exception;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\auth\AuthException;
+use iutnc\netvod\exception\user\AttributException;
 use PDO;
 
 class User
@@ -20,7 +20,7 @@ class User
         {
             return $this->$name;
         }
-        throw new \Exception("$name n'existe pas");
+        throw new AttributException("$name n'existe pas");
 
     }
 

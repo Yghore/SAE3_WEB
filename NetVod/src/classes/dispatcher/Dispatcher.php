@@ -6,6 +6,7 @@ use iutnc\netvod\action\AddEpisodeAction;
 use iutnc\netvod\action\AddFavorite;
 use iutnc\netvod\action\AddSerial;
 use iutnc\netvod\action\AddUser;
+use iutnc\netvod\action\AffichageDetaille;
 use iutnc\netvod\action\CatalogueAction;
 use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Signin;
@@ -48,7 +49,10 @@ class Dispatcher
                 $episode = new AddEpisodeAction();
                 $html .= $episode->execute();
                 break;
-
+            case 'affichage-detaille':
+                $affichage = new AffichageDetaille();
+                $html .= $affichage->execute();
+                break;
             default:
                 $home = new Home();
                 $html .= $home->execute();
@@ -73,7 +77,7 @@ class Dispatcher
                     <li><a href="?action=add-user">Inscription</a></li>
                     <li><a href="?action=signin">Se connecter</a></li>
                     <li><a href="?action=add-serial">ajouter une serie</a></li>
-                    <li><a href="?action=print-catalogue">afficher la categorie</a></li>
+                    <li><a href="?action=print-catalogue">afficher le catalogue</a></li>
                     <li><a href="?action=add-episode">ajouter un episode</a></li>
                 </nav></ul>
                 <div>$html</div>
