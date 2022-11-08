@@ -14,6 +14,7 @@ class Serie
     private String $img;
     private int $annee;
     private String $date_ajout;
+    private String $nbEpisode;
 
 
     public function __get(string $name)

@@ -2,7 +2,7 @@
 
 namespace iutnc\netvod\render;
 
-use iutnc\netvod\model\list\Serie;
+use iutnc\netvod\model\Serie;
 
 class SerieRenderer implements Renderer
 {
@@ -21,10 +21,10 @@ class SerieRenderer implements Renderer
             $html .= <<<EOF
             <div>
                 <p>Titre : {$this->serie->titre}</p>
-                <p>Description : {$this->serie->description}</p>
+                <p>Description : {$this->serie->descriptif}</p>
                 <div>Img : <img src="{$this->serie->img}" alt="Image de la série"></div>
                 <p>Année de sortie : {$this->serie->annee}</p>
-                <p>Date ajout : {$this->serie->date}</p>
+                <p>Date ajout : {$this->serie->date_ajout}</p>
                 <p>Nombre d'episode dans la serie : {$this->serie->nbEpisodes}</p>
             </div>
         EOF;

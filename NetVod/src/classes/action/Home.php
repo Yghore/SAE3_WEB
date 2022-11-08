@@ -18,7 +18,7 @@ class Home extends Action
         }
         catch (AuthException)
         {
-            return "Vous ne semblez pas connecté, merci de vous connecter pour voir vaut favoris";
+            return "Vous ne semblez pas connecté, merci de vous connecter pour voir vos favoris";
         }
     }
 
