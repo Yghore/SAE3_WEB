@@ -4,7 +4,6 @@ namespace iutnc\netvod\model\list;
 
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\video\InvalidPropertyNameException;
-use iutnc\netvod\exception\video\InvalidPropertyValueException as InvalidPropertyValueException;
 use iutnc\netvod\model\video\Episode;
 
 class Serie
