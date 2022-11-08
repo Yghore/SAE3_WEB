@@ -51,49 +51,6 @@ class CatalogueAction extends Action
                 EOF;
                 }
             }
-            /////////////////////////////////////////
-            $query = <<<end
-            SELECT
-                id,
-                titre,
-                img
-            FROM
-                serie
-            end;
-            $resultatSet = $pdo->prepare($query);
-            $resultatSet->execute();
-            while ($row = $resultatSet->fetch()) {
-                $idserie = $row['id'];
-                $titre = $row['titre'];
-                $image = $row['img'];
-                /////////////////////////////////////////////
-                $query3 = <<<end
-                SELECT
-                    avg(note) as note
-                FROM
-                comment2user
-                WHERE   
-                    idserie = $idserie
-                   
-                end;
-                $resultatSet3 = $pdo->prepare($query3);
-                $resultatSet3->execute();
-                $row3 = $resultatSet3->fetch();
-                if ($row3['note'] == null) {
-                    $html .= <<<end
-                    <li><a href="index.php?action=print-catalogue&id=$idserie">$titre $image</a> <a href="?action=add-comment-note&id=$idserie"><button>Ajouter AVIS</button></a>
-                <p>Il n'y a pas encore de note pour cette série</p>
-                </li>
-                end;
-                } else {
-                    $note = $row3['note'];
-                    $html .= <<<EOF
-                    <li><a href="index.php?action=print-catalogue&id=$idserie">$titre $image</a> 
-                <p>La note moyenne de cette série est de $note</p>
-                </li>
-                EOF;
-                }
-            }
         } else {
             $idserie = $_GET['id'];
             if (!isset($_GET['idepisode'])) {
