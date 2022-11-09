@@ -11,7 +11,8 @@ class Profil extends Action
     protected function executeGET(): string
     {
         //affichage du profil avec nom prenom age
-        $ur = new UserRenderer(User::getFromSession());
+        $user = User::getFromSession();
+        $ur = new UserRenderer($user);
         if(User::existSession()) {
             $html = <<<EOF
         <div class="bg-form">
@@ -19,13 +20,12 @@ class Profil extends Action
                 <h1>Profil</h1>
                 <form action="index.php?action=profil" method="post">
                     <label for="nom">Nom</label>
-                    <input type="text" name="nom" id="nom" required>
+                    <input type="text" name="nom" id="nom" value="{$user->nom}" required>
                     <label for="prenom">Prénom</label>
-                    <input type="text" name="prenom" id="prenom" required>
+                    <input type="text" name="prenom" id="prenom" value="{$user->prenom}" required>
                     {$ur->renderCheckBox()}
                     <input type="submit" value="Modifier">
                 </form>
-                
             </div>
             <div class="form">
                 <h1>Déconnexion</h1>
@@ -60,9 +60,9 @@ class Profil extends Action
             $prenom = $_POST['prenom'];
             $age = $_POST['age'];
             $user = User::getFromSession();
-            $user->setNom($nom);
-            $user->setPrenom($prenom);
-            $user->setAge($age);
+            $user->nom = $nom;
+            $user->prenom = $prenom;
+            $user->date_birdth = $age;
             $res =<<<EOF
             <h1>Profil modifié</h1>
             EOF;

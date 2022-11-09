@@ -30,8 +30,9 @@ class UserRenderer implements Renderer
     public function renderCheckBox(): string
     {
         $res = <<<EOF
+
         <fieldset>
-                  <legend>Quels sont vos genres préférés:</le
+                  <legend>Quels sont vos genres préférés:</legend>
                   <div>
                       <input type="checkbox" id="horreur" name="horreur" checked>
                       <label for="scales">Horreur</label>

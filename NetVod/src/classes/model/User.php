@@ -5,36 +5,40 @@ namespace iutnc\netvod\model;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\auth\AuthException;
 use iutnc\netvod\exception\user\AttributException;
+use iutnc\netvod\exception\video\InvalidPropertyNameException;
 use PDO;
 use iutnc\netvod\model\list\Serie;
 
 class User
 {
-    private string $email;
-    private string $password;
-    private string $role;
-    private int $id;
-    private string $name;
-    private string $firstname;
-    private string $birthdate;
-    private bool $parental_authorisation;
+    protected int $id;
+    protected string $email;
+    protected string $pass;
+    protected ?bool $valid;
+    protected ?string $nom;
+    protected ?string $prenom;
+    protected ?string $date_birth;
+    protected ?bool $parental_authorisation;
 
-    public function __get(string $name): mixed
-    {
-        if (property_exists($this, $name) && $name != "password") {
-            return $this->$name;
+    public function __construct(){}
+
+    public function __get(string $attribut) : mixed{
+        if (property_exists($this, $attribut)){
+            return $this->$attribut;
+        } else {
+            throw new InvalidPropertyNameException();
         }
-        throw new AttributException("$name n'existe pas");
-
     }
 
-    public function __construct(string $email, string $password, int $id, string $role = '1')
-    {
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
-        $this->id = $id;
+    public function __set(string $attribut, mixed $valeur){
+        if (property_exists($this, $attribut)){
+            $this->$attribut = $valeur;
+        } else {
+            throw new InvalidPropertyNameException("Attribut existe pas : $attribut");
+        }
     }
+
+
 
     public static function existSession(): bool
     {
@@ -66,27 +70,26 @@ class User
         $query = $db->prepare("INSERT INTO user (email, pass) VALUES (:email, :password)");
         $query->execute([
             'email' => $this->email,
-            'password' => $this->password
+            'password' => $this->pass
         ]);
     }
 
-    public static function getFromEmail(string $email): ?User
+    public static function getFromEmail(string $email): User
     {
         $db = ConnectionFactory::makeConnection();
         $query = $db->prepare("SELECT * FROM user WHERE email = :email");
+        $query->setFetchMode(PDO::FETCH_CLASS, User::class);
+
         $query->execute([
             'email' => $email
         ]);
-        $result = $query->fetch();
-        if ($result) {
-            return new User($result['email'], $result['pass'], $result['id']);
-        }
-        return null;
+        $user = $query->fetch();
+        return $user;
     }
 
     public function checkPassword($password)
     {
-        return password_verify($password, $this->password);
+        return password_verify($password, $this->pass);
     }
 
     public function addFavoriteSerie(int $idSerie): bool
