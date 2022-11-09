@@ -3,6 +3,7 @@
 namespace iutnc\netvod\action;
 
 use iutnc\netvod\model\User;
+use iutnc\netvod\render\UserRenderer;
 
 class Profil extends Action
 {
@@ -10,6 +11,7 @@ class Profil extends Action
     protected function executeGET(): string
     {
         //affichage du profil avec nom prenom age
+        $ur = new UserRenderer(User::getFromSession());
         if(User::existSession()) {
             $html = <<<EOF
         <div class="bg-form">
@@ -20,8 +22,7 @@ class Profil extends Action
                     <input type="text" name="nom" id="nom" required>
                     <label for="prenom">Prénom</label>
                     <input type="text" name="prenom" id="prenom" required>
-                    <label for="age">Age</label>
-                    <input type="number" name="age" id="age" required>
+                    {$ur->renderCheckBox()}
                     <input type="submit" value="Modifier">
                 </form>
                 

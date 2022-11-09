@@ -26,4 +26,43 @@ class UserRenderer implements Renderer
         EOF;
         return $html;
     }
+
+    public function renderCheckBox(): string
+    {
+        $res = <<<EOF
+        <fieldset>
+                  <legend>Quels sont vos genres préférés:</le
+                  <div>
+                      <input type="checkbox" id="scales" name="scales" checked>
+                      <label for="scales">Scales</label>
+                  <
+                  <div>
+                    <input type="checkbox" id="horns" name="horns">
+                    <label for="horns">Horns</label>
+                  </div>
+                  
+                  <div>
+                    <input type="checkbox" id="horns" name="horns">
+                    <label for="horns">Horns</label>
+                  </div>
+                  
+                  <div>
+                    <input type="checkbox" id="horns" name="horns">
+                    <label for="horns">Horns</label>
+                  </div>
+                  
+                  <div>
+                    <input type="checkbox" id="horns" name="horns">
+                    <label for="horns">Horns</label>
+                  </div>
+                  
+                  <div>
+                    <input type="checkbox" id="horns" name="horns">
+                    <label for="horns">Horns</label>
+                  </div>
+        </fieldset>
+        EOF;
+        return $res;
+
+    }
 }

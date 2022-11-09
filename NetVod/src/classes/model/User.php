@@ -14,6 +14,10 @@ class User
     private string $password;
     private string $role;
     private int $id;
+    private string $name;
+    private string $firstname;
+    private string $birthdate;
+    private bool $parental_authorisation;
 
     public function __get(string $name): mixed
     {
