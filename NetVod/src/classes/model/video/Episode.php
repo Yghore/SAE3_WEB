@@ -2,11 +2,14 @@
 
 namespace iutnc\netvod\model\video;
 
+use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\video\InvalidPropertyValueException as InvalidPropertyValueException;
 use iutnc\netvod\exception\video\InvalidPropertyNameException;
 
 class Episode
 {
+
+    protected int $id;
 
     protected int $numero;
 
@@ -21,7 +24,7 @@ class Episode
     protected int $serie_id;
 
     public function __construct(string $titre, $filename){
-        $this->id = $titre;
+        $this->titre = $titre;
         $this->filename = $filename;
     }
 
@@ -47,5 +50,28 @@ class Episode
         } else {
             throw new InvalidPropertyNameException();
         }
+    }
+
+    public static function getEpisode($idEpisode) : Episode
+    {
+        $pdo = ConnectionFactory::makeConnection();
+        $query2 = <<<end
+            SELECT
+              *
+            FROM
+                episode
+            WHERE id = ?
+            end;
+        $resultatSet2 = $pdo->prepare($query2);
+        $resultatSet2->execute([$idEpisode]);
+        while ($row2 = $resultatSet2->fetch()) {
+            $episode = new Episode($row2['titre'], $row2['file']);
+            $episode->id = $row2['id'];
+            $episode->duree = $row2['duree'];
+            $episode->serie_id = $row2['serie_id'];
+            $episode->numero = $row2['numero'];
+            $episode->resume = $row2['resume'];
+        }
+        return $episode;
     }
 }
