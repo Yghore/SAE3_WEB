@@ -13,26 +13,20 @@ a
 }
 
 a.btn {
-    color: #ffffff;
-    text-decoration: none;
-    width: 100%;
+
+    display: inline-block;
     background-color: #575fcf;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s;
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+    text-align: center;
 }
+
 
 a.btn:hover
 {
     transition: 0.5s;
     border-color: #575fcf;
-}
-
-a:hover
-{
-    color: #b6b6b6;
 }
 
 body
@@ -128,7 +122,7 @@ div.form
     margin: 30px auto;
     width: 30%;
     padding: 8px 30px;
-    background-color: rgba(0, 0, 0, 0.79);
+    background-color: rgba(20, 20, 20, 0.72);
     color: white;
 
     border-radius: 6px;

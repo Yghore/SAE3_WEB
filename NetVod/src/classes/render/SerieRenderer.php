@@ -48,6 +48,9 @@ class SerieRenderer implements Renderer
                 <p>Date ajout : {$this->serie->date_ajout}</p>
                 <p>Nombre d'episode dans la serie : {$this->serie->nbEpisodes}</p>
                  {$if(User::getFromSession()->isFavoriteSerie($this->serie->id), $existfavorite, $addfavorite)}
+                 <div>
+                    <a href="?action=add-comment-note&id={$this->serie->id}" class="btn">Ajouter un commentaire/note</a>
+                 </div>
             </div>
         EOF;
         }

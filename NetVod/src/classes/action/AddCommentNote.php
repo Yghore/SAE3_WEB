@@ -10,15 +10,17 @@ class AddCommentNote extends Action
     protected function executeGET(): string
     {
         $content = <<<EOF
-        <h1>Ajout d’un commentaire</h1>
-        <form action="index.php?action=add-comment-note" method="post">
-        <label for="commentaire">Commentaire</label>
-        <input type="text" name="commentaire" id="commentaire" required>
-        <label for="note">Note</label>
-        <input type="number" name="note" id="note" required>
-        <input type="hidden" name="id" value="{$_GET['id']}">
-        <input type="submit" value="Ajouter">
-        </form>
+        <div class="form">
+            <h1>Ajout d’un commentaire</h1>
+            <form action="index.php?action=add-comment-note" method="post">
+            <label for="commentaire">Commentaire</label>
+            <input type="text" name="commentaire" id="commentaire" required>
+            <label for="note">Note</label>
+            <input type="number" name="note" id="note" required>
+            <input type="hidden" name="id" value="{$_GET['id']}">
+            <input type="submit" value="Ajouter">
+            </form>
+        </div>
 
         EOF;
 
