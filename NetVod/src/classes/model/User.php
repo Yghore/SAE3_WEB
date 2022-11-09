@@ -35,7 +35,7 @@ class User
 
     public static function existSession() : bool
     {
-        return $_SESSION['user'];
+        return isset($_SESSION['user']);
     }
 
     public static function getFromSession() : User
