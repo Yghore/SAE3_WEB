@@ -121,10 +121,10 @@ class Serie
         while ($row = $resultatSet->fetch()) {
             $serie = new Serie($row['titre']);
             $serie->id = $row['id'];
-            $serie->description = $row['descriptif'];
+            $serie->descriptif = $row['descriptif'];
             $serie->img = $row['img'];
             $serie->annee= $row['annee'];
-            $serie->date = $row['date_ajout'];
+            $serie->date_ajout = $row['date_ajout'];
             $serie->nbEpisodes = $row['nbepisodes'];
         }
         return $serie;
