@@ -8,6 +8,7 @@ use iutnc\netvod\exception\auth\LoginInvalidPasswordException;
 use iutnc\netvod\exception\auth\LoginInvalidUserException;
 use iutnc\netvod\exception\auth\RegisterInvalidEmailException;
 use iutnc\netvod\exception\auth\RegisterInvalidPasswordMatchException;
+use iutnc\netvod\model\Token;
 use iutnc\netvod\model\User;
 
 class Auth
@@ -38,7 +39,7 @@ class Auth
         }
     }
 
-    public static function register(string $email, string $password, string $role ='1') : bool{
+    public static function register(string $email, string $password, string $role ='1') : Token {
         if (strlen($password) < 10){
             throw new RegisterInvalidPasswordMatchException("Le mot de passe doit faire 10 caractères");
         }
@@ -52,7 +53,10 @@ class Auth
         $user->email = $email;
 
         $user->save();
-        return true;
+
+        $token = new Token();
+        $token->generateToken("V", $user->email);
+        return $token;
     }
 
 

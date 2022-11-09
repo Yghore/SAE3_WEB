@@ -3,6 +3,7 @@
 namespace iutnc\netvod\render;
 
 use iutnc\netvod\model\list\Serie;
+use iutnc\netvod\model\User;
 
 class SerieRenderer implements Renderer
 {
@@ -22,7 +23,6 @@ class SerieRenderer implements Renderer
             <div>
                 <p>Titre : {$this->serie->titre}</p>
                 <p>Description : {$this->serie->descriptif}</p>
-                <div>Img : <img src="{$this->serie->img}" alt="Image de la série"></div>
                 <p>Année de sortie : {$this->serie->annee}</p>
                 <p>Date ajout : {$this->serie->date_ajout}</p>
                 <p>Nombre d'episode dans la serie : {$this->serie->nbEpisodes}</p>
@@ -30,10 +30,34 @@ class SerieRenderer implements Renderer
         EOF;
         }
         if ($selector == 2) {
+            $if = function (bool $condition, ?string $true, ?string $false) { return $condition ? $true : $false; };
+            $addfavorite = <<<EOF
+
+                    <form method="POST" action="?action=add-favorite">
+                        <input type="hidden" name="url" value="/projet/NetVod/index.php?action=print-catalogue&amp;id=3">
+                        <input type="hidden" name="idserie" value="{$this->serie->id}">
+                        <input type="submit" value="Ajouter au favoris">
+                     </form>
+            EOF;
+            $existfavorite = '<input type="submit" value="En favoris 👌" disabled>';
+
             $html .= <<<EOF
-                <li><a href="index.php?action=print-catalogue&id={$this->serie->id}">{$this->serie->titre} {$this->serie->img}</a> <a href="?action=add-comment-note&id={$this->serie->id}"><button>Ajouter AVIS</button></a>
-                <p>Il n'y a pas encore de note pour cette série</p>
-                </li>
+                <div class="card">
+                    <a href="?action=print-catalogue&id={$this->serie->id}">
+                    <div class="img" style='background: no-repeat url("ressources/img/{$this->serie->img}") center; background-size: cover'>
+
+                    </div>
+                    </a>
+                     <div class="other">
+
+                        {$if(User::getFromSession()->isFavoriteSerie($this->serie->id), $existfavorite, $addfavorite)}
+                        <h4>{$this->serie->titre}</h4>
+                        <p>{$this->serie->descriptif}</p>
+                     </div>
+                </div>
+                
+               
+                
             EOF;
         }
 

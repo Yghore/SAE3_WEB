@@ -15,7 +15,7 @@ class SeriesRenderer implements Renderer
 
     public function render(int $selector = 1): string
     {
-        $html = "<div>";
+        $html = "<div class='list-card'>";
         foreach ($this->series as $value)
         {
 

@@ -5,6 +5,7 @@ namespace iutnc\netvod\action;
 use iutnc\netvod\auth\Auth;
 use iutnc\netvod\exception\auth\AuthException;
 use iutnc\netvod\model\User;
+use iutnc\netvod\render\auth\RegisterRenderer;
 
 
 class AddUser extends Action
@@ -15,24 +16,9 @@ class AddUser extends Action
      */
     protected function executeGET(): string
     {
-        $content = <<<EOF
-            <div class="bg-form">
-                <div class="form">
-                    <h1>Ajout d’un utilisateur</h1>
-                    <form action="?action=add-user" method="post">
-                         <label for="email">Email</label>
-                         <input type="email" name="email" id="email" required>
-                         <label for="password">Mot de passe</label>
-                         <input type="password" name="password" id="password" required>
-                         <label for="password">Confirmer</label>
-                         <input type="password" name="confirmer" id="confirmer" required>
-                         <input type="submit" value="Ajouter">
-                    </form>
-                </div>
-            </div>
-         EOF;
+        $rr = new RegisterRenderer();
 
-        return $content;
+        return $rr->render();
     }
 
     /**
@@ -44,14 +30,22 @@ class AddUser extends Action
         try {
             if (!User::existFromDatabase($_POST['email'], $_POST['password'])) {
                 if ($_POST['password'] == $_POST['confirmer']) {
-                    Auth::register($_POST['email'], $_POST['password']);
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    return '<h1>Utilisateur ajouté</h1>';
+                    $token = Auth::register($_POST['email'], $_POST['password']);
+
+                    //header('Location: ' . $_SERVER['PHP_SELF']);
+                    return <<<EOF
+                        <div class="bg-form">
+                            <div class="form">
+                                <h1>Utilisateur ajouté</h1><p>Merci de valider votre email en cliquant <a href="{$token->getValidateURL()}">ici</a></p>
+                            </div>
+                        </div>
+                       EOF;
                 } else {
-                    return '<h1>Les mots de passe ne correspondent pas</h1>';
+                    return (new RegisterRenderer("Les mots de passe ne correspond pas"))->render();
                 }
             }else{
-                return '<h1>Cet utilisateur existe déjà</h1>';
+
+                return (new RegisterRenderer("Cet utilisateur existe déjà"))->render();
             }
         } catch (AuthException $e) {
             return $e->getMessage();

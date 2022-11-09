@@ -52,6 +52,15 @@ class Episode
         }
     }
 
+    public function getThumbnails() : string
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("SELECT img FROM serie s INNER JOIN episode e ON  s.id = e.serie_id WHERE serie_id = ? LIMIT 1");
+        $state->execute([$this->serie_id]);
+        return $state->fetch()['img'];
+
+    }
+
     public static function getEpisode($idEpisode) : Episode
     {
         $pdo = ConnectionFactory::makeConnection();

@@ -7,6 +7,7 @@ use iutnc\netvod\exception\auth\AuthException;
 
 use iutnc\netvod\exception\auth\LoginInvalidEmailException;
 use iutnc\netvod\exception\auth\LoginInvalidPasswordException;
+use iutnc\netvod\exception\auth\LoginInvalidUserException;
 use iutnc\netvod\model\User;
 
 class Signin extends Action
@@ -33,7 +34,7 @@ class Signin extends Action
                           <input type="email" name="email" id="email" placeholder="Email" required>
                           <label for="password">Mot de passe</label>
                           <input type="password" name="password" id="password" placeholder="Mot de passe" required>
-                          <a href="?action=forgotpassword">Mot de passe oublié</a>
+                          <a id="forget_link" href="?action=forgotpassword">Mot de passe oublié</a>
                           <input type="submit" value="Connexion">
                         </form>
                     </div>

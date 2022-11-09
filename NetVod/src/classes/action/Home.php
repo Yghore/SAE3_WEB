@@ -16,9 +16,9 @@ class Home extends Action
             $user = User::getFromSession();
 
             $html = "<h2>Vos favoris :</h2>\n";
-            $html .= (new SeriesRenderer($user->getFavoritesSeries()))->render();
+            $html .= (new SeriesRenderer($user->getFavoritesSeries()))->render(2);
             $html .= "<h2>Vos séries en cours :</h2>\n";
-            $html .= (new SeriesRenderer($user->getCurrentSeries()))->render();
+            $html .= (new SeriesRenderer($user->getCurrentSeries()))->render(2);
             return $html;
         }
         catch (AuthException)

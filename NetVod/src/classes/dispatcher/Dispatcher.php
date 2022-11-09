@@ -14,6 +14,7 @@ use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Logout;
 use iutnc\netvod\action\Profil;
 use iutnc\netvod\action\Signin;
+use iutnc\netvod\model\Token;
 use iutnc\netvod\model\User;
 
 class Dispatcher
@@ -29,6 +30,7 @@ class Dispatcher
         }
         $html = '';
         switch ($action) {
+
             case 'add-user':
                 $user = new AddUser();
                 $html .= $user->execute();
@@ -67,7 +69,10 @@ class Dispatcher
                 $profil = new Profil();
                 $html .= $profil->execute();
                 break;
-
+            case 'validate':
+                $validate = new \iutnc\netvod\action\Token();
+                $html .= $validate->execute();
+                break;
             case 'forgotpassword':
                 $forgotpassword = new ForgotPassword();
                 $html .= $forgotpassword->execute();
@@ -119,7 +124,7 @@ class Dispatcher
         }
         $render .= <<<END
                 </nav>
-                <div>$html</div>
+                <div class="main">$html</div>
             </body>
         </html>
     END;

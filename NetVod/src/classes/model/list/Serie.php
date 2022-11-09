@@ -5,6 +5,7 @@ namespace iutnc\netvod\model\list;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\video\InvalidPropertyNameException;
 use iutnc\netvod\model\video\Episode;
+use PDO;
 
 class Serie
 {
@@ -126,6 +127,16 @@ class Serie
         }
         return $serie;
     }
+
+    public static function getSeries() : array
+    {
+        $bd = ConnectionFactory::makeConnection();
+        $state = $bd->prepare("SELECT serie.*, COUNT(e.serie_id) as nbEpisodes FROM serie INNER JOIN episode e on serie.id = e.serie_id group by e.serie_id having count(e.serie_id) > 0");
+        $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
+        $state->execute();
+        return $state->fetchAll();
+    }
+
 
     public static function getAllEpisodes($idSerie) : array {
         $episodes = [];

@@ -2,6 +2,7 @@
 
 namespace iutnc\netvod\render;
 
+use iutnc\netvod\model\list\Serie;
 use iutnc\netvod\model\video\Episode;
 
 class EpisodeRenderer implements Renderer
@@ -16,8 +17,23 @@ class EpisodeRenderer implements Renderer
     public function render(int $selector = 1): string
     {
         $html = '';
-        if ($selector == 1){
-            $html = "<li><a href=\"index.php?action=print-catalogue&id= {$this->episode->serie_id} idserie&idepisode={$this->episode->id}\"> {$this->episode->numero} {$this->episode->titre} {$this->episode->duree} </a></li>";
+        if ($selector == 1) {
+            $html .= <<<EOF
+                <div class="card">
+                    <a href="?action=print-catalogue&id={$this->episode->id}">
+                    <div class="img" style='background: no-repeat url("ressources/img/{$this->episode->getThumbnails()}") center; background-size: cover'>
+
+                    </div>
+                    </a>
+                     <div class="other">
+                        <h4>{$this->episode->titre}</h4>
+                        <p>{$this->episode->resume}</p>
+                     </div>
+                </div>
+                
+               
+                
+            EOF;
         }
 
         if ($selector == 2){

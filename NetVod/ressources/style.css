@@ -12,6 +12,24 @@ a
     text-decoration: none;
 }
 
+a.btn {
+    color: #ffffff;
+    text-decoration: none;
+    width: 100%;
+    background-color: #575fcf;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+a.btn:hover
+{
+    transition: 0.5s;
+    border-color: #575fcf;
+}
+
 a:hover
 {
     color: #b6b6b6;
@@ -37,6 +55,11 @@ nav {
     width: calc(100% - 40px);
     min-height: 30px;
     align-items: start;
+}
+
+div.main
+{
+    margin: auto 5%;
 }
 
 nav a
@@ -128,6 +151,13 @@ div.form form
     color: #e54848;
 }
 
+.success-text
+{
+    color: #3db73d;
+}
+
+
+
 div.form input{
     width: 100%;
     padding: 12px 20px;
@@ -146,7 +176,9 @@ div.form input:hover
     border-color: #575fcf;
 }
 
-div.form a {
+
+
+div.form a#forget_link {
     grid-column-start: 3 ;
     color: #5d65cb;
 
@@ -170,3 +202,65 @@ div.form input[type=submit]:hover {
 
 
 
+div.list-card
+{
+    display: grid;
+    grid-template-columns: repeat(8, 3fr);
+    grid-gap: 10px;
+    margin: 5px;
+}
+
+div.list-card div.card
+{
+    height: 200px;
+    width: 200px;
+    transition: 0.4s;
+}
+
+div.list-card div.card .img
+{
+    height: 100%;
+    width: 100%;
+}
+
+div.list-card div.card:hover
+{
+    scale: 150%;
+    transition: 0.4s;
+    transition-delay:0.4s;
+}
+
+div.list-card div.card .other
+{
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.1s, opacity 0.4s linear;
+
+}
+
+div.list-card div.card:hover .other{
+    visibility: visible;
+    opacity: 1;
+    background-color: #141414;
+    margin: 0;
+    padding: 5px;
+    transition: opacity 0.4s linear;
+    transition-delay: 0.5s;
+}
+
+input[type='submit']
+{
+    width: 100%;
+    background-color: #575fcf;
+    color: white;
+    padding: 3px 3px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type='submit']:enabled
+{
+    background-color: #4c518f;
+
+}

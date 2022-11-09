@@ -8,6 +8,7 @@ use iutnc\netvod\model\User;
 use iutnc\netvod\model\video\Episode;
 use iutnc\netvod\render\EpisodeRenderer;
 use iutnc\netvod\render\SerieRenderer;
+use iutnc\netvod\render\SeriesRenderer;
 
 class CatalogueAction extends Action
 {
@@ -18,20 +19,7 @@ class CatalogueAction extends Action
         $pdo = ConnectionFactory::makeConnection();
         if (!isset($_GET['id'])) {
             if (User::existSession()){
-                $nbSerie = Serie::nbSerie();
-                for ($i = 1; $i <= $nbSerie; $i++){
-                    $serie = Serie::getSerie($i);
-                    $render = new SerieRenderer($serie);
-                    $idserie = $serie->id;
-                    $titre = $serie->titre;
-                    $image = $serie->img;
-                    $noter = Serie::MoyenneNoteSerie($i);
-                    if ($noter == false){
-                        $html .= $render->render(2);
-                    } else {
-                        $html .= $render->render(3);
-                    }
-                }
+                $html =  (new SeriesRenderer(Serie::getSeries()))->render(2);
             } else {
                 $html = "Vous n'etes pas connecté";
             }
@@ -54,10 +42,12 @@ class CatalogueAction extends Action
                         EOF;
                     }
                     $episodes = Serie::getAllEpisodes($idserie);
+                    $html .= "<div class='list-card'>";
                     foreach ($episodes as $episode){
                         $render = new EpisodeRenderer($episode);
                         $html .= $render->render(1);
                     }
+                    $html .= "</div>";
                     // On vérifie que l'utilisateur est connecté
                     if(User::existSession()){
                         // On insère dans la table current2user la série en cours si elle n'y est pas déjà

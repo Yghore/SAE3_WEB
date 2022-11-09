@@ -62,7 +62,7 @@ class User
 
     public static function emailExistInDatabase(string $email) : bool{
         $db = ConnectionFactory::makeConnection();
-        $query = $db->prepare("SELECT email from USER where email = ? ");
+        $query = $db->prepare("SELECT email from user where email = ? ");
         $query->execute([$email]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
         return $result != null;
@@ -90,9 +90,10 @@ class User
 
         if($query->rowCount() > 0)
         {
+
             $query->closeCursor();
-            $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom WHERE email = :email");
-            $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email]);
+            $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom, valid = :valid WHERE email = :email");
+            $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email, ':valid' => $this->valid]);
             return;
         }
         $query = $db->prepare("INSERT INTO user (email, pass) VALUES (:email, :password)");
