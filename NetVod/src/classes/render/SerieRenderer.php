@@ -31,12 +31,20 @@ class SerieRenderer implements Renderer
         }
         if ($selector == 2) {
             $html .= <<<EOF
-                <li><a href="index.php?action=print-catalogue&id={$this->serie->id}">{$this->serie->titre} {$this->serie->img}</a>
+                <li><a href="index.php?action=print-catalogue&id={$this->serie->id}">{$this->serie->titre} {$this->serie->img}</a> <a href="?action=add-comment-note&id={$this->serie->id}"><button>Ajouter AVIS</button></a>
+                <p>Il n'y a pas encore de note pour cette série</p>
+                </li>
             EOF;
-            /*
-            <div>
-                    <li><a href="index.php?action=print-catalogue&id=$idserie">$titre $image</a>
-            </div>*/
+        }
+
+        if ($selector == 3) {
+            $id = $this->serie->id;
+            $note = Serie::MoyenneNoteSerie($id);
+            $html .= <<<EOF
+                        <li><a href="index.php?action=print-catalogue&id={$this->serie->id}">{$this->serie->titre} {$this->serie->img}</a> 
+                        <p>La note moyenne de cette série est de $note</p>
+                        </li>
+                     EOF;
         }
 
         return $html;

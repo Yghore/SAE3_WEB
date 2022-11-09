@@ -7,7 +7,7 @@ class AddSerial extends Action
 
     protected function executeGET(): string
     {
-        // TODO: Implement executeGET() method.
+        return "TODO";
     }
 
     protected function executePOST(): string
