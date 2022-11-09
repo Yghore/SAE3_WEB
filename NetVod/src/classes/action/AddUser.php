@@ -4,6 +4,7 @@ namespace iutnc\netvod\action;
 
 use iutnc\netvod\auth\Auth;
 use iutnc\netvod\exception\auth\AuthException;
+use iutnc\netvod\model\User;
 
 
 class AddUser extends Action
@@ -41,12 +42,16 @@ class AddUser extends Action
     protected function executePOST(): string
     {
         try {
-            if ($_POST['password'] == $_POST['confirmer']) {
-                Auth::register($_POST['email'], $_POST['password']);
-                header('Location: '.$_SERVER['PHP_SELF']);
-                return '<h1>Utilisateur ajouté</h1>';
-            } else {
-                return '<h1>Les mots de passe ne correspondent pas</h1>';
+            if (!User::existFromDatabase($_POST['email'], $_POST['password'])) {
+                if ($_POST['password'] == $_POST['confirmer']) {
+                    Auth::register($_POST['email'], $_POST['password']);
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                    return '<h1>Utilisateur ajouté</h1>';
+                } else {
+                    return '<h1>Les mots de passe ne correspondent pas</h1>';
+                }
+            }else{
+                return '<h1>Cet utilisateur existe déjà</h1>';
             }
         } catch (AuthException $e) {
             return $e->getMessage();

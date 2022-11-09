@@ -38,7 +38,17 @@ class User
         return isset($_SESSION['user']);
     }
 
-    public static function getFromSession() : User
+
+     public static function existFromDatabase(string $email, string $pass) : bool{
+        $db = ConnectionFactory::makeConnection();
+        $query = $db->prepare("SELECT email,pass from USER where email = ? and pass = ? ");
+        $query->execute([$email,$pass]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result != null;
+
+    }
+
+    public static function getFromSession(): User
     {
         if(isset($_SESSION['user'])){
             return $_SESSION['user'];

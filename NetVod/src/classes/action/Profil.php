@@ -54,8 +54,7 @@ class Profil extends Action
             <h1>Vous êtes déconnecté</h1>
             EOF;
 
-        } else if ($_POST['nom'] != "" && $_POST['prenom'] != "" && $_POST['age'] != "" && $_POST['age'] > 0) {
-            //sinon on modifie le profil
+        }else if (isset($_POST['modifier'])) {
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
             $age = $_POST['age'];
@@ -63,9 +62,11 @@ class Profil extends Action
             $user->setNom($nom);
             $user->setPrenom($prenom);
             $user->setAge($age);
-            $user->save();
-            return '<h1>Profil modifié</h1>';
+            $res =<<<EOF
+            <h1>Profil modifié</h1>
+            EOF;
         }
+
         return $res;
     }
 }
