@@ -129,4 +129,44 @@ class Serie
         }
         return $serie;
     }
+
+    public static function getAllEpisodes($idSerie) : array {
+        $episodes = [];
+        $pdo = ConnectionFactory::makeConnection();
+        $query2 = <<<end
+            SELECT
+              id
+            FROM
+                episode
+            WHERE serie_id = ?
+            end;
+        $resultatSet2 = $pdo->prepare($query2);
+        $resultatSet2->execute([$idSerie]);
+        while ($row2 = $resultatSet2->fetch()) {
+            $id = $row2['id'];
+            $episodes[] = Episode::getEpisode($id);
+        }
+        return $episodes;
+    }
+
+    public static function MoyenneNoteSerie($idSerie) : mixed{
+        $noter = false;
+        $pdo = ConnectionFactory::makeConnection();
+        $query3 = <<<end
+                 SELECT
+                    avg(note) as note
+                 FROM
+                    comment2user
+                 WHERE   
+                    idserie = $idSerie
+                   
+                end;
+        $resultatSet3 = $pdo->prepare($query3);
+        $resultatSet3->execute();
+        $row3 = $resultatSet3->fetch();
+        if ($row3['note'] !== null) {
+            $noter = $row3['note'];
+        }
+        return $noter;
+    }
 }
