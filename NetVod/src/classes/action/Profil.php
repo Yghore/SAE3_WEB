@@ -15,7 +15,7 @@ class Profil extends Action
         if(User::existSession()) {
             $user = User::getFromSession();
             $ur = new UserRenderer($user);
-            $if = function (bool $condition, string $true, string $false) { return $condition ? $true : $false; };
+            $if = function (bool $condition, ?string $true, ?string $false) { return $condition ? $true : $false; };
             $html = <<<EOF
         <div class="">
             <div class="form">

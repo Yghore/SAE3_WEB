@@ -47,7 +47,10 @@ class Auth
         if ($user){
             throw new RegisterInvalidEmailException("L'utilisateur existe déjà");
         }
-        $user = new User($email, password_hash($password, PASSWORD_DEFAULT), $role);
+        $user = new User();
+        $user->pass = password_hash($password, PASSWORD_DEFAULT);
+        $user->email = $email;
+
         $user->save();
         return true;
     }

@@ -53,7 +53,7 @@ class User
     public static function existFromDatabase(string $email, string $pass): bool
     {
         $db = ConnectionFactory::makeConnection();
-        $query = $db->prepare("SELECT email,pass from USER where email = ? and pass = ? ");
+        $query = $db->prepare("SELECT email,pass from user where email = ? and pass = ? ");
         $query->execute([$email, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
         return $result != null;
@@ -70,6 +70,7 @@ class User
 
     public function isValid() : bool
     {
+        if(!isset($this->valid)) return false;
         return $this->valid;
     }
 
@@ -78,12 +79,11 @@ class User
         $db = ConnectionFactory::makeConnection();
         $query = $db->prepare("SELECT email FROM user WHERE email = ?");
         $query->execute([$this->email]);
-        $_SESSION['user'] = $this;
-        var_dump($_SESSION['user']);
+
         if($query->rowCount() > 0)
         {
             $query->closeCursor();
-            $query = $db->prepare("UPDATE USER SET nom = :nom, prenom = :prenom WHERE email = :email");
+            $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom WHERE email = :email");
             $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email]);
             return;
         }
@@ -92,10 +92,11 @@ class User
             'email' => $this->email,
             'password' => $this->pass
         ]);
+
     }
 
 
-    public static function getFromEmail(string $email): User
+    public static function getFromEmail(string $email): User | bool
     {
         $db = ConnectionFactory::makeConnection();
         $query = $db->prepare("SELECT * FROM user WHERE email = :email");
