@@ -3,8 +3,28 @@ create table user (
     email varchar(25) NOT NULL,
     pass varchar(255) NOT NULL,
     valid boolean DEFAULT false,
+    nom varchar(50) NULL,
+    prenom varchar(50) NULL,
+    date_birth date NULL,
+    parental_authorisation boolean,
 
     primary key (id)
+);
+
+create table genre(
+    id integer(11) NOT NULL,
+    libelle varchar(40) NOT NULL,
+
+    CONSTRAINT pk_genre PRIMARY KEY(id)
+);
+
+create table user2genre (
+    iduser integer(11) NOT NULL,
+    idgenre integer(11) NOT NULL,
+
+    CONSTRAINT pk_user2genre PRIMARY KEY (iduser, idgenre),
+    CONSTRAINT fk_user2genre_user_iduser FOREIGN KEY (iduser) REFERENCES user(id),
+    CONSTRAINT fk_user2genre_genre_idgenre FOREIGN KEY (idgenre) REFERENCES genre(id)
 );
 
 create table token_reset (
