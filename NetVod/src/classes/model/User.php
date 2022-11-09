@@ -5,6 +5,7 @@ namespace iutnc\netvod\model;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\auth\AuthException;
 use iutnc\netvod\exception\user\AttributException;
+use iutnc\netvod\model\list\Serie;
 use PDO;
 
 class User
@@ -37,6 +38,16 @@ class User
     public static function existSession(): bool
     {
         return isset($_SESSION['user']);
+    }
+
+
+     public static function existFromDatabase(string $email, string $pass) : bool{
+        $db = ConnectionFactory::makeConnection();
+        $query = $db->prepare("SELECT email,pass from USER where email = ? and pass = ? ");
+        $query->execute([$email,$pass]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result != null;
+
     }
 
     public static function getFromSession(): User
