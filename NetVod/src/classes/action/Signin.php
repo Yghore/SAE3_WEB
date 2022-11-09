@@ -17,10 +17,10 @@ class Signin extends Action
         try
         {
             $user = User::getFromSession();
-            return <<<EOF
-                <h1>Vous êtes déjà connecté :</h1>
-                <div>Utilisateur : <bold>{$user->email}</bold></div>
-            EOF;
+            header('location: ?action=profil');
+            die();
+
+
         }
         catch(AuthException)
         {
@@ -28,8 +28,10 @@ class Signin extends Action
                 <div class="bg-form">
                     <div class="form">
                         <h1>Connexion</h1>
-                        <form action="index.php?action=signin" method="post">
+                        <form action="?action=signin" method="post">
+                         <label for="email">Email</label>
                           <input type="email" name="email" id="email" placeholder="Email" required>
+                          <label for="password">Mot de passe</label>
                           <input type="password" name="password" id="password" placeholder="Mot de passe" required>
                           <a href="?action=forgotpassword">Mot de passe oublié</a>
                           <input type="submit" value="Connexion">
@@ -44,34 +46,44 @@ class Signin extends Action
     protected function executePOST(): string
     {
         $content = <<<EOF
-                <h1>Connexion</h1>
-                <form action="index.php?action=signin" method="post">
-                  <label for="email">Email</label>
-                  <input type="email" name="email" id="email" required>
-                  <label for="password">Mot de passe</label>
-                  <input type="password" name="password" id="password" required>
-                  <input type="submit" value="Connexion">
-                </form>
+            <div class="bg-form">
+                    <div class="form">
+                        <h1>Connexion</h1>
+                        <form action="?action=signin" method="post">
+                            <label for="password">Email</label>
+                            <input type="email" name="email" id="email" placeholder="Email" required>
+                            <label for="password">Mot de passe</label>
+
+                            <input type="password" name="password" id="password" placeholder="Mot de passe" required>
+                            
+                            <input type="submit" value="Connexion">
+                            <p class="error-text">
+
+                
             EOF;
         try {
             if (Auth::authenticate($_POST['email'], $_POST['password'])) {
                 $user = User::getFromEmail($_POST['email']);
-                if (!$user) {
-                    $user = $_SESSION['user'];
+                if ($user) {
+                    header('location: ?action=home');
+                    die();
 
                 };
             }
         } catch (LoginInvalidEmailException $e) {
-            return $content . "Email invalide";
+            $content .= "Email invalide";
         }
         catch(LoginInvalidPasswordException $e)
         {
-            return $content . "Mot de passe invalide";
+             $content .= "Mot de passe invalide";
         }
-        return <<<EOF
-                    <h1>Vous êtes connecté connecté :</h1>
-                    <div>Utilisateur : <bold>{$user->email}</bold></div>
-                EOF;
+        catch(LoginInvalidUserException $e)
+        {
+            $content .= "Merci de valider votre inscriptions avant de vous connecter";
+        }
+
+        $content .= "</form></div></div>";
+        return $content;
 
     }
 }

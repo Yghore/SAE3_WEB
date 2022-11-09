@@ -38,6 +38,10 @@ class User
         }
     }
 
+    public function __isset($key) {
+        return isset($this->$key);
+    }
+
 
 
     public static function existSession(): bool
@@ -49,7 +53,7 @@ class User
     public static function existFromDatabase(string $email, string $pass): bool
     {
         $db = ConnectionFactory::makeConnection();
-        $query = $db->prepare("SELECT email,pass from USER where email = ? and pass = ? ");
+        $query = $db->prepare("SELECT email,pass from user where email = ? and pass = ? ");
         $query->execute([$email, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
         return $result != null;
@@ -72,17 +76,35 @@ class User
         throw new AuthException("Vous n'êtes pas connecté");
     }
 
+    public function isValid() : bool
+    {
+        if(!isset($this->valid)) return false;
+        return $this->valid;
+    }
+
     public function save()
     {
         $db = ConnectionFactory::makeConnection();
+        $query = $db->prepare("SELECT email FROM user WHERE email = ?");
+        $query->execute([$this->email]);
+
+        if($query->rowCount() > 0)
+        {
+            $query->closeCursor();
+            $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom WHERE email = :email");
+            $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email]);
+            return;
+        }
         $query = $db->prepare("INSERT INTO user (email, pass) VALUES (:email, :password)");
         $query->execute([
             'email' => $this->email,
             'password' => $this->pass
         ]);
+
     }
 
-    public static function getFromEmail(string $email): User
+
+    public static function getFromEmail(string $email): User | bool
     {
         $db = ConnectionFactory::makeConnection();
         $query = $db->prepare("SELECT * FROM user WHERE email = :email");
@@ -110,7 +132,7 @@ class User
     public function getFavoritesSeries(): array
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT s.*, COUNT(e.id) as 'nbEpisodes' FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = :user HAVING count(e.id) > 0");
+        $state = $db->prepare("SELECT s.*, count(e.id) nbEpisodes FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = :user group by e.serie_id having count(e.id) > 0");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([':user' => $this->id]);
         return $state->fetchAll();
@@ -119,7 +141,7 @@ class User
     public function getCurrentSeries(): array
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT s.*, count(e.id) as nbEpisodes FROM current2user INNER JOIN serie s on current2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = ? HAVING count(e.id) > 0");
+        $state = $db->prepare("SELECT s.*, count(e.id) as nbEpisodes FROM current2user INNER JOIN serie s on current2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = ? group by e.serie_id HAVING count(e.id) > 0");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([$this->id]);
         return $state->fetchAll();

@@ -34,9 +34,13 @@ class AddCommentNote extends Action
             $note = $_POST['note'];
             var_dump($_POST);
             $idserie = $_POST['id'];
-            $iduser = User::getFromSession()->getId();
-            $user = User::getFromSession();
-            $user->putCommentNoteSerie($idserie,$iduser,$note,$commentaire);
+            try {
+                $iduser = User::getFromSession()->getId();
+                $user = User::getFromSession();
+                $user->putCommentNoteSerie($idserie,$iduser,$note,$commentaire);
+            } catch (\Exception $e){
+                echo $e->getMessage();
+            }
 
             die();
         } else {

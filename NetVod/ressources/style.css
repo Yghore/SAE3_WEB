@@ -42,7 +42,7 @@ nav {
 nav a
 {
     text-decoration: none;
-    margin: 0px 6px;
+    margin: 0 6px;
     color: white;
     transition: 0.5s;
 }
@@ -123,6 +123,10 @@ div.form form
 
 }
 
+.error-text
+{
+    color: #e54848;
+}
 
 div.form input{
     width: 100%;

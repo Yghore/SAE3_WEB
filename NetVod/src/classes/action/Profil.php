@@ -11,20 +11,22 @@ class Profil extends Action
     protected function executeGET(): string
     {
         //affichage du profil avec nom prenom age
-        $user = User::getFromSession();
-        $ur = new UserRenderer($user);
+
         if(User::existSession()) {
+            $user = User::getFromSession();
+            $ur = new UserRenderer($user);
+            $if = function (bool $condition, ?string $true, ?string $false) { return $condition ? $true : $false; };
             $html = <<<EOF
-        <div class="bg-form">
+        <div class="">
             <div class="form">
                 <h1>Profil</h1>
                 <form action="index.php?action=profil" method="post">
                     <label for="nom">Nom</label>
-                    <input type="text" name="nom" id="nom" value="{$user->nom}" required>
+                    <input type="text" name="nom" id="nom" value="{$if(isset($user->nom), $user->nom, "")}" required>
                     <label for="prenom">Prénom</label>
-                    <input type="text" name="prenom" id="prenom" value="{$user->prenom}" required>
+                    <input type="text" name="prenom" id="prenom" value="{$if(isset($user->prenom), $user->prenom, "")}" required>
                     {$ur->renderCheckBox()}
-                    <input type="submit" value="Modifier">
+                    <input type="submit" value="Modifier" name="modifier">
                 </form>
             </div>
             <div class="form">
@@ -58,14 +60,14 @@ class Profil extends Action
         }else if (isset($_POST['modifier'])) {
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
-            $age = $_POST['age'];
+            $age = "";
             $user = User::getFromSession();
             $user->nom = $nom;
             $user->prenom = $prenom;
-            $user->date_birdth = $age;
-            $res =<<<EOF
-            <h1>Profil modifié</h1>
-            EOF;
+            $user->date_birth = $age;
+            $user->save();
+            header('location: ?action=profil');
+            die();
         }
 
         return $res;
