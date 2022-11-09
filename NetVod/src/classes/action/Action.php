@@ -8,7 +8,8 @@ abstract class Action
     protected ?string $hostname = null;
     protected ?string $script_name = null;
 
-    public function __construct(){
+    public function __construct()
+    {
 
         $this->http_method = $_SERVER['REQUEST_METHOD'];
         $this->hostname = $_SERVER['HTTP_HOST'];

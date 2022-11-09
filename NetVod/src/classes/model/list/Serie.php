@@ -4,7 +4,6 @@ namespace iutnc\netvod\model\list;
 
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\video\InvalidPropertyNameException;
-use iutnc\netvod\exception\video\InvalidPropertyValueException as InvalidPropertyValueException;
 use iutnc\netvod\model\video\Episode;
 
 class Serie
@@ -35,7 +34,6 @@ class Serie
         if (property_exists($this, $attribut)){
             return $this->$attribut;
         } else {
-            echo $attribut;
             throw new InvalidPropertyNameException();
         }
     }
@@ -44,7 +42,7 @@ class Serie
         if (property_exists($this, $attribut)){
             $this->$attribut = $valeur;
         } else {
-            throw new InvalidPropertyNameException();
+            throw new InvalidPropertyNameException("Attribut existe pas : $attribut");
         }
     }
 
@@ -102,6 +100,7 @@ class Serie
         $nbSerie = $resultatSet->fetch()['nb'];
         return $nbSerie;
     }
+
 
 
     public static function getSerie(int $id) : Serie

@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+body, html
+{
+    margin: 0;
+
+
+}
+
+a
+{
+    color: white;
+    text-decoration: none;
+}
+
+a:hover
+{
+    color: #b6b6b6;
+}
+
+body
+{
+    font-family: 'Poppins', sans-serif;
+    background-color: #141414;
+    color: white;
+}
+
+/* MENU */
+
+nav {
+    display: flex;
+    padding: 20px;
+    /*background: url("img/bg.gif") no-repeat;*/
+    background-color: rgb(20, 20, 20);
+    background-image: linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent);
+    background-size: cover;
+    color: white;
+    width: calc(100% - 40px);
+    min-height: 30px;
+    align-items: start;
+}
+
+nav a
+{
+    text-decoration: none;
+    margin: 0px 6px;
+    color: white;
+    transition: 0.5s;
+}
+
+nav a:hover
+{
+    transition: 0.5s;
+    scale: 120%;
+    color: #c4c4c4;
+}
+
+nav a#img:hover
+{
+    transition: 1s;
+    rotate:360deg;
+}
+
+nav a#img {
+    transition: 0.8s;
+}
+
+nav img
+{
+    height: 25px;
+    width: auto;
+    margin: 0;
+    align-self: center;
+}
+
+nav div.left
+{
+    width: 70%;
+    display: flex;
+    align-items: start;
+}
+
+nav div.right
+{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* FORMULAIRE */
+
+
+div.bg-form {
+    background-size: cover;
+    background: url("img/bg_form.jpg");
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+}
+
+div.form
+{
+    margin: 30px auto;
+    width: 30%;
+    padding: 8px 30px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+
+    border-radius: 6px;
+}
+
+div.form h1
+{
+    font-weight: normal;
+}
+
+div.form form
+{
+
+    display: grid;
+    grid-template-columns: repeat(1, 3fr);
+}
+
+
+div.form input{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+div.form input:hover
+{
+    transition: 0.5s;
+    border-color: #575fcf;
+}
+
+div.form input[type=submit] {
+    width: 100%;
+    background-color: #575fcf;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+div.form input[type=submit]:hover {
+    background-color: #5158b9;
+    transition: 0.3s;
+}
+
+
+

@@ -13,6 +13,7 @@ use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Logout;
 use iutnc\netvod\action\Profil;
 use iutnc\netvod\action\Signin;
+use iutnc\netvod\model\User;
 
 class Dispatcher
 {
@@ -76,28 +77,50 @@ class Dispatcher
     }
 
     private function renderPage(string $html){
-        echo <<<END
+        $render = <<<END
         <!DOCTYPE html>
         <html lang = "fr">
             <head>
                 <title>NetVod - Video Streaming</title>
                 <meta charset= "utf8" />
+               <link rel="stylesheet" href="ressources/style.css" >
             </head>
             
             <body>
-                <h1>NetVod - Video Streaming</h1>
-                <nav><ul>
-                    <li><a href="index.php">Accueil</a></li>
-                    <li><a href="?action=add-user">Inscription</a></li>
-                    <li><a href="?action=signin">Se connecter</a></li>
-                    <li><a href="?action=add-serial">ajouter une serie</a></li>
-                    <li><a href="?action=print-catalogue">afficher le catalogue</a></li>
-                    <li><a href="?action=add-episode">ajouter un episode</a></li>
-                    <li><a href="?action=profil">Profil</a></li>
-                </nav></ul>
+                <nav>
+                    <div class="left">
+                        <a id="img" href="index.php"><img src="ressources/img/logo.png" alt="Logo NetVOD"></a>
+                        <a href="?action=add-serial">Ajouter une serie</a>
+                        <a href="?action=print-catalogue">Afficher le catalogue</a>
+                        <a href="?action=add-episode">Ajouter un episode</a>
+                    </div>
+                    <div class="right">
+                       
+        END;
+        if(User::existSession())
+        {
+            $render .= <<<END
+
+                <a href="?action=profil">Profil</a>
+            </div>
+            END;
+
+        }
+        else
+        {
+            $render .= <<<END
+                <a href="?action=add-user">Inscription</a>
+                <a href="?action=signin">Se connecter</a>
+            END;
+
+
+        }
+        $render .= <<<END
+                </nav>
                 <div>$html</div>
             </body>
         </html>
     END;
+        echo $render;
     }
 }
