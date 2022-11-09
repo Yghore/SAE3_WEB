@@ -17,8 +17,7 @@ class User
 
     public function __get(string $name): mixed
     {
-        if(property_exists($this, $name) && $name != "password")
-        {
+        if (property_exists($this, $name) && $name != "password") {
             return $this->$name;
         }
         throw new AttributException("$name n'existe pas");
@@ -33,16 +32,17 @@ class User
         $this->id = $id;
     }
 
-    public static function existSession() : bool
+    public static function existSession(): bool
     {
         return isset($_SESSION['user']);
     }
 
 
-     public static function existFromDatabase(string $email, string $pass) : bool{
+    public static function existFromDatabase(string $email, string $pass): bool
+    {
         $db = ConnectionFactory::makeConnection();
         $query = $db->prepare("SELECT email,pass from USER where email = ? and pass = ? ");
-        $query->execute([$email,$pass]);
+        $query->execute([$email, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
         return $result != null;
 
@@ -50,7 +50,7 @@ class User
 
     public static function getFromSession(): User
     {
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             return $_SESSION['user'];
         }
         throw new AuthException("Vous n'êtes pas connecté");
@@ -66,7 +66,7 @@ class User
         ]);
     }
 
-    public static function getFromEmail(string $email) : ?User
+    public static function getFromEmail(string $email): ?User
     {
         $db = ConnectionFactory::makeConnection();
         $query = $db->prepare("SELECT * FROM user WHERE email = :email");
@@ -80,7 +80,8 @@ class User
         return null;
     }
 
-    public function checkPassword($password){
+    public function checkPassword($password)
+    {
         return password_verify($password, $this->password);
     }
 
@@ -91,7 +92,7 @@ class User
         return $state->execute([':user' => $this->id, ':serie' => $idSerie]);
     }
 
-    public function getFavoritesSeries() : array
+    public function getFavoritesSeries(): array
     {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT s.*, COUNT(e.serie_id) as 'nbEpisodes' FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = :user");
@@ -100,7 +101,8 @@ class User
         return $state->fetchAll();
     }
 
-    public function getCurrentSeries(): array{
+    public function getCurrentSeries(): array
+    {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT serie.*, COUNT(episode.id) as nbEpisodes FROM serie INNER JOIN episode ON serie.id=episode.serie_id WHERE serie.id IN (SELECT idserie FROM current2user WHERE iduser = :user)");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
@@ -108,7 +110,7 @@ class User
         return $state->fetchAll();
     }
 
-    public function isFavoriteSerie(int $serieid) : bool
+    public function isFavoriteSerie(int $serieid): bool
     {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT idserie FROM favorite2user WHERE iduser = :user AND idserie = :serie");
@@ -116,8 +118,27 @@ class User
         return $state->rowCount() >= 1;
     }
 
+    public static function disconnect(): string
+    {
+        if (isset($_SESSION['user'])) {
+            if (isset($_SESSION['user'])) {
+                unset($_SESSION['user']);
+                $res = <<<EOF
+            <div class="alert alert-success" role="alert">
+                Vous êtes déconnecté
+            EOF;
 
+            } else {
+                $res = <<<EOF
+            <div class="alert alert-danger" role="alert">
+                Vous n'êtes pas connecté
+            EOF;
+            }
+            $res .= "</div>";
 
+        }
+        return $res;
+    }
 
 
 }
