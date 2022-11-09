@@ -28,7 +28,7 @@ class Auth
         }
         if($user->checkPassword($password))
         {
-            if(!$user->isValid()){ throw new LoginInvalidUserException;}
+            if(!$user->isValid()){ throw new LoginInvalidUserException("User non vérifié");}
             $_SESSION['user'] = $user;
             return true;
         }
