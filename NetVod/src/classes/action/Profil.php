@@ -10,8 +10,8 @@ class Profil extends Action
     protected function executeGET(): string
     {
         //affichage du profil avec nom prenom age
-
-        $html = <<<EOF
+        if(User::existSession()) {
+            $html = <<<EOF
         <div class="bg-form">
             <div class="form">
                 <h1>Profil</h1>
@@ -29,13 +29,19 @@ class Profil extends Action
             <div class="form">
                 <h1>Déconnexion</h1>
                 <form action="index.php?action=profil" method="post">
-                    <input type="submit" value="Déconnexion">
+                    <input type="submit" value="Déconnexion" name="deconnexion">
                 </form>
             </div>
         </div>
 
         EOF;
-        return $html;
+
+            return $html;
+
+        }
+        header('location: ?action=signin');
+        die();
+
     }
 
     protected function executePOST(): string

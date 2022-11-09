@@ -50,7 +50,7 @@ nav a
 nav a:hover
 {
     transition: 0.5s;
-    scale: 110%;
+    scale: 120%;
     color: #c4c4c4;
 }
 
