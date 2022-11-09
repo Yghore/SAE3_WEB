@@ -35,7 +35,8 @@ class UserRenderer implements Renderer
                   <div>
                       <input type="checkbox" id="horreur" name="horreur" checked>
                       <label for="scales">Horreur</label>
-                  <
+                  </div>
+                  
                   <div>
                     <input type="checkbox" id="comedie" name="comedie">
                     <label for="horns">Comédie</label>
