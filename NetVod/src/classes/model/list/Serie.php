@@ -14,19 +14,19 @@ class Serie
 
     protected string $titre;
 
-    protected string $description;
+    protected string $descriptif;
 
     protected string $img;
 
     protected int $annee;
 
-    protected string $date;
+    protected string $date_ajout;
 
     protected array $episodes;
 
     protected int $nbEpisodes;
 
-    public function __construct(string $titre, array $episodes = []){
+    public function __construct(string $titre = "", array $episodes = []){
         $this->titre = $titre;
         $this->episodes = $episodes;
     }

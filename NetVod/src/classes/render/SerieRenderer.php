@@ -2,7 +2,7 @@
 
 namespace iutnc\netvod\render;
 
-use iutnc\netvod\model\Serie;
+use iutnc\netvod\model\list\Serie;
 
 class SerieRenderer implements Renderer
 {
