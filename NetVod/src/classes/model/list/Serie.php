@@ -34,6 +34,7 @@ class Serie
         if (property_exists($this, $attribut)){
             return $this->$attribut;
         } else {
+            echo $attribut;
             throw new InvalidPropertyNameException();
         }
     }
