@@ -94,7 +94,7 @@ class User
     public function getFavoritesSeries() : array
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT s.*, COUNT(e.serie_id) as 'nbEpisodes' FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = :user");
+        $state = $db->prepare("SELECT s.*, COUNT(e.id) as 'nbEpisodes' FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = :user HAVING count(e.id) > 0");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([':user' => $this->id]);
         return $state->fetchAll();
@@ -102,9 +102,9 @@ class User
 
     public function getCurrentSeries(): array{
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT serie.*, COUNT(episode.id) as nbEpisodes FROM serie INNER JOIN episode ON serie.id=episode.serie_id WHERE serie.id IN (SELECT idserie FROM current2user WHERE iduser = :user)");
+        $state = $db->prepare("SELECT s.*, count(e.id) as nbEpisodes FROM current2user INNER JOIN serie s on current2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = ? HAVING count(e.id) > 0");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
-        $state->execute([':user' => $this->id]);
+        $state->execute([$this->id]);
         return $state->fetchAll();
     }
 
