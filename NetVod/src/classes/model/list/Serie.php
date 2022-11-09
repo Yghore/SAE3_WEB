@@ -25,11 +25,6 @@ class Serie
 
     protected int $nbEpisodes;
 
-    public function __construct(string $titre = "", array $episodes = []){
-        $this->titre = $titre;
-        $this->episodes = $episodes;
-    }
-
     public function __get(string $attribut) : mixed{
         if (property_exists($this, $attribut)){
             return $this->$attribut;
@@ -120,7 +115,8 @@ class Serie
         $resultatSet->execute([$id]);
         $serieid = '';
         while ($row = $resultatSet->fetch()) {
-            $serie = new Serie($row['titre']);
+            $serie = new Serie();
+            $serie->titre = $row['titre'];
             $serie->id = $row['id'];
             $serie->descriptif = $row['descriptif'];
             $serie->img = $row['img'];

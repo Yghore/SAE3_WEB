@@ -21,9 +21,9 @@ class EpisodeRenderer implements Renderer
         }
 
         if ($selector == 2){
-            $html .= "</br>{$this->episode->titre}";
-            $html .= "</br>{$this->episode->resume}";
-            $html .= "</br>{$this->episode->duree}";
+            $html .= "</br>Titre de l'episode : {$this->episode->titre}";
+            $html .= "</br>Resume : {$this->episode->resume}";
+            $html .= "</br>Duree : {$this->episode->duree} min";
         }
         return $html;
     }
