@@ -1,3 +1,15 @@
+/** Ordre de supression :
+DROP TABLE token_reset;
+DROP TABLE current2user;
+DROP TABLE favorite2user;
+DROP TABLE comment2user;
+DROP TABLE user2genre;
+DROP TABLE user;
+DROP TABLE genre;
+**/
+
+
+
 create table user (
     id integer(11) NOT NULL auto_increment,
     email varchar(25) NOT NULL,
