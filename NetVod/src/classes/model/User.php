@@ -97,7 +97,7 @@ class User
     public function getFavoritesSeries(): array
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT * FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id WHERE iduser = :user");
+        $state = $db->prepare("SELECT s.*, COUNT(e.serie_id) as 'nbEpisodes' FROM favorite2user INNER JOIN serie s on favorite2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = :user");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([':user' => $this->id]);
         return $state->fetchAll();

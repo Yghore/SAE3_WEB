@@ -13,19 +13,19 @@ class Serie
 
     protected string $titre;
 
-    protected string $description;
+    protected string $descriptif;
 
     protected string $img;
 
     protected int $annee;
 
-    protected string $date;
+    protected string $date_ajout;
 
     protected array $episodes;
 
     protected int $nbEpisodes;
 
-    public function __construct(string $titre, array $episodes = []){
+    public function __construct(string $titre = "", array $episodes = []){
         $this->titre = $titre;
         $this->episodes = $episodes;
     }
@@ -34,7 +34,6 @@ class Serie
         if (property_exists($this, $attribut)){
             return $this->$attribut;
         } else {
-            echo $attribut;
             throw new InvalidPropertyNameException();
         }
     }
@@ -43,7 +42,7 @@ class Serie
         if (property_exists($this, $attribut)){
             $this->$attribut = $valeur;
         } else {
-            throw new InvalidPropertyNameException();
+            throw new InvalidPropertyNameException("Attribut existe pas : $attribut");
         }
     }
 
@@ -101,6 +100,7 @@ class Serie
         $nbSerie = $resultatSet->fetch()['nb'];
         return $nbSerie;
     }
+
 
 
     public static function getSerie(int $id) : Serie
