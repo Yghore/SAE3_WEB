@@ -81,3 +81,10 @@ create table comment2user (
     CONSTRAINT fk_comment2user_serie_idserie foreign key(idserie) REFERENCES serie(id)
 
 );
+
+UPDATE serie SET img = 'ressources/img/seriesThumbnails/1.png' WHERE id=1;
+UPDATE serie SET img = 'ressources/img/seriesThumbnails/2.png' WHERE id=2;
+UPDATE serie SET img = 'ressources/img/seriesThumbnails/3.png' WHERE id=3;
+UPDATE serie SET img = 'ressources/img/seriesThumbnails/4.png' WHERE id=4;
+UPDATE serie SET img = 'ressources/img/seriesThumbnails/5.png' WHERE id=5;
+UPDATE serie SET img = 'ressources/img/seriesThumbnails/6.png' WHERE id=6;
