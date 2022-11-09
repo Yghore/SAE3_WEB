@@ -56,6 +56,14 @@ class User
 
     }
 
+    public static function emailExistInDatabase(string $email) : bool{
+        $db = ConnectionFactory::makeConnection();
+        $query = $db->prepare("SELECT email from USER where email = ? ");
+        $query->execute([$email]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result != null;
+    }
+
     public static function getFromSession(): User
     {
         if (isset($_SESSION['user'])) {
@@ -123,6 +131,14 @@ class User
         $state = $db->prepare("SELECT idserie FROM favorite2user WHERE iduser = :user AND idserie = :serie");
         $state->execute([':user' => $this->id, ':serie' => $serieid]);
         return $state->rowCount() >= 1;
+    }
+
+    public static function getIdUserFromEmail(string $email): int
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("SELECT id FROM user WHERE email = :email");
+        $state->execute([':email' => $email]);
+        return $state->fetch(PDO::FETCH_ASSOC)['id'];
     }
 
     public static function disconnect(): string

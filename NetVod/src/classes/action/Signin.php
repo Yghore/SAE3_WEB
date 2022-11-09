@@ -31,6 +31,7 @@ class Signin extends Action
                         <form action="index.php?action=signin" method="post">
                           <input type="email" name="email" id="email" placeholder="Email" required>
                           <input type="password" name="password" id="password" placeholder="Mot de passe" required>
+                          <a href="?action=forgotpassword">Mot de passe oublié</a>
                           <input type="submit" value="Connexion">
                         </form>
                     </div>

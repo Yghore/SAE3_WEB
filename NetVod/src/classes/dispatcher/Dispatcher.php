@@ -9,6 +9,7 @@ use iutnc\netvod\action\AddSerial;
 use iutnc\netvod\action\AddUser;
 use iutnc\netvod\action\CatalogueAction;
 use iutnc\netvod\action\DeleteFavorite;
+use iutnc\netvod\action\ForgotPassword;
 use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Logout;
 use iutnc\netvod\action\Profil;
@@ -65,6 +66,11 @@ class Dispatcher
             case 'profil':
                 $profil = new Profil();
                 $html .= $profil->execute();
+                break;
+
+            case 'forgotpassword':
+                $forgotpassword = new ForgotPassword();
+                $html .= $forgotpassword->execute();
                 break;
             default:
                 $home = new Home();
