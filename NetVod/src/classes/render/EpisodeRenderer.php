@@ -9,9 +9,11 @@ class EpisodeRenderer implements Renderer
 {
 
     protected Episode $episode;
+    protected ?Serie $serie;
 
-    public function __construct($episode){
+    public function __construct(Episode $episode, ?Serie $serie = null){
         $this->episode = $episode;
+        $this->serie = $serie;
     }
 
     public function render(int $selector = 1): string
@@ -20,7 +22,7 @@ class EpisodeRenderer implements Renderer
         if ($selector == 1) {
             $html .= <<<EOF
                 <div class="card">
-                    <a href="?action=print-catalogue&id={$this->episode->id}">
+                    <a href="?action=print-catalogue&id={$this->serie->id}&idepisode={$this->episode->id}">
                     <div class="img" style='background: no-repeat url("ressources/img/{$this->episode->getThumbnails()}") center; background-size: cover'>
 
                     </div>
@@ -37,9 +39,19 @@ class EpisodeRenderer implements Renderer
         }
 
         if ($selector == 2){
-            $html .= "</br>Titre de l'episode : {$this->episode->titre}";
-            $html .= "</br>Resume : {$this->episode->resume}";
-            $html .= "</br>Duree : {$this->episode->duree} min";
+
+            $html .= <<<EOF
+                <p>Titre de l'episode : {$this->episode->titre}</p>
+                <p>Resume : {$this->episode->resume}</p>
+                <p>Duree : {$this->episode->duree} min</p>
+                <video controls width="100%">
+                
+                    <source src="ressources/video/{$this->episode->filename}" type="video/mp4">
+
+                </video>
+            EOF;
+
+
         }
         return $html;
     }

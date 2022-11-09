@@ -9,14 +9,35 @@ class SerieRenderer implements Renderer
 {
 
     protected Serie $serie;
+    protected string $url;
 
-    public function __construct($s)
+    public function __construct(Serie $s, string $url)
     {
         $this->serie = $s;
+        $this->url = $url;
     }
 
     public function render(int $selector = 1): string
     {
+        $if = function (bool $condition, ?string $true, ?string $false) { return $condition ? $true : $false; };
+        $addfavorite = <<<EOF
+
+                    <form method="POST" action="?action=add-favorite">
+                        <input type="hidden" name="url" value="?action=print-catalogue&amp;id=3">
+                        <input type="hidden" name="idserie" value="{$this->serie->id}">
+                        <input type="hidden" name="url" value="{$this->url}">
+                        <input type="submit" value="Ajouter aux favoris">
+                     </form>
+            EOF;
+        $existfavorite = <<<EOF
+
+                    <form method="POST" action="?action=delete-favorite">
+                        <input type="hidden" name="url" value="?action=print-catalogue&amp;id=3">
+                        <input type="hidden" name="idserie" value="{$this->serie->id}">
+                        <input type="hidden" name="url" value="{$this->url}">
+                        <input type="submit" value="Supprimer des favoris">
+                     </form>
+            EOF;
         $html = '';
         if ($selector == 1){
             $html .= <<<EOF
@@ -26,20 +47,12 @@ class SerieRenderer implements Renderer
                 <p>Année de sortie : {$this->serie->annee}</p>
                 <p>Date ajout : {$this->serie->date_ajout}</p>
                 <p>Nombre d'episode dans la serie : {$this->serie->nbEpisodes}</p>
+                 {$if(User::getFromSession()->isFavoriteSerie($this->serie->id), $existfavorite, $addfavorite)}
             </div>
         EOF;
         }
         if ($selector == 2) {
-            $if = function (bool $condition, ?string $true, ?string $false) { return $condition ? $true : $false; };
-            $addfavorite = <<<EOF
 
-                    <form method="POST" action="?action=add-favorite">
-                        <input type="hidden" name="url" value="/projet/NetVod/index.php?action=print-catalogue&amp;id=3">
-                        <input type="hidden" name="idserie" value="{$this->serie->id}">
-                        <input type="submit" value="Ajouter au favoris">
-                     </form>
-            EOF;
-            $existfavorite = '<input type="submit" value="En favoris 👌" disabled>';
 
             $html .= <<<EOF
                 <div class="card">

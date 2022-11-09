@@ -130,6 +130,13 @@ class User
         return $state->execute([':user' => $this->id, ':serie' => $idSerie]);
     }
 
+    public function deleteFavoriteSerie(int $idSerie): bool
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("DELETE FROM favorite2user WHERE iduser = :user AND idserie = :serie");
+        return $state->execute([':user' => $this->id, ':serie' => $idSerie]);
+    }
+
     public function getFavoritesSeries(): array
     {
         $db = ConnectionFactory::makeConnection();

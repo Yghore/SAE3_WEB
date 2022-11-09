@@ -3,18 +3,14 @@
 namespace iutnc\netvod\dispatcher;
 
 use iutnc\netvod\action\AddCommentNote;
-use iutnc\netvod\action\AddEpisodeAction;
 use iutnc\netvod\action\AddFavorite;
-use iutnc\netvod\action\AddSerial;
 use iutnc\netvod\action\AddUser;
 use iutnc\netvod\action\CatalogueAction;
 use iutnc\netvod\action\DeleteFavorite;
 use iutnc\netvod\action\ForgotPassword;
 use iutnc\netvod\action\Home;
-use iutnc\netvod\action\Logout;
 use iutnc\netvod\action\Profil;
 use iutnc\netvod\action\Signin;
-use iutnc\netvod\model\Token;
 use iutnc\netvod\model\User;
 
 class Dispatcher
@@ -40,10 +36,6 @@ class Dispatcher
                 $signin = new Signin();
                 $html .= $signin->execute();
                 break;
-            case 'add-serial':
-                $addserial = new AddSerial();
-                $html .= $addserial->execute();
-                break;
 
             case 'print-catalogue':
                 $catalogue = new CatalogueAction();
@@ -56,10 +48,6 @@ class Dispatcher
             case 'delete-favorite':
                 $favorite = new DeleteFavorite();
                 $html .= $favorite->execute();
-            case 'add-episode':
-                $episode = new AddEpisodeAction();
-                $html .= $episode->execute();
-                break;
             case 'add-comment-note':
                 $comment = new AddCommentNote();
                 $html .= $comment->execute();
@@ -99,10 +87,8 @@ class Dispatcher
             <body>
                 <nav>
                     <div class="left">
-                        <a id="img" href="index.php"><img src="ressources/img/logo.png" alt="Logo NetVOD"></a>
+                        <a id="img" href="?action=home"><img src="ressources/img/logo.png" alt="Logo NetVOD"></a>
                         <a href="?action=print-catalogue">Afficher le catalogue</a>
-                        <a href="?action=add-serial">Ajouter une serie</a>
-                        <a href="?action=add-episode">Ajouter un episode</a>
                     </div>
                     <div class="right">
                        
