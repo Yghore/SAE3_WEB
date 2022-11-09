@@ -27,7 +27,7 @@ class Dispatcher
             $action = 'home';
         }
         $html = '';
-        switch ($action){
+        switch ($action) {
             case 'add-user':
                 $user = new AddUser();
                 $html .= $user->execute();
@@ -65,8 +65,6 @@ class Dispatcher
             case 'profil':
                 $profil = new Profil();
                 $html .= $profil->execute();
-                $logout = new Logout();
-                $html .= $logout->execute();
                 break;
             default:
                 $home = new Home();
@@ -76,7 +74,8 @@ class Dispatcher
         $this->renderPage($html);
     }
 
-    private function renderPage(string $html){
+    private function renderPage(string $html)
+    {
         $render = <<<END
         <!DOCTYPE html>
         <html lang = "fr">
@@ -90,24 +89,21 @@ class Dispatcher
                 <nav>
                     <div class="left">
                         <a id="img" href="index.php"><img src="ressources/img/logo.png" alt="Logo NetVOD"></a>
-                        <a href="?action=add-serial">Ajouter une serie</a>
                         <a href="?action=print-catalogue">Afficher le catalogue</a>
+                        <a href="?action=add-serial">Ajouter une serie</a>
                         <a href="?action=add-episode">Ajouter un episode</a>
                     </div>
                     <div class="right">
                        
         END;
-        if(User::existSession())
-        {
+        if (User::existSession()) {
             $render .= <<<END
 
                 <a href="?action=profil">Profil</a>
             </div>
             END;
 
-        }
-        else
-        {
+        } else {
             $render .= <<<END
                 <a href="?action=add-user">Inscription</a>
                 <a href="?action=signin">Se connecter</a>
