@@ -28,10 +28,14 @@ class Signin extends Action
                 <div class="bg-form">
                     <div class="form">
                         <h1>Connexion</h1>
-                        <form action="index.php?action=signin" method="post">
-                          <input type="email" name="email" id="email" placeholder="Email" required>
-                          <input type="password" name="password" id="password" placeholder="Mot de passe" required>
-                          <input type="submit" value="Connexion">
+                        <form action="?action=signin" method="post">
+                            <label for="password">Email</label>
+                            <input type="email" name="email" id="email" placeholder="Email" required>
+                            <label for="password">Mot de passe</label>
+
+                            <input type="password" name="password" id="password" placeholder="Mot de passe" required>
+                            
+                            <input type="submit" value="Connexion">
                         </form>
                     </div>
                 </div>
@@ -44,7 +48,7 @@ class Signin extends Action
     {
         $content = <<<EOF
                 <h1>Connexion</h1>
-                <form action="index.php?action=signin" method="post">
+                <form action="?action=signin" method="post">
                   <label for="email">Email</label>
                   <input type="email" name="email" id="email" required>
                   <label for="password">Mot de passe</label>
