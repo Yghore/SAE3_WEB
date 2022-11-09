@@ -5,6 +5,7 @@ namespace iutnc\netvod\auth;
 use iutnc\netvod\exception\auth\AuthException;
 use iutnc\netvod\exception\auth\LoginInvalidEmailException;
 use iutnc\netvod\exception\auth\LoginInvalidPasswordException;
+use iutnc\netvod\exception\auth\LoginInvalidUserException;
 use iutnc\netvod\exception\auth\RegisterInvalidEmailException;
 use iutnc\netvod\exception\auth\RegisterInvalidPasswordMatchException;
 use iutnc\netvod\model\User;
@@ -27,6 +28,7 @@ class Auth
         }
         if($user->checkPassword($password))
         {
+            if(!$user->isValid()){ throw new LoginInvalidUserException;}
             $_SESSION['user'] = $user;
             return true;
         }

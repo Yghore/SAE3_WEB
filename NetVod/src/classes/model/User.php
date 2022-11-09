@@ -38,6 +38,10 @@ class User
         }
     }
 
+    public function __isset($key) {
+        return isset($this->$key);
+    }
+
 
 
     public static function existSession(): bool
@@ -64,15 +68,32 @@ class User
         throw new AuthException("Vous n'êtes pas connecté");
     }
 
+    public function isValid() : bool
+    {
+        return $this->valid;
+    }
+
     public function save()
     {
         $db = ConnectionFactory::makeConnection();
+        $query = $db->prepare("SELECT email FROM user WHERE email = ?");
+        $query->execute([$this->email]);
+        $_SESSION['user'] = $this;
+        var_dump($_SESSION['user']);
+        if($query->rowCount() > 0)
+        {
+            $query->closeCursor();
+            $query = $db->prepare("UPDATE USER SET nom = :nom, prenom = :prenom WHERE email = :email");
+            $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email]);
+            return;
+        }
         $query = $db->prepare("INSERT INTO user (email, pass) VALUES (:email, :password)");
         $query->execute([
             'email' => $this->email,
             'password' => $this->pass
         ]);
     }
+
 
     public static function getFromEmail(string $email): User
     {
