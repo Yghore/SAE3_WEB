@@ -187,7 +187,7 @@ class User
     public function isCurrentSerie(int $idSerie): bool
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT * FROM current2user WHERE iduser = :user AND idserie = :serie");
+        $state = $db->prepare("SELECT * FROM current2user WHERE iduser = :user AND idserie = :serie AND NOT currentEpisode = (SELECT MAX(e.id) FROM episode e WHERE e.serie_id=idserie)");
         $state->execute([':user' => $this->id, ':serie' => $idSerie]);
         return $state->rowCount() > 0;
     }

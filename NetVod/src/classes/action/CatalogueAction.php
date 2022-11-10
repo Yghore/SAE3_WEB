@@ -24,7 +24,7 @@ class CatalogueAction extends Action
             // On récupère la recherche
             $q = $_GET['q'];
             // On sanitize la recherche
-            $q = filter_var($q, FILTER_SANITIZE_SPECIAL_CHARS);
+            filter_var($q, FILTER_SANITIZE_STRING);
             // On sépare les mots de la recherche
             $keywords = explode(' ', $q);
             // On récupère les séries qui correspondent à la recherche
@@ -69,8 +69,9 @@ class CatalogueAction extends Action
     private function isSerie(int $idserie) : string
     {
         $html = "";
+        // On recupere l'user
         $user = User::getFromSession();
-        
+        // On affiche quand même les infos de la série
         $serie = Serie::getSerie($idserie);
         $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
         $html .= $render->render(1);
@@ -82,6 +83,7 @@ class CatalogueAction extends Action
         }
 
         $html .= "</div>";
+        // Mais on lui donne le prochaine épisode
         if($user->isCurrentSerie($idserie)){
             $episodeSuivant = $serie->getNextEpisode($user->getCurrentEpisode($idserie));
             $html .= $this->isEpisode($episodeSuivant, $idserie);
@@ -89,7 +91,7 @@ class CatalogueAction extends Action
         return $html;
     }
 
-    private function isEpisode(int | bool $idepisode, int $idserie) : string
+    private function isEpisode(int $idepisode, int $idserie)
     {
         if($idepisode === false)
         {
