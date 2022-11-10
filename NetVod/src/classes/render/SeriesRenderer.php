@@ -15,7 +15,20 @@ class SeriesRenderer implements Renderer
 
     public function render(int $selector = 1): string
     {
-        $html = "<div class='list-card'>";
+        $html = '';
+        if ($_GET['action'] == 'print-catalogue'){
+        $html .= <<<end
+                <label for="pet-select">Sort by : </label>
+                <select name="orderBy" id="trie-liste">
+                    <option value="">--Please choose an option--</option>
+                    <option value="titre">Titre</option>
+                    <option value="date_ajout">date d'ajout</option>
+                    <option value="nbEpisodes">nombres d'episode</option>
+                </select>
+                <button>entrer</button>
+            end;
+    }
+        $html .= "<div class='list-card'>";
         foreach ($this->series as $value)
         {
 

@@ -88,10 +88,19 @@ class Serie
         return $resultatSet->fetch();
     }
 
-    public static function getSeries() : array
+    public static function getSeries(?string $orderBy) : array
     {
         $bd = ConnectionFactory::makeConnection();
-        $state = $bd->prepare("SELECT serie.*, COUNT(e.serie_id) as nbEpisodes FROM serie INNER JOIN episode e on serie.id = e.serie_id group by e.serie_id having count(e.serie_id) > 0");
+        if ($orderBy == 'nbEpisodes') {
+            $order = "ORDER BY " . $orderBy . " DESC";
+        } else if ($orderBy == 'titre') {
+        $order = "ORDER BY serie." . $orderBy . " ASC";
+        } else if ($orderBy == 'date_ajout'){
+            $order = "ORDER BY serie." . $orderBy . " DESC";;
+        } else {
+            $order = '';
+        }
+        $state = $bd->prepare("SELECT serie.*, COUNT(e.serie_id) as nbEpisodes FROM serie INNER JOIN episode e on serie.id = e.serie_id group by e.serie_id having count(e.serie_id) > 0 $order");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute();
         return $state->fetchAll();

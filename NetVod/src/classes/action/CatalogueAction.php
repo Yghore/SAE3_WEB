@@ -17,7 +17,11 @@ class CatalogueAction extends Action
     {
         $html = '';
         if (!isset($_GET['id'])) {
-            $html .= $this->allSeries();
+            if (isset($_GET['orderBy'])){
+                $html .= $this->allSeries($_GET['orderBy']);
+            } else {
+                $html .= $this->allSeries();
+            }
         } else {
             $idserie = $_GET['id'];
             if (!isset($_GET['idepisode'])) {
@@ -31,10 +35,10 @@ class CatalogueAction extends Action
         return $html;
     }
 
-    private function allSeries() : string
+    private function allSeries(string $orderBy= null) : string
     {
         if (User::existSession()){
-            return (new SeriesRenderer(Serie::getSeries()))->render(2);
+            return (new SeriesRenderer(Serie::getSeries($orderBy)))->render(2);
         } else {
             return "Vous n'etes pas connecté";
         }
