@@ -25,6 +25,8 @@ class Profil extends Action
                     <input type="text" name="nom" id="nom" value="{$if(isset($user->nom), $user->nom, "")}" required>
                     <label for="prenom">Prénom</label>
                     <input type="text" name="prenom" id="prenom" value="{$if(isset($user->prenom), $user->prenom, "")}" required>
+                    <label for="date">Date de naissance</label>
+                    <input type="date" name="date" id="date" value="{$if(isset($user->date_birth), $user->date_birth, "")}" required>
                     {$ur->renderCheckBox()}
                     <input type="submit" value="Modifier" name="modifier">
                 </form>
@@ -60,16 +62,26 @@ class Profil extends Action
         }else if (isset($_POST['modifier'])) {
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
+            $date = $_POST['date'];
             $age = "";
             $user = User::getFromSession();
             $user->nom = $nom;
             $user->prenom = $prenom;
-            $user->date_birth = $age;
+            $user->date_birth = $date;
             $user->save();
             header('location: ?action=profil');
-            die();
+            $genres = [];
+            foreach ($_POST as $key => $value) {
+                if ($key != 'modifier' && $key != 'nom' && $key != 'prenom' && $key != 'deconnexion' && $key != 'date') {
+                    $genres[] = $key;
+                }
+            }
+            $user->genres = $genres;
+            $user->save();
+            $res .=<<<EOF
+            <h1> Votre profil a bien été modifié</h1>         
+            EOF;
         }
-
         return $res;
     }
 }

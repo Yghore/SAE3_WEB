@@ -19,6 +19,7 @@ class User
     protected ?string $prenom;
     protected ?string $date_birth;
     protected ?bool $parental_authorisation;
+    protected ?array $genres;
 
 
     public function __get(string $attribut) : mixed{
@@ -91,15 +92,15 @@ class User
         {
 
             $query->closeCursor();
-            $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom, valid = :valid WHERE email = :email");
-            $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email, ':valid' => $this->valid]);
-            return;
+            $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom, valid = :valid, date_birth = :date_birth WHERE email = :email");
+            $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email, ':valid' => $this->valid, ':date_birth' => $this->date_birth]);
+
         }
         $query = $db->prepare("INSERT INTO user (email, pass, valid) VALUES (:email, :password, :valid)");
         $query->execute([
             'email' => $this->email,
             'password' => $this->pass,
-            'valid' => 1
+            'valid' => 0
         ]);
 
     }
