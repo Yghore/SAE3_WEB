@@ -30,8 +30,11 @@ class CatalogueAction extends Action
             // On récupère les séries qui correspondent à la recherche
             $series = Serie::getSeriesByKeywords($keywords);
             // On affiche les séries
-            $html .= "<h2>Résultats de la recherche : </h2>\n";
-            $html .= (new SeriesRenderer($series))->render(2);
+            if(count($series)==0) $html = "<h2>La recherche n'a retourné aucun résultat</h2>";
+            else {
+                $html .= "<h2>Résultats de la recherche : </h2>\n";
+                $html .= (new SeriesRenderer($series))->render(2);
+            }
         }
         else{
             if (!isset($_GET['id'])) {
