@@ -32,14 +32,13 @@ class AddCommentNote extends Action
     protected function executePOST(): string
     {
         if ($_POST['commentaire'] != null && $_POST['note'] != null) {
-            $commentaire = $_POST['commentaire'];
-            $note = $_POST['note'];
-            var_dump($_POST);
-            $idserie = $_POST['id'];
+            $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $note = filter_var($_POST['note'], FILTER_SANITIZE_NUMBER_INT);
+            $idserie = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
             try {
-                $iduser = User::getFromSession()->getId();
                 $user = User::getFromSession();
-                $user->putCommentNoteSerie($idserie,$iduser,$note,$commentaire);
+                $user->putCommentNoteSerie($idserie,$note,$commentaire);
+                header('location: ?action=print-catalogue&id='.$idserie);
             } catch (\Exception $e){
                 echo $e->getMessage();
             }
