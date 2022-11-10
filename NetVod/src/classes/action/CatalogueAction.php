@@ -19,16 +19,38 @@ class CatalogueAction extends Action
     protected function executeGET(): string
     {
         $html = '';
-        if (!isset($_GET['id'])) {
-            $html .= $this->allSeries();
-        } else {
-            $idserie = $_GET['id'];
-            if (!isset($_GET['idepisode'])) {
-                $html .= $this->isSerie($idserie);
-
+        if(isset($_GET['q'])){
+            // On récupère la recherche
+            $q = $_GET['q'];
+            // On sanitize la recherche
+            filter_var($q, FILTER_SANITIZE_STRING);
+            // On sépare les mots de la recherche
+            $keywords = explode(' ', $q);
+            // On récupère les séries qui correspondent à la recherche
+            $series = Serie::getSeriesByKeywords($keywords);
+            // On affiche les séries
+            if(count($series)==0) $html = "<h2>La recherche n'a retourné aucun résultat</h2>";
+            else {
+                $html .= "<h2>Résultats de la recherche : </h2>\n";
+                $html .= (new SeriesRenderer($series))->render(2);
+            }
+        }
+        else{
+            if (!isset($_GET['id'])) {
+                if (isset($_GET['orderBy'])){
+                    $html .= $this->allSeries($_GET['orderBy']);
+                } else {
+                    $html .= $this->allSeries();
+                }
             } else {
-                $idepisode = $_GET['idepisode'];
-                $html .= $this->isEpisode($idepisode, $idserie);
+                $idserie = $_GET['id'];
+                if (!isset($_GET['idepisode'])) {
+                    $html .= $this->isSerie($idserie);
+
+                } else {
+                    $idepisode = $_GET['idepisode'];
+                    $html .= $this->isEpisode($idepisode, $idserie);
+                }
             }
         }
         return $html;
@@ -55,9 +77,7 @@ class CatalogueAction extends Action
             $render = new EpisodeRenderer($episode, $serie);
             $html .= $render->render(1);
         }
-
         $html .= "</div>";
-        $html .= (new CommentsRenderer(Comment2user::getCommentaireFromSerie($idserie)))->render();
         // On vérifie que l'utilisateur est connecté
 
         return $html;

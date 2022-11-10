@@ -22,8 +22,6 @@ class Serie
 
     protected string $date_ajout;
 
-    protected array $episodes;
-
     protected int $nbEpisodes;
 
     public function __get(string $attribut) : mixed{
@@ -44,32 +42,6 @@ class Serie
         }
     }
 
-    public function ajouterEpisode(Episode $episode){
-        $this->episodes[] = $episode;
-    }
-
-    public function ajouterListeEpisode(array $listeEpisodes){
-        foreach ($listeEpisodes as $episode){
-            $this->ajouterEpisode($episode);
-        }
-    }
-
-    public static function nbSerie(): int {
-        $pdo = ConnectionFactory::makeConnection();
-        $query = <<<end
-            SELECT
-                COUNT(id) as 'nb'
-            FROM
-                serie
-            end;
-        $resultatSet = $pdo->prepare($query);
-        $resultatSet->execute();
-        $nbSerie = $resultatSet->fetch()['nb'];
-        return $nbSerie;
-    }
-
-
-
     public static function getSerie(int $id) : Serie
     {
         $pdo = ConnectionFactory::makeConnection();
@@ -88,10 +60,19 @@ class Serie
         return $resultatSet->fetch();
     }
 
-    public static function getSeries() : array
+    public static function getSeries(?string $orderBy) : array
     {
         $bd = ConnectionFactory::makeConnection();
-        $state = $bd->prepare("SELECT serie.*, COUNT(e.serie_id) as nbEpisodes FROM serie INNER JOIN episode e on serie.id = e.serie_id group by e.serie_id having count(e.serie_id) > 0");
+        if ($orderBy == 'nbEpisodes') {
+            $order = "ORDER BY " . $orderBy . " DESC";
+        } else if ($orderBy == 'titre') {
+        $order = "ORDER BY serie." . $orderBy . " ASC";
+        } else if ($orderBy == 'date_ajout'){
+            $order = "ORDER BY serie." . $orderBy . " DESC";;
+        } else {
+            $order = '';
+        }
+        $state = $bd->prepare("SELECT serie.*, COUNT(e.serie_id) as nbEpisodes FROM serie INNER JOIN episode e on serie.id = e.serie_id group by e.serie_id having count(e.serie_id) > 0 $order");
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute();
         return $state->fetchAll();
@@ -117,7 +98,7 @@ class Serie
         return $episodes;
     }
 
-    public static function MoyenneNoteSerie($idSerie) : mixed{
+    public static function moyenneNoteSerie($idSerie) : mixed{
         $noter = false;
         $pdo = ConnectionFactory::makeConnection();
         $query3 = <<<end
@@ -136,5 +117,24 @@ class Serie
             $noter = $row3['note'];
         }
         return $noter;
+    }
+
+    public static function getSeriesByKeywords(array $keywords): array{
+        $pdo = ConnectionFactory::makeConnection();
+        $query = <<<end
+            SELECT DISTINCT serie.*, COUNT(e.serie_id) as nbEpisodes
+            FROM serie INNER JOIN episode e on serie.id = e.serie_id
+            WHERE serie.titre LIKE ?
+            OR serie.descriptif LIKE ?
+            GROUP BY e.serie_id HAVING COUNT(e.serie_id) > 0;
+            end;
+        $resultSet = $pdo->prepare($query);
+        $resultSet->setFetchMode(PDO::FETCH_CLASS, Serie::class);
+        $resultats = [];
+        foreach ($keywords as $keyword){
+            $resultSet->execute(["%$keyword%", "%$keyword%"]);
+            $resultats = array_merge($resultats, $resultSet->fetchAll());
+        }
+        return array_unique($resultats, SORT_REGULAR);
     }
 }
