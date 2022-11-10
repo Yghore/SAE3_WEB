@@ -10,7 +10,9 @@ use iutnc\netvod\action\DeleteFavorite;
 use iutnc\netvod\action\ForgotPassword;
 use iutnc\netvod\action\Home;
 use iutnc\netvod\action\Profil;
+use iutnc\netvod\action\ResetPassword;
 use iutnc\netvod\action\Signin;
+use iutnc\netvod\action\Token;
 use iutnc\netvod\model\User;
 
 class Dispatcher
@@ -58,12 +60,16 @@ class Dispatcher
                 $html .= $profil->execute();
                 break;
             case 'validate':
-                $validate = new \iutnc\netvod\action\Token();
+                $validate = new Token();
                 $html .= $validate->execute();
                 break;
             case 'forgotpassword':
                 $forgotpassword = new ForgotPassword();
                 $html .= $forgotpassword->execute();
+                break;
+            case 'resetpassword':
+                $resetpassword = new ResetPassword();
+                $html .= $resetpassword->execute();
                 break;
             default:
                 $home = new Home();
