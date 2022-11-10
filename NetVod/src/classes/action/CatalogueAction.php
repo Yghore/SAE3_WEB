@@ -68,28 +68,30 @@ class CatalogueAction extends Action
 
     private function isSerie(int $idserie) : string
     {
-        $user = User::getFromSession()->getId();
-        if($user->isCurrentSerie($idSeries)){
-            
-        }
-
         $html = "";
-        $serie = Serie::getSerie($idserie);
-        $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
-        $html .= $render->render(1);
-        $episodes = Serie::getAllEpisodes($idserie);
-        $html .= "<div class='list-card'>";
-        foreach ($episodes as $episode){
-            $render = new EpisodeRenderer($episode, $serie);
-            $html .= $render->render(1);
+        $user = User::getFromSession();
+        if($user->isCurrentSerie($idserie)){
+            $episodeSuivant = $user->getCurrentEpisode($idserie)+1;
+            $html .= $this->isEpisode($episodeSuivant, $idserie);
         }
-        $html .= "</div>";
+        else{
+        
+            $serie = Serie::getSerie($idserie);
+            $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
+            $html .= $render->render(1);
+            $episodes = Serie::getAllEpisodes($idserie);
+            $html .= "<div class='list-card'>";
+            foreach ($episodes as $episode){
+                $render = new EpisodeRenderer($episode, $serie);
+                $html .= $render->render(1);
+            }
+            $html .= "</div>";
+        }
         return $html;
     }
 
     private function isEpisode(int $idepisode, int $idserie)
     {
-        $idepisode = $_GET['idepisode'];
         $episode = Episode::getEpisode($idepisode);
         $render = new EpisodeRenderer($episode);
         if(User::existSession()){
