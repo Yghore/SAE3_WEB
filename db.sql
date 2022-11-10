@@ -127,4 +127,4 @@ insert into genre values (9, 'Science-Fiction');
 insert into genre values (10, 'Thriller');
 insert into genre values (11,'Enfant');
 
-ALTER TABLE current2user ADD currentEpisode integer(11) NULL;
+ALTER TABLE `current2user` ADD `currentEpisode` INT(11) NULL AFTER `currentEpisode`;
