@@ -62,7 +62,6 @@ class Profil extends Action
             die();
 
         }else if (isset($_POST['modifier'])) {
-            var_dump($_POST);
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
             $date = $_POST['date'];
@@ -73,9 +72,10 @@ class Profil extends Action
             $genres = [];
             foreach ($_POST as $key => $value) {
                 if ($key != 'modifier' && $key != 'nom' && $key != 'prenom' && $key != 'deconnexion' && $key != 'date') {
-                    $genres[] = $key;
+                    $genres[$key] = $value;
                 }
             }
+            var_dump($genres);
             $user->genres = $genres;
             $user->save();
             $genresExisted = Genre::getGenres();

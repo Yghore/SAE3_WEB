@@ -131,7 +131,7 @@ class User2genre
             $pdo = ConnectionFactory::makeConnection();
             $query = <<<end
                 SELECT
-                    iduser
+                    *
                 FROM
                     user2genre
                 WHERE
@@ -143,7 +143,8 @@ class User2genre
             $stmt->bindValue(':id_user', $iduser, PDO::PARAM_INT);
             $stmt->bindValue(':id_genre', $idgenre, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+            var_dump($stmt->rowCount());
+            return $stmt->rowCount() > 0;
         }
 
 
