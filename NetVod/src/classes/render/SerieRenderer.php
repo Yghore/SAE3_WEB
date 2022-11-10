@@ -40,11 +40,11 @@ class SerieRenderer implements Renderer
             EOF;
         $html = '';
         if ($selector == 1){
-            $html .= $this->compact($if, $existfavorite, $addfavorite);
+            $html .= $this->long($if, $existfavorite, $addfavorite);
         }
         if ($selector == 2) {
 
-            $html .= $this->long($if, $existfavorite, $addfavorite);
+            $html .= $this->compact($if, $existfavorite, $addfavorite);
         }
 
         if ($selector == 3) {
@@ -55,7 +55,7 @@ class SerieRenderer implements Renderer
 
     }
 
-    public function compact ($if ,$existfavorite, $addfavorite){
+    public function long ($if ,$existfavorite, $addfavorite){
         return <<<EOF
             <div>
                 <p>Titre : {$this->serie->titre}</p>
@@ -71,11 +71,11 @@ class SerieRenderer implements Renderer
         EOF;
     }
 
-    public function long ($if ,$existfavorite, $addfavorite) : string {
+    public function compact ($if ,$existfavorite, $addfavorite) : string {
         return <<<EOF
                 <div class="card">
                     <a href="?action=print-catalogue&id={$this->serie->id}">
-                    <div class="img" style='background: no-repeat url("ressources/img/{$this->serie->img}") center; background-size: cover'>
+                    <div class="img" style='background: no-repeat url("{$this->serie->img}") center; background-size: cover'>
 
                     </div>
                     </a>
