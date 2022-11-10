@@ -78,16 +78,13 @@ class Serie
         return $state->fetchAll();
     }
 
-    public function getNextEpisode(int $idepisode): int | bool
+    public function getNextEpisode(int $idepisode): int
     {
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT e.numero FROM episode e INNER JOIN serie s on e.serie_id = s.id WHERE numero = :episode AND e.serie_id = :serie");
         $state->execute([':episode' => $idepisode + 1, ':serie' => $this->id]);
-        if ($state->rowCount() == 0) {
-            return false;
-        } else {
-            return $state->fetch()['numero'];
-        }
+        return $state->fetch()['numero'];
+
     }
 
     public static function getAllEpisodes($idSerie) : array {

@@ -294,10 +294,8 @@ div.comment
 }
 
 fieldset {
-    border: 1px solid white;
     border-radius: 4px;
     padding: 10px;
-    column-count: 2;
-    column-gap: 100px;
-    display: inline-block;
+    display: grid;
+    grid-template-columns: repeat(2, 3fr);
 }
