@@ -19,6 +19,7 @@ class CatalogueAction extends Action
     protected function executeGET(): string
     {
         $html = '';
+        // Si une recherche a été effectuée
         if(isset($_GET['q'])){
             // On récupère la recherche
             $q = $_GET['q'];

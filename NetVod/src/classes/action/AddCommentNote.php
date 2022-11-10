@@ -16,7 +16,7 @@ class AddCommentNote extends Action
             <label for="commentaire">Commentaire</label>
             <input type="text" name="commentaire" id="commentaire" required>
             <label for="note">Note</label>
-            <input type="number" name="note" id="note" required>
+            <input type="number" name="note" min=1 max=5 step=1 id="note" required>
             <input type="hidden" name="id" value="{$_GET['id']}">
             <input type="submit" value="Ajouter">
             </form>
