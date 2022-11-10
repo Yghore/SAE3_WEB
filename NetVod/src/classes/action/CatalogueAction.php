@@ -69,9 +69,13 @@ class CatalogueAction extends Action
     private function isSerie(int $idserie) : string
     {
         $html = "";
+        // On recupere l'user
         $user = User::getFromSession();
+        // Si la serie est dans ses en cours
         if($user->isCurrentSerie($idserie)){
+            // On recupere l'episode suivant
             $episodeSuivant = $user->getCurrentEpisode($idserie)+1;
+            // l'utilisateur accède à l'épisode suivant
             $html .= $this->isEpisode($episodeSuivant, $idserie);
         }
         else{
