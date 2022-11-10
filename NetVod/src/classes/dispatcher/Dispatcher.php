@@ -104,10 +104,11 @@ class Dispatcher
         if (User::existSession()) {
             if($_GET['action']=='print-catalogue'){
                 $render .= <<<END
-                <form method="get" action="index.php?action=print-catalogue">
-                <label for="search">Rechercher une série : </label>
-                <input type="text" name="search">
-                <input type="submit" value="Rechercher" id="boutonSearch">
+                <form method="GET">
+                <label for="q">Rechercher une série : </label>
+                <input type="hidden" name="action" value="print-catalogue">
+                <input type="text" id="q" name="q">
+                <input type="submit" value="Rechercher">
             </div>
             END;
             }
