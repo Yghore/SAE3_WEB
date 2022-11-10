@@ -19,7 +19,6 @@ class CatalogueAction extends Action
     protected function executeGET(): string
     {
         $html = '';
-        // Si l'utilisateur a effectué une recherche
         if(isset($_GET['q'])){
             // On récupère la recherche
             $q = $_GET['q'];
@@ -35,7 +34,11 @@ class CatalogueAction extends Action
         }
         else{
             if (!isset($_GET['id'])) {
-                $html .= $this->allSeries();
+                if (isset($_GET['orderBy'])){
+                    $html .= $this->allSeries($_GET['orderBy']);
+                } else {
+                    $html .= $this->allSeries();
+                }
             } else {
                 $idserie = $_GET['id'];
                 if (!isset($_GET['idepisode'])) {
@@ -71,9 +74,7 @@ class CatalogueAction extends Action
             $render = new EpisodeRenderer($episode, $serie);
             $html .= $render->render(1);
         }
-
         $html .= "</div>";
-        $html .= (new CommentsRenderer(Comment2user::getCommentaireFromSerie($idserie)))->render();
         // On vérifie que l'utilisateur est connecté
 
         return $html;
