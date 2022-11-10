@@ -68,8 +68,10 @@ class CatalogueAction extends Action
 
     private function isSerie(int $idserie) : string
     {
-        $iduser = User::getFromSession()->getId();
-        $seriesEnCours = 
+        $user = User::getFromSession()->getId();
+        if($user->isCurrentSerie($idSeries)){
+            
+        }
 
         $html = "";
         $serie = Serie::getSerie($idserie);
