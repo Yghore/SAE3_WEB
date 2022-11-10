@@ -24,7 +24,7 @@ class CatalogueAction extends Action
             // On récupère la recherche
             $q = $_GET['q'];
             // On sanitize la recherche
-            filter_var($q, FILTER_SANITIZE_STRING);
+            $q = filter_var($q, FILTER_SANITIZE_SPECIAL_CHARS);
             // On sépare les mots de la recherche
             $keywords = explode(' ', $q);
             // On récupère les séries qui correspondent à la recherche
@@ -70,28 +70,31 @@ class CatalogueAction extends Action
     {
         $html = "";
         $user = User::getFromSession();
-        if($user->isCurrentSerie($idserie)){
-            $episodeSuivant = $user->getCurrentEpisode($idserie)+1;
-            $html .= $this->isEpisode($episodeSuivant, $idserie);
-        }
-        else{
         
-            $serie = Serie::getSerie($idserie);
-            $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
+        $serie = Serie::getSerie($idserie);
+        $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
+        $html .= $render->render(1);
+        $episodes = Serie::getAllEpisodes($idserie);
+        $html .= "<div class='list-card'>";
+        foreach ($episodes as $episode){
+            $render = new EpisodeRenderer($episode, $serie);
             $html .= $render->render(1);
-            $episodes = Serie::getAllEpisodes($idserie);
-            $html .= "<div class='list-card'>";
-            foreach ($episodes as $episode){
-                $render = new EpisodeRenderer($episode, $serie);
-                $html .= $render->render(1);
-            }
-            $html .= "</div>";
+        }
+
+        $html .= "</div>";
+        if($user->isCurrentSerie($idserie)){
+            $episodeSuivant = $serie->getNextEpisode($user->getCurrentEpisode($idserie));
+            $html .= $this->isEpisode($episodeSuivant, $idserie);
         }
         return $html;
     }
 
-    private function isEpisode(int $idepisode, int $idserie)
+    private function isEpisode(int | bool $idepisode, int $idserie) : string
     {
+        if($idepisode === false)
+        {
+            return "Tu as fini cette série !";
+        }
         $episode = Episode::getEpisode($idepisode);
         $render = new EpisodeRenderer($episode);
         if(User::existSession()){

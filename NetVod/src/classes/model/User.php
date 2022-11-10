@@ -19,7 +19,7 @@ class User
     protected ?string $nom;
     protected ?string $prenom;
     protected ?string $date_birth;
-    protected ?bool $parental = false;
+    protected ?bool $parental_authorisation = false;
     protected ?array $genres;
 
     public function isStricted(): bool {
@@ -198,6 +198,8 @@ class User
         $state->execute([':user' => $this->id, ':serie' => $idSerie]);
         return $state->fetch()['currentEpisode'];
     }
+
+
 
     public function getCompletedSeries(): array{
         $pdo = ConnectionFactory::makeConnection();
