@@ -88,3 +88,4 @@ UPDATE serie SET img = 'ressources/img/seriesThumbnails/3.png' WHERE id=3;
 UPDATE serie SET img = 'ressources/img/seriesThumbnails/4.png' WHERE id=4;
 UPDATE serie SET img = 'ressources/img/seriesThumbnails/5.png' WHERE id=5;
 UPDATE serie SET img = 'ressources/img/seriesThumbnails/6.png' WHERE id=6;
+
