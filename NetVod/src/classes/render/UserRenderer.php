@@ -34,28 +34,28 @@ class UserRenderer implements Renderer
         <fieldset>
                   <legend>Quels sont vos genres préférés:</legend>
                   <div>
-                      <input type="checkbox" id="horreur" name="horreur" checked>
-                      <label for="scales">Horreur</label>
+                    <label for="horreur">Horreur</label>
+                    <input type="checkbox" id="horreur" name="horreur" >
                   </div>
                   
                   <div>
+                    <label for="comedie">Comédie</label>
                     <input type="checkbox" id="comedie" name="comedie">
-                    <label for="horns">Comédie</label>
                   </div>
                   
                   <div>
+                    <label for="action">Action</label>
                     <input type="checkbox" id="action" name="action">
-                    <label for="horns">Action</label>
                   </div>
                   
                   <div>
+                    <label for="enfant">Enfant</label>
                     <input type="checkbox" id="enfant" name="enfant">
-                    <label for="horns">Enfant</label>
                   </div>
                   
                   <div>
+                    <label for="drame">Drame</label>
                     <input type="checkbox" id="drame" name="drame">
-                    <label for="horns">Drame</label>
                   </div>
                   
         </fieldset>

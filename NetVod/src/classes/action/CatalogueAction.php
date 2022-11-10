@@ -3,9 +3,12 @@
 namespace iutnc\netvod\action;
 
 use iutnc\netvod\db\ConnectionFactory;
+use iutnc\netvod\model\Comment2user;
 use iutnc\netvod\model\list\Serie;
 use iutnc\netvod\model\User;
 use iutnc\netvod\model\video\Episode;
+use iutnc\netvod\render\CommentRenderer;
+use iutnc\netvod\render\CommentsRenderer;
 use iutnc\netvod\render\EpisodeRenderer;
 use iutnc\netvod\render\SerieRenderer;
 use iutnc\netvod\render\SeriesRenderer;
@@ -68,7 +71,9 @@ class CatalogueAction extends Action
             $render = new EpisodeRenderer($episode, $serie);
             $html .= $render->render(1);
         }
+
         $html .= "</div>";
+        $html .= (new CommentsRenderer(Comment2user::getCommentaireFromSerie($idserie)))->render();
         // On vérifie que l'utilisateur est connecté
 
         return $html;
