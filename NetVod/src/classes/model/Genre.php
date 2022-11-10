@@ -42,18 +42,13 @@ class Genre
                     libelle
                 end;
             $stmt = $pdo->prepare($query);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, Genre::class);
             $stmt->execute();
-            $genres = [];
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $genre = new Genre();
-                $genre->id = $row['id'];
-                $genre->libelle = $row['libelle'];
-                $genres[] = $genre;
-            }
-            return $genres;
+            return $stmt->fetchAll();
+
         }
 
-        public static function getGenreById(int $id): string {
+        public static function getGenreById(int $id): Genre {
             $pdo = ConnectionFactory::makeConnection();
             $query = <<<end
                 SELECT
@@ -66,9 +61,9 @@ class Genre
                 end;
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(':id', $id);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, Genre::class);
             $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $row['libelle'];
+            return $stmt->fetch();
         }
 
        public static function getIdByGenre(string $libelle): int{

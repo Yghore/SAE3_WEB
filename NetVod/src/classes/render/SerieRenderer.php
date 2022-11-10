@@ -28,7 +28,6 @@ class SerieRenderer implements Renderer
                      </form>
             EOF;
         $existfavorite = <<<EOF
-
                     <form method="POST" action="?action=delete-favorite">
                         <input type="hidden" name="idserie" value="{$this->serie->id}">
                         <input type="hidden" name="url" value="{$this->url}">

@@ -31,7 +31,7 @@ class GenresRenderer implements Renderer
         foreach ($this->genres as $genre) {
             $res .= <<<EOF
             <div>
-                <input type="checkbox" name="{$genre->libelle}" value="{$genre->id}" id="{$genre->id}" {$if(User2genre::isUserAsGenre($genre->id), 'checked', '')}>
+                <input type="checkbox" name="{$genre->id}" value="{$genre->libelle}" id="{$genre->id}" {$if(User2genre::isUserAsGenre($genre->id), 'checked', '')}>
                 <label for="{$genre->id}">{$genre->libelle}</label>
             </div>
             EOF;
