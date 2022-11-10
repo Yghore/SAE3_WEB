@@ -141,10 +141,12 @@ class Serie
         return array_unique($resultats, SORT_REGULAR);
     }
 
-    public function isCompleted(int $idUser): bool{
+    public function getCompletedSeries(int $idUser): array{
         $pdo = ConnectionFactory::makeConnection();
+        // La requête récupère les séries dont l'utilisateur a vu tous les épisodes (current2user.currentEpisode correspond au dernier épisode de la série)
         $query = <<<end
-            SELECT * FROM serie s
+            SELECT s.*, COUNT(e.serie_id) as nbEpisodes
+            FROM serie s INNER JOIN episode e on serie.id = e.serie_id
             INNER JOIN current2user c ON c.idserie = s.id
             WHERE c.iduser = ?
             AND s.id = ?
@@ -152,6 +154,7 @@ class Serie
             end;
         $resultSet = $pdo->prepare($query);
         $resultSet->execute([$idUser, $this->id]);
-        return $resultSet->rowCount() > 0;
+        // on renvoie le tableau de séries que l'utilisateur a terminé
+        return $resultSet->fetchAll();
     }
 }
