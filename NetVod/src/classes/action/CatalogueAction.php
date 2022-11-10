@@ -68,6 +68,9 @@ class CatalogueAction extends Action
 
     private function isSerie(int $idserie) : string
     {
+        $iduser = User::getFromSession()->getId();
+        $seriesEnCours = 
+
         $html = "";
         $serie = Serie::getSerie($idserie);
         $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
@@ -79,8 +82,6 @@ class CatalogueAction extends Action
             $html .= $render->render(1);
         }
         $html .= "</div>";
-        // On vérifie que l'utilisateur est connecté
-
         return $html;
     }
 

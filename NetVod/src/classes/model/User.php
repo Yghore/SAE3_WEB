@@ -184,6 +184,14 @@ class User
         return $state->fetchAll();
     }
 
+    public function isCurrentSerie(int $idSerie): bool
+    {
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("SELECT * FROM current2user WHERE iduser = :user AND idserie = :serie");
+        $state->execute([':user' => $this->id, ':serie' => $idSerie]);
+        return $state->rowCount() > 0;
+    }
+
     public function getCompletedSeries(): array{
         $pdo = ConnectionFactory::makeConnection();
         // La requête récupère les séries dont l'utilisateur a vu tous les épisodes (current2user.currentEpisode correspond au dernier épisode de la série)
