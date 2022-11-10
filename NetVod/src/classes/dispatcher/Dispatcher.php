@@ -95,7 +95,8 @@ class Dispatcher
                     <div class="left">
                         <a id="img" href="?action=home"><img src="ressources/img/logo.png" alt="Logo NetVOD"></a>
                         <a href="?action=print-catalogue">Afficher le catalogue</a>
-                    </div>
+                        
+                     </div>
                     <div class="right">
                        
         END;
@@ -126,7 +127,8 @@ class Dispatcher
         }
         $render .= <<<END
                 </nav>
-                <div class="main">$html</div>
+                <a href="javascript:history.back()" id="backButton" class="back"><img src="ressources/img/Button/backButton.png" alt="back"></a>                           
+                 <div class="main">$html</div>
             </body>
         </html>
     END;

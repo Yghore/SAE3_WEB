@@ -37,47 +37,17 @@ class Serie
         if (property_exists($this, $attribut)){
             $this->$attribut = $valeur;
         } else {
+            echo $attribut;
             throw new InvalidPropertyNameException("Attribut existe pas : $attribut");
         }
     }
-
-    /*public function getDescriptionSerie(int $id) :array {
-        $pdo = ConnectionFactory::makeConnection();
-        $episodes = [];
-        $query2 = <<<end
-            SELECT
-              *
-            FROM
-                episode
-            WHERE serie_id = ?
-            end;
-        $resultatSet2 = $pdo->prepare($query2);
-        $resultatSet2->execute([$id]);
-        while ($row2 = $resultatSet2->fetch()) {
-            $idepisode = $row2['id'];
-            $titre2 = $row2['titre'];
-            $resume2 = $row2['resume'];
-            $numero2 = $row2['numero'];
-            $duree = $row2['duree'];
-            $file = $row2['file'];
-            $img = '';
-            $episodes[] = new Episode($titre2, $file);
-            $episodes->numero = $numero2;
-            $episodes->resume = $resume2;
-            $episodes->duree = $duree;
-            $episodes->serie_id = $id;
-            //$html .= "<li><a href=\"index.php?action=print-catalogue&id=$id&idepisode=$idepisode\"> $numero2 $titre2 $duree $img </a></li>";
-        }
-        $this->episodes = $episodes;
-        return $episodes;
-    }*/
 
     public static function getSerie(int $id) : Serie
     {
         $pdo = ConnectionFactory::makeConnection();
         $query = <<<end
             SELECT
-                serie.titre, serie.id, serie.descriptif, serie.img, serie.annee, serie.date_ajout, COUNT(episode.serie_id) as 'nbepisodes'
+                serie.titre, serie.id, serie.descriptif, serie.img, serie.annee, serie.date_ajout, COUNT(episode.serie_id) as 'nbEpisodes'
             FROM
                 serie
             INNER JOIN episode ON episode.serie_id = serie.id
@@ -85,19 +55,9 @@ class Serie
                 serie.id = ?
             end;
         $resultatSet = $pdo->prepare($query);
+        $resultatSet->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $resultatSet->execute([$id]);
-        $serieid = '';
-        while ($row = $resultatSet->fetch()) {
-            $serie = new Serie();
-            $serie->titre = $row['titre'];
-            $serie->id = $row['id'];
-            $serie->descriptif = $row['descriptif'];
-            $serie->img = $row['img'];
-            $serie->annee= $row['annee'];
-            $serie->date_ajout = $row['date_ajout'];
-            $serie->nbEpisodes = $row['nbepisodes'];
-        }
-        return $serie;
+        return $resultatSet->fetch();
     }
 
     public static function getSeries() : array

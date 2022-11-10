@@ -51,10 +51,6 @@ nav {
     align-items: start;
 }
 
-div.main
-{
-    margin: auto 5%;
-}
 
 nav a
 {
@@ -256,5 +252,31 @@ input[type='submit']
 input[type='submit']:enabled
 {
     background-color: #4c518f;
+
+}
+
+#backButton {
+    background-color: transparent;
+    color: red;
+    fill: red;
+    padding: 3px 3px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position : absolute;
+    z-index: 2;
+    right: 3px;
+
+
+}
+
+#backButton:hover {
+    background-color: white;
+
+}
+
+#backButton img {
+    height: 50px;
+    width: 50px;
 
 }
