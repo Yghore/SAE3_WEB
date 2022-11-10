@@ -26,6 +26,9 @@ class CatalogueAction extends Action
             $keywords = explode(' ', $q);
             // On récupère les séries qui correspondent à la recherche
             $series = Serie::getSeriesByKeywords($keywords);
+            // On affiche les séries
+            $html .= "<h2>Résultats de la recherche : </h2>\n";
+            $html .= (new SeriesRenderer($series))->render(2);
         }
         else{
             if (!isset($_GET['id'])) {

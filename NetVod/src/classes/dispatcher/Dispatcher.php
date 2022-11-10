@@ -103,7 +103,7 @@ class Dispatcher
 
 
         if (User::existSession()) {
-            if($_GET['action']=='print-catalogue'){
+            if(isset($_GET['action']) && $_GET['action']=='print-catalogue'){
                 $render .= <<<END
                 <form method="GET">
                 <label for="q">Rechercher une série : </label>

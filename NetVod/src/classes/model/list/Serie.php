@@ -113,23 +113,19 @@ class Serie
     public static function getSeriesByKeywords(array $keywords): array{
         $pdo = ConnectionFactory::makeConnection();
         $query = <<<end
-            SELECT DISTINCT
-                serie.*, COUNT(episode.serie_id) as 'nbepisodes'
-            FROM
-                serie
-            INNER JOIN episode ON episode.serie_id = serie.id
-            WHERE
-                serie.titre REGEXP ?
-            OR
-                serie.descriptif REGEXP ?
+            SELECT serie.*, COUNT(e.serie_id) as nbEpisodes
+            FROM serie INNER JOIN episode e on serie.id = e.serie_id
+            WHERE serie.titre LIKE ?
+            OR serie.descriptif LIKE ?
+            GROUP BY e.serie_id HAVING COUNT(e.serie_id) > 0;
             end;
-        $resultatSet = $pdo->prepare($query);
-        $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
-        $resultatsSerie = [];
+        $resultSet = $pdo->prepare($query);
+        $resultSet->setFetchMode(PDO::FETCH_CLASS, Serie::class);
+        $resultats = [];
         foreach ($keywords as $keyword){
-            $resultatSet->execute(["'/$keyword/'", "'/$keyword/'"]);
-            $resultatSeries = merge_array($resultatSeries, $resultatSet->fetchAll());
+            $resultSet->execute(["%$keyword%", "%$keyword%"]);
+            $resultats = array_merge($resultats, $resultSet->fetchAll());
         }
-        return $series;
+        return $resultats;
     }
 }
