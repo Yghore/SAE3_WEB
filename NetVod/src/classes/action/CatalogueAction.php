@@ -24,7 +24,7 @@ class CatalogueAction extends Action
             // On récupère la recherche
             $q = $_GET['q'];
             // On sanitize la recherche
-            $q = filter_var($q, FILTER_SANITIZE_STRING);
+            $q = filter_var($q, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             // On sépare les mots de la recherche
             $keywords = explode(' ', $q);
             // On récupère les séries qui correspondent à la recherche
