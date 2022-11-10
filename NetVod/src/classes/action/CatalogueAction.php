@@ -24,7 +24,7 @@ class CatalogueAction extends Action
             // On récupère la recherche
             $q = $_GET['q'];
             // On sanitize la recherche
-            filter_var($q, FILTER_SANITIZE_STRING);
+            $q = filter_var($q, FILTER_SANITIZE_STRING);
             // On sépare les mots de la recherche
             $keywords = explode(' ', $q);
             // On récupère les séries qui correspondent à la recherche
@@ -82,10 +82,14 @@ class CatalogueAction extends Action
             $html .= $render->render(1);
         }
 
+
+
         $html .= "</div>";
+        $html .= (new CommentsRenderer(Comment2user::getCommentaireFromSerie($idserie)))->render();
         // Mais on lui donne le prochaine épisode
         if($user->isCurrentSerie($idserie)){
-            $episodeSuivant = $serie->getNextEpisode($user->getCurrentEpisode($idserie));
+            $episodeSuivant = $user->getCurrentEpisode($idserie) + 1;
+            $html .= "<h1>Prochaine épisode :</h1>";
             $html .= $this->isEpisode($episodeSuivant, $idserie);
         }
         return $html;
@@ -93,10 +97,6 @@ class CatalogueAction extends Action
 
     private function isEpisode(int $idepisode, int $idserie)
     {
-        if($idepisode === false)
-        {
-            return "Tu as fini cette série !";
-        }
         $episode = Episode::getEpisode($idepisode);
         $render = new EpisodeRenderer($episode);
         if(User::existSession()){

@@ -192,6 +192,8 @@ class User
         return $state->rowCount() > 0;
     }
 
+
+
     public function getCurrentEpisode(int $idSerie): int{
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("SELECT currentEpisode FROM current2user WHERE iduser = :user AND idserie = :serie");

@@ -58,9 +58,8 @@ class Profil extends Action
         $res='';
         if (isset($_POST['deconnexion'])) {
             User::disconnect();
-            $res =<<<EOF
-            <h1>Vous êtes déconnecté</h1>
-            EOF;
+            header('location: ?action=signin');
+            die();
 
         }else if (isset($_POST['modifier'])) {
             var_dump($_POST);
