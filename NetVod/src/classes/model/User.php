@@ -20,7 +20,6 @@ class User
     protected ?string $date_birth;
     protected ?bool $parental_authorisation;
 
-    public function __construct(){}
 
     public function __get(string $attribut) : mixed{
         if (property_exists($this, $attribut)){
@@ -184,6 +183,14 @@ class User
         $state = $db->prepare("SELECT id FROM user WHERE email = :email");
         $state->execute([':email' => $email]);
         return $state->fetch(PDO::FETCH_ASSOC)['id'];
+    }
+
+    public function putCommentNoteSerie($idserie, $note, $commentaire)
+    {
+
+        $db = ConnectionFactory::makeConnection();
+        $state = $db->prepare("INSERT INTO comment2user (idserie, iduser, note, commentaire) VALUES (?,?,?,?)");
+        $state->execute([$idserie,$this->id,$note,$commentaire]);
     }
 
     public static function disconnect(): string

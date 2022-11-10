@@ -100,11 +100,21 @@ class Dispatcher
                     <div class="right">
                        
         END;
-        if (User::existSession()) {
-            $render .= <<<END
 
-                <a href="?action=profil">Profil</a>
+
+        if (User::existSession()) {
+            if($_GET['action']=='print-catalogue'){
+                $render .= <<<END
+                <form method="GET">
+                <label for="q">Rechercher une série : </label>
+                <input type="hidden" name="action" value="print-catalogue">
+                <input type="text" id="q" name="q">
+                <input type="submit" value="Rechercher">
             </div>
+            END;
+            }
+            $render .= <<<END
+                <a href="?action=profil">Profil</a>
             END;
 
         } else {

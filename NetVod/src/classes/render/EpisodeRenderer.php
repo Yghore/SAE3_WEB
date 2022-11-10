@@ -23,7 +23,7 @@ class EpisodeRenderer implements Renderer
             $html .= <<<EOF
                 <div class="card">
                     <a href="?action=print-catalogue&id={$this->serie->id}&idepisode={$this->episode->id}">
-                    <div class="img" style='background: no-repeat url("ressources/img/{$this->episode->getThumbnails()}") center; background-size: cover'>
+                     <div class="img" style='background: no-repeat url("{$this->episode->img}") center; background-size: cover'>
 
                     </div>
                     </a>
@@ -39,19 +39,16 @@ class EpisodeRenderer implements Renderer
         }
 
         if ($selector == 2){
-
             $html .= <<<EOF
                 <p>Titre de l'episode : {$this->episode->titre}</p>
                 <p>Resume : {$this->episode->resume}</p>
                 <p>Duree : {$this->episode->duree} min</p>
                 <video controls width="100%">
                 
-                    <source src="ressources/video/{$this->episode->filename}" type="video/mp4">
+                    <source src="ressources/video/{$this->episode->file}" type="video/mp4">
 
                 </video>
             EOF;
-
-
         }
         return $html;
     }
