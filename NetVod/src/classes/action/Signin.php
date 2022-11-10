@@ -80,7 +80,7 @@ class Signin extends Action
         }
         catch(LoginInvalidUserException $e)
         {
-            $content .= "Merci de valider votre inscriptions avant de vous connecter";
+             $content .= "Utilisateur pas connu";
         }
 
         $content .= "</form></div></div>";
