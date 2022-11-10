@@ -17,15 +17,15 @@ class CatalogueAction extends Action
     {
         $html = '';
         if (!isset($_GET['id'])) {
-            $html = $this->allSeries();
+            $html .= $this->allSeries();
         } else {
             $idserie = $_GET['id'];
             if (!isset($_GET['idepisode'])) {
-                $html = $this->isSerie($idserie);
+                $html .= $this->isSerie($idserie);
 
             } else {
                 $idepisode = $_GET['idepisode'];
-                $html = $this->isEpisode($idepisode, $idserie);
+                $html .= $this->isEpisode($idepisode, $idserie);
             }
         }
         return $html;
