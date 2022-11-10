@@ -5,6 +5,7 @@ namespace iutnc\netvod\model\video;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\video\InvalidPropertyValueException as InvalidPropertyValueException;
 use iutnc\netvod\exception\video\InvalidPropertyNameException;
+use PDO;
 
 class Episode
 {
@@ -19,14 +20,11 @@ class Episode
 
     protected int $duree;
 
-    protected string $filename;
+    protected string $file;
 
     protected int $serie_id;
 
-    public function __construct(string $titre, $filename){
-        $this->titre = $titre;
-        $this->filename = $filename;
-    }
+    protected string $img;
 
     public function __toString(): string{
         return json_encode($this);
@@ -36,17 +34,15 @@ class Episode
         if (property_exists($this, $attribut)){
             return $this->$attribut;
         } else {
+            echo $attribut;
             throw new InvalidPropertyNameException();
         }
     }
 
     public function __set(string $attribut, mixed $valeur){
         if (property_exists($this, $attribut)){
-            if ($attribut !== 'filename'){
-                $this->$attribut = $valeur;
-            } else {
-                throw new InvalidPropertyValueException();
-            }
+            $this->$attribut = $valeur;
+            throw new InvalidPropertyValueException();
         } else {
             throw new InvalidPropertyNameException();
         }
@@ -55,7 +51,7 @@ class Episode
     public function getThumbnails() : string
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT img FROM serie s INNER JOIN episode e ON  s.id = e.serie_id WHERE serie_id = ? LIMIT 1");
+        $state = $db->prepare("SELECT s.img FROM serie s INNER JOIN episode e ON  s.id = e.serie_id WHERE serie_id = ? LIMIT 1");
         $state->execute([$this->serie_id]);
         return $state->fetch()['img'];
 
@@ -72,15 +68,8 @@ class Episode
             WHERE id = ?
             end;
         $resultatSet2 = $pdo->prepare($query2);
+        $resultatSet2->setFetchMode(PDO::FETCH_CLASS, Episode::class);
         $resultatSet2->execute([$idEpisode]);
-        while ($row2 = $resultatSet2->fetch()) {
-            $episode = new Episode($row2['titre'], $row2['file']);
-            $episode->id = $row2['id'];
-            $episode->duree = $row2['duree'];
-            $episode->serie_id = $row2['serie_id'];
-            $episode->numero = $row2['numero'];
-            $episode->resume = $row2['resume'];
-        }
-        return $episode;
+        return $resultatSet2->fetch();
     }
 }
