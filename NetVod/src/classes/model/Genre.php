@@ -11,7 +11,8 @@ class Genre
 
         protected int $id;
 
-        protected string $nom;
+        protected string $libelle;
+
 
         public function __get(string $attribut) : mixed{
             if (property_exists($this, $attribut)){
@@ -46,13 +47,13 @@ class Genre
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $genre = new Genre();
                 $genre->id = $row['id'];
-                $genre->nom = $row['nom'];
+                $genre->libelle = $row['libelle'];
                 $genres[] = $genre;
             }
             return $genres;
         }
 
-        public static function getGenreById(int $id): Genre {
+        public static function getGenreById(int $id): string {
             $pdo = ConnectionFactory::makeConnection();
             $query = <<<end
                 SELECT
@@ -67,14 +68,10 @@ class Genre
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $genre = new Genre();
-            $genre->id = $row['id'];
-            $genre->nom = $row['nom'];
-            return $genre;
+            return $row['libelle'];
         }
 
-        public static function getGenreByLibelle(string $nom): Genre
-        {
+       public static function getIdByGenre(string $libelle): int{
             $pdo = ConnectionFactory::makeConnection();
             $query = <<<end
                 SELECT
@@ -83,15 +80,56 @@ class Genre
                 FROM
                     genre
                 WHERE
-                    libelle = :nom
+                    libelle = :libelle
                 end;
             $stmt = $pdo->prepare($query);
-            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':libelle', $libelle);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $genre = new Genre();
-            $genre->id = $row['id'];
-            $genre->nom = $row['nom'];
-            return $genre;
+            return $row['id'];
         }
+
+        public static function addGenre(int $id,string $libelle): void {
+            $pdo = ConnectionFactory::makeConnection();
+            $query = <<<end
+                INSERT INTO
+                    genre
+                VALUES
+                    (:id, :libelle)
+                end;
+            $stmt = $pdo->prepare($query);
+            $stmt->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        public static function deleteGenre(int $id): void {
+            $pdo = ConnectionFactory::makeConnection();
+            $query = <<<end
+                DELETE FROM
+                    genre
+                WHERE
+                    id = :id
+                end;
+            $stmt = $pdo->prepare($query);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+        public static function updateGenre(int $id, string $libelle): void {
+            $pdo = ConnectionFactory::makeConnection();
+            $query = <<<end
+                UPDATE
+                    genre
+                SET
+                    libelle = :libelle
+                WHERE
+                    id = :id
+                end;
+            $stmt = $pdo->prepare($query);
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->bindValue(':libelle', $libelle, PDO::PARAM_STR);
+            $stmt->execute();
+
+       }
 }
