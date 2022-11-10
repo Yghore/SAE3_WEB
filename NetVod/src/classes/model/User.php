@@ -176,7 +176,9 @@ class User
     public function getCurrentSeries(): array
     {
         $db = ConnectionFactory::makeConnection();
-        $state = $db->prepare("SELECT s.*, count(e.id) as nbEpisodes FROM current2user INNER JOIN serie s on current2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = ? group by e.serie_id HAVING count(e.id) > 0");
+        // on selectionne les series en cours qui ne sont pas achevées
+        $state = $db->prepare("SELECT s.*, count(e.id) as nbEpisodes FROM current2user INNER JOIN serie s on current2user.idserie = s.id INNER JOIN episode e on s.id = e.serie_id WHERE iduser = ? AND NOT current2user.currentEpisode = (SELECT MAX(e.id) FROM episode e WHERE e.serie_id=s.id) GROUP BY e.serie_id HAVING count(e.id) > 0");
+        // On les recupere en tant qu'objets Serie
         $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $state->execute([$this->id]);
         return $state->fetchAll();
