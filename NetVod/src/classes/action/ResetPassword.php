@@ -11,7 +11,7 @@ class ResetPassword extends Action
     protected function executeGET(): string
     {
         $token = $_SESSION['token'];
-        $url = "?action=resetpassword";
+        $url = "?action=resetpassword&token=$token";
         $html = <<<EOF
                 <div class="bg-form">
                     <div class="form">
@@ -23,7 +23,7 @@ class ResetPassword extends Action
                 <div class="bg-form">
                     <div class="form">
                         <h1>Réinitialisation de votre mot de passe</h1>
-                        <form action="index.php?action=resetpassword" method="post">
+                        <form action=$url method="post">
                             <label for="password">Nouveau mot de passe</label>
                             <input type="password" name="password" id="password" required>
                             <label for="password">Confirmer le mot de passe</label>
@@ -57,6 +57,7 @@ class ResetPassword extends Action
                     <div class="form">
                         <h1>Mot de passe oublié</h1>
                         <p>Votre mot de passe a bien été réinitialisé</p>
+                        <button><a href="?action=signin">Se connecter</a></button>
                     </div>
                 </div>
             EOF;

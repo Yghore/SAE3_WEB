@@ -47,7 +47,7 @@ class ForgotPassword extends Action
                         <h1>Mot de passe oublié</h1>
                         <h2>Réinitialisation de votre mot de passe</h2>
                         <p>Bonjour, vous avez demandé à réinitialiser votre mot de passe. 
-                        Pour ce faire, veuillez cliquer sur le lien suivant :<a href="?action=resetpassword"> ICI </a></p>
+                        Pour ce faire, veuillez cliquer sur le lien suivant :<a href="?action=resetpassword&token=$token"> ICI </a></p>
                     </div>
                 </div>
             EOF;
