@@ -119,6 +119,20 @@ class User
         return $user;
     }
 
+
+    public static function getFromUserId(int $userid): User | bool
+    {
+        $db = ConnectionFactory::makeConnection();
+        $query = $db->prepare("SELECT * FROM user WHERE id = :user");
+        $query->setFetchMode(PDO::FETCH_CLASS, User::class);
+
+        $query->execute([
+            'user' => $userid
+        ]);
+        $user = $query->fetch();
+        return $user;
+    }
+
     public function checkPassword($password)
     {
         return password_verify($password, $this->pass);

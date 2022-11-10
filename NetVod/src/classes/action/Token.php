@@ -16,14 +16,14 @@ class Token extends Action
         {
             $token = $_GET['token'];
             $db = ConnectionFactory::makeConnection();
-            $state = $db->prepare("SELECT email, UNIX_TIMESTAMP(date_expiration) as expiration FROM token_reset WHERE token = ?");
+            $state = $db->prepare("SELECT iduser, UNIX_TIMESTAMP(date_expiration) as expiration FROM token_reset WHERE token = ?");
             $state->execute([$token]);
             if($state->rowCount() > 0)
             {
                 $res = $state->fetch();
                 if($res['expiration'] > time())
                 {
-                    $user = User::getFromEmail($res['email']);
+                    $user = User::getFromUserId($res['iduser']);
                     $user->valid = true;
                     $user->save();
                     TokenAction::deleteTokenFormDB($token);
