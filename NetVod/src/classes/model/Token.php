@@ -9,7 +9,7 @@ class Token
 {
 
     protected string $token;
-    protected string $email;
+    protected string $id;
     protected int $date_expiration;
     protected string $type_token;
 
@@ -40,11 +40,11 @@ class Token
     {
         $this->token = bin2hex(random_bytes(32));
         $this->type_token = $typeToken;
-        $this->email = $email;
+        $this->id = User::getIdUserFromEmail($email);
         $this->date_expiration = time() + 60 * 5;
         $db = ConnectionFactory::makeConnection();
         $state = $db->prepare("INSERT INTO token_reset values(?, ?, FROM_UNIXTIME(?), ?)");
-        $state->execute([$this->token, $this->email, $this->date_expiration, $this->type_token]);
+        $state->execute([$this->token, $this->id, $this->date_expiration, $this->type_token]);
 
     }
 

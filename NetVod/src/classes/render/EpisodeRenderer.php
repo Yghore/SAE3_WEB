@@ -39,7 +39,6 @@ class EpisodeRenderer implements Renderer
         }
 
         if ($selector == 2){
-
             $html .= <<<EOF
                 <p>Titre de l'episode : {$this->episode->titre}</p>
                 <p>Resume : {$this->episode->resume}</p>
@@ -50,8 +49,6 @@ class EpisodeRenderer implements Renderer
 
                 </video>
             EOF;
-
-
         }
         return $html;
     }
