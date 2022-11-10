@@ -45,7 +45,7 @@ class EpisodeRenderer implements Renderer
                 <p>Duree : {$this->episode->duree} min</p>
                 <video controls width="100%">
                 
-                    <source src="ressources/video/{$this->episode->filename}" type="video/mp4">
+                    <source src="ressources/video/{$this->episode->file}" type="video/mp4">
 
                 </video>
             EOF;
