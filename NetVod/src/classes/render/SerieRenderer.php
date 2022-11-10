@@ -68,9 +68,17 @@ class SerieRenderer implements Renderer
     }
 
     public function compact ($if ,$existfavorite, $addfavorite) : string {
-        return <<<EOF
+        $html = <<<EOF
                 <div class="card">
-                    <a href="?action=print-catalogue&id={$this->serie->id}">
+                    <a href="?action=print-catalogue&id={$this->serie->id}
+                EOF;
+                if (User::existSession()){     
+                    if(User::getFromSession()->isCurrentSerie($this->serie->id)) {
+                        $idEp = User::getFromSession()->getCurrentEpisode($this->serie->id); 
+                        $html.="&idepisode=$idEp";}
+                }
+                $html.=<<<EOF
+                    ">
                     <div class="img" style='background: no-repeat url("{$this->serie->img}") center; background-size: cover'>
 
                     </div>
@@ -82,8 +90,8 @@ class SerieRenderer implements Renderer
                         <p>{$this->serie->descriptif}</p>
                      </div>
                 </div>
-
-            EOF;
+                EOF;
+        return $html;
     }
 
     public function noteMoyenneSerie() : string {
