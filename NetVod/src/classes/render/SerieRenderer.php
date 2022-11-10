@@ -74,7 +74,7 @@ class SerieRenderer implements Renderer
                 EOF;
                 if (User::existSession()){     
                     if(User::getFromSession()->isCurrentSerie($this->serie->id)) {
-                        $idEp = User::getFromSession()->getCurrentEpisode($this->serie->id); 
+                        $idEp = User::getFromSession()->getCurrentEpisode($this->serie->id)+1; 
                         $html.="&idepisode=$idEp";}
                 }
                 $html.=<<<EOF
