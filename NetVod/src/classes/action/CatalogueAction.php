@@ -89,12 +89,14 @@ class CatalogueAction extends Action
         $episode = Episode::getEpisode($idepisode);
         $render = new EpisodeRenderer($episode);
         if(User::existSession()){
-            // On insère dans la table current2user la série en cours si elle n'y est pas déjà
+            // On insère dans la table current2user la série en cours pour l'user si elle n'y est pas déjà
             $pdo = ConnectionFactory::makeConnection();
-            $rs3 = $pdo->prepare("INSERT IGNORE INTO current2user VALUES (?,?)");
+            $rs3 = $pdo->prepare("INSERT IGNORE INTO current2user (iduser, idserie) VALUES (?,?)");
             $iduser = User::getFromSession()->id;
             $rs3->execute([$iduser,$idserie]);
-
+            // On ajoute l'épisode courant à la table current2user
+            $rs3 = $pdo->prepare("UPDATE current2user SET currentEpisode = ? WHERE iduser = ? AND idserie = ?");
+            $rs3->execute([$idepisode,$iduser,$idserie]);
         }
         return $render->render(2);
 
