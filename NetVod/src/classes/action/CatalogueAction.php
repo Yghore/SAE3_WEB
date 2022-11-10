@@ -70,6 +70,9 @@ class CatalogueAction extends Action
     private function isSerie(int $idserie) : string
     {
         $html = "";
+        // On recupere l'user
+        $user = User::getFromSession();
+        // On affiche quand même les infos de la série
         $serie = Serie::getSerie($idserie);
         $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
         $html .= $render->render(1);
@@ -79,12 +82,23 @@ class CatalogueAction extends Action
             $render = new EpisodeRenderer($episode, $serie);
             $html .= $render->render(1);
         }
+
+        $html .= "</div>";
+        // Mais on lui donne le prochaine épisode
+        if($user->isCurrentSerie($idserie)){
+            $episodeSuivant = $serie->getNextEpisode($user->getCurrentEpisode($idserie));
+            $html .= $this->isEpisode($episodeSuivant, $idserie);
+        }
         $html .= "</div>";
         return $html;
     }
 
     private function isEpisode(int $idepisode, int $idserie)
     {
+        if($idepisode === false)
+        {
+            return "Tu as fini cette série !";
+        }
         $episode = Episode::getEpisode($idepisode);
         $render = new EpisodeRenderer($episode);
         if(User::existSession()){
