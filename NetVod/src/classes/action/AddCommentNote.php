@@ -35,6 +35,8 @@ class AddCommentNote extends Action
             $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $note = filter_var($_POST['note'], FILTER_SANITIZE_NUMBER_INT);
             $idserie = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
+            if ($note>5) $note = 5;
+            if ($note<1) $note = 1;
             try {
                 $user = User::getFromSession();
                 $user->putCommentNoteSerie($idserie,$note,$commentaire);
