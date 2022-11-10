@@ -53,10 +53,10 @@ class CatalogueAction extends Action
         return $html;
     }
 
-    private function allSeries() : string
+    private function allSeries(string $orderBy = '') : string
     {
         if (User::existSession()){
-            return (new SeriesRenderer(Serie::getSeries()))->render(2);
+            return (new SeriesRenderer(Serie::getSeries($orderBy)))->render(2);
         } else {
             return "Vous n'etes pas connecté";
         }
