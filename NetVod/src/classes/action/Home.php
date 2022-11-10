@@ -31,6 +31,12 @@ class Home extends Action
                 $html .= "<h2>Vous n'avez pas de série en cours</h2>\n";
                 $html .= "<p>Commencez à visionner une série pour qu'elle s'affiche ici</p>\n";
             }
+            $watched = $user->getCompletedSeries();
+            if (count($watched)>0){
+                $html .= "<h2>Vos séries visionnées :</h2>\n";
+                $html .= (new SeriesRenderer($watched))->render(2);
+            }
+
             return $html;
         }
         catch (AuthException $e)

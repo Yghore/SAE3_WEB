@@ -184,6 +184,24 @@ class User
         return $state->fetchAll();
     }
 
+    public function getCompletedSeries(): array{
+        $pdo = ConnectionFactory::makeConnection();
+        // La requête récupère les séries dont l'utilisateur a vu tous les épisodes (current2user.currentEpisode correspond au dernier épisode de la série)
+        $query = <<<end
+            SELECT s.*, COUNT(e.serie_id) as nbEpisodes
+            FROM serie s INNER JOIN episode e on s.id = e.serie_id
+            INNER JOIN current2user c ON c.idserie = s.id
+            WHERE c.iduser = ?
+            AND c.currentEpisode = (SELECT MAX(e.id) FROM episode e WHERE e.serie_id=s.id)
+            GROUP BY e.serie_id HAVING COUNT(e.serie_id) > 0;
+            end;
+        $resultSet = $pdo->prepare($query);
+        $resultSet->setFetchMode(PDO::FETCH_CLASS, Serie::class);
+        $resultSet->execute([$this->id]);
+        // on renvoie le tableau de séries que l'utilisateur a terminé
+        return $resultSet->fetchAll();
+    }
+
     public function isFavoriteSerie(int $serieid): bool
     {
         $db = ConnectionFactory::makeConnection();
