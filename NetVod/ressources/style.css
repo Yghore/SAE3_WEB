@@ -299,3 +299,31 @@ fieldset {
     display: grid;
     grid-template-columns: repeat(2, 3fr);
 }
+
+
+div.form-search
+{
+    display: inline;
+}
+
+div.form-search form input[type='text']
+{
+    padding: 10px 10px;
+    display: inline;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+div.form-search form input[type='submit']
+{
+    width: 20%;
+    padding: 10px 10px;
+    display: inline;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: 0.3s;
+    grid-column: span 3;
+}
