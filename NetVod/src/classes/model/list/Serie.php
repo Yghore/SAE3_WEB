@@ -140,4 +140,5 @@ class Serie
         // on renvoie le tableau de séries correspondant à la recherche en enlevant les doublons
         return array_unique($resultats, SORT_REGULAR);
     }
+    
 }
