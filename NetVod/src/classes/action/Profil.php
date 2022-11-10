@@ -8,6 +8,7 @@ use iutnc\netvod\model\User2genre;
 use iutnc\netvod\render\GenresRenderer;
 use iutnc\netvod\render\UserRenderer;
 
+
 class Profil extends Action
 {
 
@@ -22,6 +23,7 @@ class Profil extends Action
         <div class="">
             <div class="form">
                 <h1>Profil</h1>
+                {$if($user->isStricted(), '<p>Vous êtes mineur</p>', '<p>Vous êtes majeur</p>')}
                 <form action="index.php?action=profil" method="post">
                     <label for="nom">Nom</label>
                     <input type="text" name="nom" id="nom" value="{$if(isset($user->nom), $user->nom, "")}" required>
@@ -62,7 +64,6 @@ class Profil extends Action
             EOF;
 
         }else if (isset($_POST['modifier'])) {
-            var_dump($_POST);
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
             $date = $_POST['date'];
@@ -76,7 +77,6 @@ class Profil extends Action
                     $genres[] = $key;
                 }
             }
-            var_dump($genres);
             $user->genres = $genres;
             $user->save();
 

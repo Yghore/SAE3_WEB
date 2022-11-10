@@ -2,6 +2,7 @@
 
 namespace iutnc\netvod\render;
 
+use iutnc\netvod\model\User;
 use iutnc\netvod\model\User2genre;
 
 class GenresRenderer implements Renderer
@@ -24,6 +25,7 @@ class GenresRenderer implements Renderer
 
         <fieldset>
                   <legend>Quels sont vos genres préférés:</legend>
+
         EOF;
 
         foreach ($this->genres as $genre) {
