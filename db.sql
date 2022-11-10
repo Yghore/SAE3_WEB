@@ -89,3 +89,28 @@ UPDATE serie SET img = 'ressources/img/seriesThumbnails/4.png' WHERE id=4;
 UPDATE serie SET img = 'ressources/img/seriesThumbnails/5.png' WHERE id=5;
 UPDATE serie SET img = 'ressources/img/seriesThumbnails/6.png' WHERE id=6;
 
+
+
+Alter table episode add img varchar(40)
+
+update episode Set img = 'ressources/img/episodes/1/1.png' where id= 1;
+update episode Set img = 'ressources/img/episodes/1/2.png' where id= 2;
+update episode Set img = 'ressources/img/episodes/1/3.png' where id= 3;
+update episode Set img = 'ressources/img/episodes/1/4.png' where id= 4;
+update episode Set img = 'ressources/img/episodes/1/5.png' where id= 5;
+update episode Set img = 'ressources/img/episodes/2/1.png' where id= 6;
+update episode Set img = 'ressources/img/episodes/2/2.png' where id= 7;
+update episode Set img = 'ressources/img/episodes/2/3.png' where id= 8;
+update episode Set img = 'ressources/img/episodes/2/4.png' where id= 9;
+update episode Set img = 'ressources/img/episodes/2/5.png' where id= 10;
+update episode Set img = 'ressources/img/episodes/3/1.png' where id= 11;
+update episode Set img = 'ressources/img/episodes/3/2.png' where id= 12;
+update episode Set img = 'ressources/img/episodes/3/3.png' where id= 13;
+update episode Set img = 'ressources/img/episodes/4/1.png' where id= 14;
+update episode Set img = 'ressources/img/episodes/4/2.png' where id= 15;
+update episode Set img = 'ressources/img/episodes/4/3.png' where id= 16;
+update episode Set img = 'ressources/img/episodes/5/1.png' where id= 17;
+update episode Set img = 'ressources/img/episodes/5/2.png' where id= 18;
+update episode Set img = 'ressources/img/episodes/5/3.png' where id= 19;
+update episode Set img = 'ressources/img/episodes/6/1.png' where id= 20;
+update episode Set img = 'ressources/img/episodes/6/2.png' where id= 21;
