@@ -18,7 +18,9 @@ class SeriesRenderer implements Renderer
         $html = '';
         if ($_GET['action'] == 'print-catalogue'){
         $html .= <<<end
+            <form>
                 <label for="pet-select">Sort by : </label>
+                <input type="hidden" name="action" value="print-catalogue">
                 <select name="orderBy" id="trie-liste">
                     <option value="">--Please choose an option--</option>
                     <option value="titre">Titre</option>
@@ -26,8 +28,9 @@ class SeriesRenderer implements Renderer
                     <option value="nbEpisodes">nombres d'episode</option>
                 </select>
                 <button>entrer</button>
+            </form>
             end;
-    }
+        }
         $html .= "<div class='list-card'>";
         foreach ($this->series as $value)
         {
