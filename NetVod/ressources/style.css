@@ -258,3 +258,15 @@ input[type='submit']:enabled
     background-color: #4c518f;
 
 }
+
+div.comments
+{
+    display: inline-block;
+}
+
+div.comment
+{
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 4px;
+}

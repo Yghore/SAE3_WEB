@@ -91,7 +91,7 @@ UPDATE serie SET img = 'ressources/img/seriesThumbnails/6.png' WHERE id=6;
 
 
 
-Alter table episode add img varchar(40)
+Alter table episode add img varchar(40);
 
 update episode Set img = 'ressources/img/episodes/1/1.png' where id= 1;
 update episode Set img = 'ressources/img/episodes/1/2.png' where id= 2;
