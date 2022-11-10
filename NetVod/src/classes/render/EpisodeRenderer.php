@@ -23,7 +23,7 @@ class EpisodeRenderer implements Renderer
             $html .= <<<EOF
                 <div class="card">
                     <a href="?action=print-catalogue&id={$this->serie->id}&idepisode={$this->episode->id}">
-                    <div class="img" style='background: no-repeat url("ressources/img/{$this->episode->getThumbnails()}") center; background-size: cover'>
+                    <div class="img" style='background: no-repeat url("{$this->episode->getThumbnails()}") center; background-size: cover'>
 
                     </div>
                     </a>
