@@ -16,16 +16,27 @@ class CatalogueAction extends Action
     protected function executeGET(): string
     {
         $html = '';
-        if (!isset($_GET['id'])) {
-            $html .= $this->allSeries();
-        } else {
-            $idserie = $_GET['id'];
-            if (!isset($_GET['idepisode'])) {
-                $html .= $this->isSerie($idserie);
-
+        // Si l'utilisateur a effectué une recherche
+        if(isset($_GET['q'])){
+            // On récupère la recherche
+            $q = $_GET['q'];
+            // On sanitize la recherche
+            filter_var($q, FILTER_SANITIZE_STRING);
+            // On sépare les mots de la recherche
+            $keyWords = explode(' ', $q);
+        }
+        else{
+            if (!isset($_GET['id'])) {
+                $html .= $this->allSeries();
             } else {
-                $idepisode = $_GET['idepisode'];
-                $html .= $this->isEpisode($idepisode, $idserie);
+                $idserie = $_GET['id'];
+                if (!isset($_GET['idepisode'])) {
+                    $html .= $this->isSerie($idserie);
+
+                } else {
+                    $idepisode = $_GET['idepisode'];
+                    $html .= $this->isEpisode($idepisode, $idserie);
+                }
             }
         }
         return $html;
