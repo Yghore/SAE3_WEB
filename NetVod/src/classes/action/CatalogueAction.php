@@ -23,7 +23,9 @@ class CatalogueAction extends Action
             // On sanitize la recherche
             filter_var($q, FILTER_SANITIZE_STRING);
             // On sépare les mots de la recherche
-            $keyWords = explode(' ', $q);
+            $keywords = explode(' ', $q);
+            // On récupère les séries qui correspondent à la recherche
+            $series = Serie::getSeriesByKeywords($keywords);
         }
         else{
             if (!isset($_GET['id'])) {

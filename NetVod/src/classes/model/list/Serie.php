@@ -22,8 +22,6 @@ class Serie
 
     protected string $date_ajout;
 
-    protected array $episodes;
-
     protected int $nbEpisodes;
 
     public function __get(string $attribut) : mixed{
@@ -40,16 +38,6 @@ class Serie
             $this->$attribut = $valeur;
         } else {
             throw new InvalidPropertyNameException("Attribut existe pas : $attribut");
-        }
-    }
-
-    public function ajouterEpisode(Episode $episode){
-        $this->episodes[] = $episode;
-    }
-
-    public function ajouterListeEpisode(array $listeEpisodes){
-        foreach ($listeEpisodes as $episode){
-            $this->ajouterEpisode($episode);
         }
     }
 
@@ -83,22 +71,6 @@ class Serie
         $this->episodes = $episodes;
         return $episodes;
     }*/
-
-    public static function nbSerie(): int {
-        $pdo = ConnectionFactory::makeConnection();
-        $query = <<<end
-            SELECT
-                COUNT(id) as 'nb'
-            FROM
-                serie
-            end;
-        $resultatSet = $pdo->prepare($query);
-        $resultatSet->execute();
-        $nbSerie = $resultatSet->fetch()['nb'];
-        return $nbSerie;
-    }
-
-
 
     public static function getSerie(int $id) : Serie
     {
@@ -157,7 +129,7 @@ class Serie
         return $episodes;
     }
 
-    public static function MoyenneNoteSerie($idSerie) : mixed{
+    public static function moyenneNoteSerie($idSerie) : mixed{
         $noter = false;
         $pdo = ConnectionFactory::makeConnection();
         $query3 = <<<end
@@ -176,5 +148,28 @@ class Serie
             $noter = $row3['note'];
         }
         return $noter;
+    }
+
+    public static function getSeriesByKeywords(array $keywords): array{
+        $pdo = ConnectionFactory::makeConnection();
+        $query = <<<end
+            SELECT DISTINCT
+                serie.*, COUNT(episode.serie_id) as 'nbepisodes'
+            FROM
+                serie
+            INNER JOIN episode ON episode.serie_id = serie.id
+            WHERE
+                serie.titre REGEXP ?
+            OR
+                serie.descriptif REGEXP ?
+            end;
+        $resultatSet = $pdo->prepare($query);
+        $state->setFetchMode(PDO::FETCH_CLASS, Serie::class);
+        $resultatsSerie = [];
+        foreach ($keywords as $keyword){
+            $resultatSet->execute(["'/$keyword/'", "'/$keyword/'"]);
+            $resultatSeries = merge_array($resultatSeries, $resultatSet->fetchAll());
+        }
+        return $series;
     }
 }
