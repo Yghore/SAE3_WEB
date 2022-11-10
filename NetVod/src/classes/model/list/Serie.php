@@ -121,6 +121,7 @@ class Serie
 
     public static function getSeriesByKeywords(array $keywords): array{
         $pdo = ConnectionFactory::makeConnection();
+        // On sélectionne toutes les séries dont le titre ou la description contient le mot clé
         $query = <<<end
             SELECT DISTINCT serie.*, COUNT(e.serie_id) as nbEpisodes
             FROM serie INNER JOIN episode e on serie.id = e.serie_id
@@ -131,10 +132,12 @@ class Serie
         $resultSet = $pdo->prepare($query);
         $resultSet->setFetchMode(PDO::FETCH_CLASS, Serie::class);
         $resultats = [];
+        // on effctue la recherche pour chaque mot clé
         foreach ($keywords as $keyword){
             $resultSet->execute(["%$keyword%", "%$keyword%"]);
             $resultats = array_merge($resultats, $resultSet->fetchAll());
         }
+        // on renvoie le tableau de séries correspondant à la recherche en enlevant les doublons
         return array_unique($resultats, SORT_REGULAR);
     }
 }
