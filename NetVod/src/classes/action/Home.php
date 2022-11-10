@@ -14,16 +14,15 @@ class Home extends Action
         try
         {
             $user = User::getFromSession();
-
             $html = "<h2>Vos favoris :</h2>\n";
             $html .= (new SeriesRenderer($user->getFavoritesSeries()))->render(2);
             $html .= "<h2>Vos séries en cours :</h2>\n";
             $html .= (new SeriesRenderer($user->getCurrentSeries()))->render(2);
             return $html;
         }
-        catch (AuthException)
+        catch (AuthException $e)
         {
-            return "Vous ne semblez pas connecté, merci de vous connecter pour voir vos favoris";
+            return $e->getMessage();
         }
     }
 

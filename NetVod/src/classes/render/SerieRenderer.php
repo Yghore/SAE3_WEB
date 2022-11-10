@@ -40,7 +40,23 @@ class SerieRenderer implements Renderer
             EOF;
         $html = '';
         if ($selector == 1){
-            $html .= <<<EOF
+            $html .= $this->compact($if, $existfavorite, $addfavorite);
+        }
+        if ($selector == 2) {
+
+            $html .= $this->long($if, $existfavorite, $addfavorite);
+        }
+
+        if ($selector == 3) {
+            $html .= $this->noteMoyenneSerie();
+        }
+
+        return $html;
+
+    }
+
+    public function compact ($if ,$existfavorite, $addfavorite){
+        return <<<EOF
             <div>
                 <p>Titre : {$this->serie->titre}</p>
                 <p>Description : {$this->serie->descriptif}</p>
@@ -53,11 +69,10 @@ class SerieRenderer implements Renderer
                  </div>
             </div>
         EOF;
-        }
-        if ($selector == 2) {
+    }
 
-
-            $html .= <<<EOF
+    public function long ($if ,$existfavorite, $addfavorite) : string {
+        return <<<EOF
                 <div class="card">
                     <a href="?action=print-catalogue&id={$this->serie->id}">
                     <div class="img" style='background: no-repeat url("ressources/img/{$this->serie->img}") center; background-size: cover'>
@@ -71,23 +86,19 @@ class SerieRenderer implements Renderer
                         <p>{$this->serie->descriptif}</p>
                      </div>
                 </div>
-                
-               
-                
-            EOF;
-        }
 
-        if ($selector == 3) {
-            $id = $this->serie->id;
-            $note = Serie::MoyenneNoteSerie($id);
-            $html .= <<<EOF
+            EOF;
+    }
+
+    public function noteMoyenneSerie() : string {
+        $id = $this->serie->id;
+        $note = Serie::MoyenneNoteSerie($id);
+        return <<<EOF
                         <li><a href="index.php?action=print-catalogue&id={$this->serie->id}">{$this->serie->titre} {$this->serie->img}</a> 
                         <p>La note moyenne de cette série est de $note</p>
                         </li>
                      EOF;
-        }
-
-        return $html;
-
     }
+
+
 }

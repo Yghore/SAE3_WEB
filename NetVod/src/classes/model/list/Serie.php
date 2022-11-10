@@ -53,7 +53,7 @@ class Serie
         }
     }
 
-    public function getDescriptionSerie(int $id) :array {
+    /*public function getDescriptionSerie(int $id) :array {
         $pdo = ConnectionFactory::makeConnection();
         $episodes = [];
         $query2 = <<<end
@@ -82,7 +82,7 @@ class Serie
         }
         $this->episodes = $episodes;
         return $episodes;
-    }
+    }*/
 
     public static function nbSerie(): int {
         $pdo = ConnectionFactory::makeConnection();

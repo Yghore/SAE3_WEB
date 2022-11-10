@@ -96,10 +96,11 @@ class User
             $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email, ':valid' => $this->valid]);
             return;
         }
-        $query = $db->prepare("INSERT INTO user (email, pass) VALUES (:email, :password)");
+        $query = $db->prepare("INSERT INTO user (email, pass, valid) VALUES (:email, :password, :valid)");
         $query->execute([
             'email' => $this->email,
-            'password' => $this->pass
+            'password' => $this->pass,
+            'valid' => 1
         ]);
 
     }
