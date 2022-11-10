@@ -140,5 +140,18 @@ class Serie
         // on renvoie le tableau de séries correspondant à la recherche en enlevant les doublons
         return array_unique($resultats, SORT_REGULAR);
     }
-    
+
+    public function isCompleted(int $idUser): bool{
+        $pdo = ConnectionFactory::makeConnection();
+        $query = <<<end
+            SELECT * FROM serie s
+            INNER JOIN current2user c ON c.idserie = s.id
+            WHERE c.iduser = ?
+            AND s.id = ?
+            AND c.currentEpisode = (SELECT MAX(e.id) FROM episode e WHERE e.serie_id=s.id)
+            end;
+        $resultSet = $pdo->prepare($query);
+        $resultSet->execute([$idUser, $this->id]);
+        return $resultSet->rowCount() > 0;
+    }
 }
