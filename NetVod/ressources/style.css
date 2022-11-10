@@ -292,3 +292,12 @@ div.comment
     width: 50px;
 
 }
+
+fieldset {
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 10px;
+    column-count: 2;
+    column-gap: 100px;
+    display: inline-block;
+}

@@ -2,6 +2,7 @@
 
 namespace iutnc\netvod\model;
 
+use DateTime;
 use iutnc\netvod\db\ConnectionFactory;
 use iutnc\netvod\exception\auth\AuthException;
 use iutnc\netvod\exception\user\AttributException;
@@ -18,9 +19,20 @@ class User
     protected ?string $nom;
     protected ?string $prenom;
     protected ?string $date_birth;
-    protected ?bool $parental_authorisation;
+    protected ?bool $parental = false;
     protected ?array $genres;
 
+    public function isStricted(): bool {
+        //verifie si l'utilisateur est mineur
+        if ($this->date_birth != null) {
+            $date = new DateTime($this->date_birth);
+            $now = new DateTime();
+            $interval = $now->diff($date);
+            return $interval->y < 18;
+        } else {
+            return false;
+        }
+    }
 
     public function __get(string $attribut) : mixed{
         if (property_exists($this, $attribut)){

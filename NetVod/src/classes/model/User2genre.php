@@ -90,9 +90,12 @@ class User2genre
                     user2genre
                 WHERE
                     idgenre = :id_genre
+                AND
+                    iduser = :id_user
                 end;
             $stmt = $pdo->prepare($query);
             $stmt->bindValue(':id_genre', $idgenre, PDO::PARAM_INT);
+            $stmt->bindValue(':id_user', User::getFromSession()->id, PDO::PARAM_INT);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($row){
