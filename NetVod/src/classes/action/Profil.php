@@ -2,7 +2,10 @@
 
 namespace iutnc\netvod\action;
 
+use iutnc\netvod\model\Genre;
 use iutnc\netvod\model\User;
+use iutnc\netvod\model\User2genre;
+use iutnc\netvod\render\GenresRenderer;
 use iutnc\netvod\render\UserRenderer;
 
 class Profil extends Action
@@ -11,10 +14,9 @@ class Profil extends Action
     protected function executeGET(): string
     {
         //affichage du profil avec nom prenom age
-
         if(User::existSession()) {
             $user = User::getFromSession();
-            $ur = new UserRenderer($user);
+            $genreRenderer = new GenresRenderer(Genre::getGenres(), User2genre::getGenresByUser($user->id));
             $if = function (bool $condition, ?string $true, ?string $false) { return $condition ? $true : $false; };
             $html = <<<EOF
         <div class="">
@@ -27,7 +29,7 @@ class Profil extends Action
                     <input type="text" name="prenom" id="prenom" value="{$if(isset($user->prenom), $user->prenom, "")}" required>
                     <label for="date">Date de naissance</label>
                     <input type="date" name="date" id="date" value="{$if(isset($user->date_birth), $user->date_birth, "")}" required>
-                    {$ur->renderCheckBox()}
+                    {$genreRenderer->render()}
                     <input type="submit" value="Modifier" name="modifier">
                 </form>
             </div>
@@ -60,27 +62,32 @@ class Profil extends Action
             EOF;
 
         }else if (isset($_POST['modifier'])) {
+            var_dump($_POST);
             $nom = $_POST['nom'];
             $prenom = $_POST['prenom'];
             $date = $_POST['date'];
-            $age = "";
             $user = User::getFromSession();
             $user->nom = $nom;
             $user->prenom = $prenom;
             $user->date_birth = $date;
-            $user->save();
-            header('location: ?action=profil');
             $genres = [];
             foreach ($_POST as $key => $value) {
                 if ($key != 'modifier' && $key != 'nom' && $key != 'prenom' && $key != 'deconnexion' && $key != 'date') {
                     $genres[] = $key;
                 }
             }
+            var_dump($genres);
             $user->genres = $genres;
             $user->save();
-            $res .=<<<EOF
-            <h1> Votre profil a bien été modifié</h1>         
-            EOF;
+
+            foreach ($genres as $genre) {
+                $res = Genre::getIdByGenre($genre);
+                if (!User2genre::exists($user->id, $res)) {
+                    User2genre::addGenre2user($user->id, $res);
+                }
+            }
+            header('location: ?action=profil');
+            die();
         }
         return $res;
     }

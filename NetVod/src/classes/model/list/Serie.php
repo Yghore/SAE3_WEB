@@ -122,7 +122,7 @@ class Serie
     public static function getSeriesByKeywords(array $keywords): array{
         $pdo = ConnectionFactory::makeConnection();
         $query = <<<end
-            SELECT serie.*, COUNT(e.serie_id) as nbEpisodes
+            SELECT DISTINCT serie.*, COUNT(e.serie_id) as nbEpisodes
             FROM serie INNER JOIN episode e on serie.id = e.serie_id
             WHERE serie.titre LIKE ?
             OR serie.descriptif LIKE ?
@@ -135,6 +135,6 @@ class Serie
             $resultSet->execute(["%$keyword%", "%$keyword%"]);
             $resultats = array_merge($resultats, $resultSet->fetchAll());
         }
-        return $resultats;
+        return array_unique($resultats, SORT_REGULAR);
     }
 }

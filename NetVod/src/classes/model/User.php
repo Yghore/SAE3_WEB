@@ -94,7 +94,7 @@ class User
             $query->closeCursor();
             $query = $db->prepare("UPDATE user SET nom = :nom, prenom = :prenom, valid = :valid, date_birth = :date_birth WHERE email = :email");
             $query->execute([':nom' => $this->nom, ':prenom' => $this->prenom, ':email' => $this->email, ':valid' => $this->valid, ':date_birth' => $this->date_birth]);
-
+            return;
         }
         $query = $db->prepare("INSERT INTO user (email, pass, valid) VALUES (:email, :password, :valid)");
         $query->execute([

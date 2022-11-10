@@ -114,3 +114,15 @@ update episode Set img = 'ressources/img/episodes/5/2.png' where id= 18;
 update episode Set img = 'ressources/img/episodes/5/3.png' where id= 19;
 update episode Set img = 'ressources/img/episodes/6/1.png' where id= 20;
 update episode Set img = 'ressources/img/episodes/6/2.png' where id= 21;
+
+insert into genre values (1, 'Action');
+insert into genre values (2, 'Aventure');
+insert into genre values (3, 'Comédie');
+insert into genre values (4, 'Drame');
+insert into genre values (5, 'Fantastique');
+insert into genre values (6, 'Horreur');
+insert into genre values (7, 'Policier');
+insert into genre values (8, 'Romance');
+insert into genre values (9, 'Science-Fiction');
+insert into genre values (10, 'Thriller');
+insert into genre values (11,'Enfant');
