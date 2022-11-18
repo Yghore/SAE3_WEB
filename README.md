@@ -80,7 +80,7 @@ password=PASSWORDHERE ; Password of account
 11. Account activation
 
     ✅  
-    __Optional upgrade track__: SIf the user has lost the token or if the token has expired, then send it again when trying to connect (or regenerate it on demand by clicking on a button)
+    __Optional upgrade track__: If the user has lost the token or if the token has expired, then send it again when trying to connect (or regenerate it on demand by clicking on a button)
 
 12. user profile management : add information (name, first name,favorite genre ...)
 
@@ -90,7 +90,7 @@ password=PASSWORDHERE ; Password of account
 12. Search the catalog by keywords
 
     ✅   
-    __Piste d'amélioration optionelle__ : Removal of linking words in the search
+    __Optional upgrade track__: Removal of linking words in the search
 
 13. Sorting ine the catalog
 
