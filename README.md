@@ -92,7 +92,7 @@ password=PASSWORDHERE ; Password of account
     ✅   
     __Optional upgrade track__: Removal of linking words in the search
 
-13. Sorting ine the catalog
+13. Sorting the catalog
 
     ✅
 
