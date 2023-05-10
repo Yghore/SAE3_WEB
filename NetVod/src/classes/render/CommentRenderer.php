@@ -19,7 +19,9 @@ class CommentRenderer implements Renderer
     {
         $html = <<<EOF
             <div class="comment">
-                <p><strong>{$this->comment->getUsername()}</strong> : {$this->comment->commentaire} Note : {$this->comment->note}/5</p>
+                <p><strong>{$this->comment->getUsername()}</strong> 
+                <p> {$this->comment->commentaire}</p>
+                <p style="font-size: 0.8em; font-style: italic;">{$this->comment->note}/5</p>
             </div>
         EOF;
         return $html;

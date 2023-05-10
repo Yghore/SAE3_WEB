@@ -42,7 +42,7 @@ class AddCommentNote extends Action
                 $user->putCommentNoteSerie($idserie,$note,$commentaire);
                 header('location: ?action=print-catalogue&id='.$idserie);
             } catch (\Exception $e){
-                echo $e->getMessage();
+                return '<div class="message-center">Vous avez déjà commenté cet épisode !</div>';
             }
 
             die();

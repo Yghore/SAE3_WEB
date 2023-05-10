@@ -40,14 +40,16 @@ class EpisodeRenderer implements Renderer
 
         if ($selector == 2){
             $html .= <<<EOF
-                <p>Titre de l'episode : {$this->episode->titre}</p>
-                <p>Resume : {$this->episode->resume}</p>
-                <p>Duree : {$this->episode->duree} min</p>
-                <video controls width="100%">
-                
-                    <source src="ressources/video/{$this->episode->file}" type="video/mp4">
+                <div class="message-center">
+                    <p>Titre de l'episode : {$this->episode->titre}</p>
+                    <p>Resume : {$this->episode->resume}</p>
+                    <p>Duree : {$this->episode->duree} min</p>
+                    <video controls width="100%">
+                    
+                        <source src="ressources/video/{$this->episode->file}" type="video/mp4">
 
-                </video>
+                    </video>
+                </div>
             EOF;
         }
         return $html;

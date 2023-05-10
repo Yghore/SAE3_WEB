@@ -24,14 +24,14 @@ class SerieRenderer implements Renderer
                     <form method="POST" action="?action=add-favorite">
                         <input type="hidden" name="idserie" value="{$this->serie->id}">
                         <input type="hidden" name="url" value="{$this->url}">
-                        <input type="submit" value="Ajouter aux favoris">
+                        <input type="submit" style="width: auto; padding: 15px 20px; margin: 10px;" value="Ajouter aux favoris">
                      </form>
             EOF;
         $existfavorite = <<<EOF
                     <form method="POST" action="?action=delete-favorite">
                         <input type="hidden" name="idserie" value="{$this->serie->id}">
                         <input type="hidden" name="url" value="{$this->url}">
-                        <input type="submit" value="Supprimer des favoris">
+                        <input type="submit" style="width: auto; padding: 15px 20px; margin: 10px;" value="Supprimer des favoris">
                      </form>
             EOF;
         $html = '';
@@ -51,14 +51,16 @@ class SerieRenderer implements Renderer
     }
 
     public function long ($if ,$existfavorite, $addfavorite){
+        $note = Serie::MoyenneNoteSerie($this->serie->id);
         return <<<EOF
-            <div>
+            <div class="message-center">
                 <p>Titre : {$this->serie->titre}</p>
-                <p>Description : {$this->serie->descriptif}</p>
+                <p>Description : {$this->serie->descriptif} (<strong>Moyenne {$note}</strong>)</p>
                 <p>Année de sortie : {$this->serie->annee}</p>
                 <p>Date ajout : {$this->serie->date_ajout}</p>
                 <p>Nombre d'episode dans la serie : {$this->serie->nbEpisodes}</p>
                 <div>{$if(User::getFromSession()->isFavoriteSerie($this->serie->id), $existfavorite, $addfavorite)}</div>
+              
              
                  <div>
                     <a href="?action=add-comment-note&id={$this->serie->id}" class="btn">Ajouter un commentaire/note</a>

@@ -198,6 +198,8 @@ div.list-card
     grid-template-columns: repeat(8, 3fr);
     grid-gap: 10px;
     margin: 5px;
+    margin-left: 60px;
+
 }
 
 div.list-card div.card
@@ -257,14 +259,23 @@ input[type='submit']:enabled
 
 div.comments
 {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 5px;
+    width: 50%;
+
 }
 
 div.comment
 {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     border: 1px solid white;
     border-radius: 4px;
+    padding: 15px;
+    background-color: #252525;
 }
 
 #backButton {
@@ -326,4 +337,38 @@ div.form-search form input[type='submit']
     box-sizing: border-box;
     transition: 0.3s;
     grid-column: span 3;
+}
+
+
+.message-center 
+{
+    text-align: center;
+    background-color: #252525;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+
+}
+
+.trie 
+{
+    padding: 6px;
+    margin: 3px;
+    border-radius: 2px;
+}
+
+.trie-btn
+{
+    background-color: #575fcf;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.trie-btn:hover 
+{
+    background-color: #3f4592;
 }

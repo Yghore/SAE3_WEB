@@ -85,7 +85,7 @@ class User
         if (isset($_SESSION['user'])) {
             return $_SESSION['user'];
         }
-        throw new AuthException("Vous n'êtes pas connecté");
+        throw new AuthException("<div class=\"message-center\">Vous n'êtes pas connecté</div>");
     }
 
     public function isValid() : bool

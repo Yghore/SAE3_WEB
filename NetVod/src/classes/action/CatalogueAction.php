@@ -50,7 +50,7 @@ class CatalogueAction extends Action
 
                 } else {
                     $idepisode = $_GET['idepisode'];
-                    $html .= "<h2><a href=\"?action=print-catalogue&id=$idserie\">Retour à la liste des épisodes</a>";
+                    $html .= "<h2><a style=\"color: #4c518f\"href=\"?action=print-catalogue&id=$idserie\">Retour à la liste des épisodes</a>";
                     $html .= $this->isEpisode($idepisode, $idserie);
                 }
             }
@@ -63,7 +63,7 @@ class CatalogueAction extends Action
         if (User::existSession()){
             return (new SeriesRenderer(Serie::getSeries($orderBy)))->render(2);
         } else {
-            return "Vous n'etes pas connecté";
+            return "<div class=\"message-center\">Vous n'êtes pas connecté</div>";
         }
     }
 
@@ -77,7 +77,7 @@ class CatalogueAction extends Action
         $render = new SerieRenderer($serie, $_SERVER['REQUEST_URI']);
         $html .= $render->render(1);
         $episodes = Serie::getAllEpisodes($idserie);
-        $html .= "<div class='list-card'>";
+        $html .= "<div class='list-card' style='margin: 120px 50px;'>";
         foreach ($episodes as $episode){
             $render = new EpisodeRenderer($episode, $serie);
             $html .= $render->render(1);
@@ -86,14 +86,16 @@ class CatalogueAction extends Action
 
 
         $html .= "</div>";
-        $html .= (new CommentsRenderer(Comment2user::getCommentaireFromSerie($idserie)))->render();
+        
         // Mais on lui donne le prochaine épisode
         if($user->isCurrentSerie($idserie)){
+            $html .= "<div class=\"message-center\">";
             $episodeSuivant = $user->getCurrentEpisode($idserie) + 1;
             $html .= "<h1>Prochaine épisode :</h1>";
             $html .= $this->isEpisode($episodeSuivant, $idserie);
         }
-        $html .= "</div>";
+        $html .= "</div></div>";
+        $html .= (new CommentsRenderer(Comment2user::getCommentaireFromSerie($idserie)))->render();
         return $html;
     }
 
